@@ -406,7 +406,7 @@ public interface Cell extends XLElement {
      * 
      * @return The value of the ss:Type-attribute of the Data-element.
      */
-    String getXlDataType();
+    String getType();
     
     boolean hasData();
     

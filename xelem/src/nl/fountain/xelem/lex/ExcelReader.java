@@ -31,9 +31,9 @@ import org.xml.sax.helpers.DefaultHandler;
 public class ExcelReader {
     
     private SAXParser parser;
-    private XMLReader reader;
+    XMLReader reader;
     
-    private Workbook currentWorkbook;
+    Workbook currentWorkbook;
     private BuilderFactory factory;
     private Handler handler;
     private Map uris;

@@ -88,8 +88,8 @@ public class SSWorksheetBuilder extends AnonymousBuilder {
     
 
     public void endElement(String uri, String localName, String qName) throws SAXException {
-        if (current.getNameSpace().equals(uri)) {
-            if (current.getTagName().equals(localName)) {
+        if (current.getTagName().equals(localName)) {
+            if (current.getNameSpace().equals(uri)) {
                 reader.setContentHandler(parent);
                 return;
             }

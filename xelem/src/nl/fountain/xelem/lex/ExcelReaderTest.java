@@ -62,6 +62,7 @@ public class ExcelReaderTest extends TestCase {
         
         try {
             xlr.read("testsuitefiles/ReaderTest/excel.xls");
+            fail("should have thrown Exception");
         } catch (SAXParseException e) {
             assertEquals(1, e.getLineNumber());
         } catch (Exception e2) {
@@ -79,6 +80,7 @@ public class ExcelReaderTest extends TestCase {
         ExcelReader xlr = new ExcelReader();
         try {
             xlr.read("testsuitefiles/ReaderTest/invalid.xml");
+            fail("should have thrown Exception");
         } catch (SAXParseException e) {
             //System.out.println(e.getMessage());
             assertEquals(11, e.getLineNumber());
@@ -89,12 +91,6 @@ public class ExcelReaderTest extends TestCase {
         Workbook wb = getReaderWorkbook();
         assertNotNull(wb);
         assertEquals("reader", wb.getName());
-        //System.out.println(wb.getFileName());
-//        Map map = xlr.getUris();
-//        for (Iterator iter = map.keySet().iterator(); iter.hasNext();) {
-//            Object element = iter.next();
-//            System.out.println(element + "=" + map.get(element));
-//        }
     }
     
     private Workbook getReaderWorkbook() throws Exception {
@@ -177,6 +173,7 @@ public class ExcelReaderTest extends TestCase {
         assertEquals("Tom Poes", iter.next());
         assertEquals("Donald Duck", iter.next());
         assertEquals("Asterix", iter.next());
+        assertEquals("Sponge Bob", iter.next());
         
         Worksheet sheet = wb.getWorksheet("Donald Duck");
         assertTrue(sheet.isProtected());
@@ -252,19 +249,19 @@ public class ExcelReaderTest extends TestCase {
         Row row3 = table.getRowAt(3);
         assertTrue(row3.hasCellAt(1));
         Cell cell = row3.getCellAt(1);
-        assertEquals("String", cell.getXlDataType());
+        assertEquals("String", cell.getType());
         assertEquals("blaadje 1", cell.getData$());
         assertTrue(cell.hasData());
         assertTrue(!cell.hasError());
         
         cell = table.getRowAt(6).getCellAt(2);
         assertEquals("=R[-2]C[1]+R[-1]C[1]", cell.getFormula());
-        assertEquals("Number", cell.getXlDataType());
+        assertEquals("Number", cell.getType());
         assertEquals("0", cell.getData$());
         
         cell = table.getRowAt(10).getCellAt(2);
         assertEquals("=5/R[-4]C", cell.getFormula());
-        assertEquals("Error", cell.getXlDataType());
+        assertEquals("Error", cell.getType());
         assertEquals("#DIV/0!", cell.getData$());
         assertTrue(cell.hasData());
         assertTrue(cell.hasError());

@@ -393,6 +393,7 @@ public class XWorksheetOptions extends AbstractXLElement implements WorksheetOpt
     }
     
     public void setChildElement(String localName, String content) {
+        //System.out.println(localName+"="+content);
         invokeMethod(localName, content);
     }
     

@@ -29,63 +29,63 @@ public class SSCellTest extends XLElementTest {
     }
     
     public void testDatatype() {
-       assertEquals("String", cell.getXlDataType());
+       assertEquals("String", cell.getType());
        assertEquals("", cell.getData$());
     }
     
     public void testDataTypeNumber() {
        cell.setData(new Integer(9));
-       assertEquals("Number", cell.getXlDataType());
+       assertEquals("Number", cell.getType());
        assertEquals("9", cell.getData$());
        cell.setData(new Double(1.23456D));
-       assertEquals("Number", cell.getXlDataType());
+       assertEquals("Number", cell.getType());
        assertEquals("1.23456", cell.getData$());
        cell.setData(new Long(123456789));
-       assertEquals("Number", cell.getXlDataType());
+       assertEquals("Number", cell.getType());
        assertEquals("123456789", cell.getData$());
        cell.setData(new Float(123.45679F));
-       assertEquals("Number", cell.getXlDataType());
+       assertEquals("Number", cell.getType());
        assertEquals("123.45679", cell.getData$());
        
        Object integer = new Integer(9);
        cell.setData(integer);
-       assertEquals("Number", cell.getXlDataType());
+       assertEquals("Number", cell.getType());
        assertEquals("9", cell.getData$());
        
        Object dubbel = new Double(1.23456D);
        cell.setData(dubbel);
-       assertEquals("Number", cell.getXlDataType());
+       assertEquals("Number", cell.getType());
        assertEquals("1.23456", cell.getData$());
        
        Object lang = new Long(123456789);
        cell.setData(lang);
-       assertEquals("Number", cell.getXlDataType());
+       assertEquals("Number", cell.getType());
        assertEquals("123456789", cell.getData$());
        
        Object drijf = new Float(123.45679F);
        cell.setData(drijf);
-       assertEquals("Number", cell.getXlDataType());
+       assertEquals("Number", cell.getType());
        assertEquals("123.45679", cell.getData$());
        
        cell.setData(8);
-       assertEquals("Number", cell.getXlDataType());
+       assertEquals("Number", cell.getType());
        assertEquals("8", cell.getData$());
        cell.setData(0.0005d);
-       assertEquals("Number", cell.getXlDataType());
+       assertEquals("Number", cell.getType());
        assertEquals("5.0E-4", cell.getData$());
        cell.setData(Long.MAX_VALUE);
-       assertEquals("Number", cell.getXlDataType());
+       assertEquals("Number", cell.getType());
        assertEquals("9223372036854775807", cell.getData$());
        
        Number n = null;
        cell.setData(n);
-       assertEquals("Error", cell.getXlDataType());
+       assertEquals("Error", cell.getType());
        assertEquals("#N/A", cell.getData$());
        assertEquals("=#N/A", cell.getFormula());
        
        n = new BigDecimal(123456.789);
        cell.setData(n);
-       assertEquals("Number", cell.getXlDataType());
+       assertEquals("Number", cell.getType());
        assertEquals("123456.789", cell.getData$().substring(0, 10));
     }
     
@@ -93,81 +93,81 @@ public class SSCellTest extends XLElementTest {
        Date date = new Date(123456789L);
        assertEquals("1970-01-02T11:17:36.789", XLUtil.format(date));
        cell.setData(date);
-       assertEquals("DateTime", cell.getXlDataType());
+       assertEquals("DateTime", cell.getType());
        assertEquals("1970-01-02T11:17:36.789", cell.getData$());
        
        Object datum = new Date(123456789L);
        assertEquals("1970-01-02T11:17:36.789", XLUtil.format((Date) datum));
        cell.setData(datum);
-       assertEquals("DateTime", cell.getXlDataType());
+       assertEquals("DateTime", cell.getType());
        assertEquals("1970-01-02T11:17:36.789", cell.getData$());
        
        Date d = null;
        cell.setData(d);
-       assertEquals("Error", cell.getXlDataType());
+       assertEquals("Error", cell.getType());
        assertEquals("#N/A", cell.getData$());
        assertEquals("=#N/A", cell.getFormula());
     }
     
     public void testDataTypeBoolean() {
        cell.setData(new Boolean(true));
-       assertEquals("Boolean", cell.getXlDataType());
+       assertEquals("Boolean", cell.getType());
        assertEquals("1", cell.getData$());
        cell.setData(new Boolean(false));
-       assertEquals("Boolean", cell.getXlDataType());
+       assertEquals("Boolean", cell.getType());
        assertEquals("0", cell.getData$());
        
        cell.setData(true);
-       assertEquals("Boolean", cell.getXlDataType());
+       assertEquals("Boolean", cell.getType());
        assertEquals("1", cell.getData$());
        cell.setData(false);
-       assertEquals("Boolean", cell.getXlDataType());
+       assertEquals("Boolean", cell.getType());
        assertEquals("0", cell.getData$());
        
        Object boo = new Boolean(true);
        cell.setData(boo);
-       assertEquals("Boolean", cell.getXlDataType());
+       assertEquals("Boolean", cell.getType());
        assertEquals("1", cell.getData$());
        
        Boolean b = null;
        cell.setData(b);
-       assertEquals("Error", cell.getXlDataType());
+       assertEquals("Error", cell.getType());
        assertEquals("#N/A", cell.getData$());
        assertEquals("=#N/A", cell.getFormula());
     }
     
     public void testDataTypeString() {
        cell.setData("bla bla");
-       assertEquals("String", cell.getXlDataType());
+       assertEquals("String", cell.getType());
        assertEquals("bla bla", cell.getData$());
        cell.setData(new Locale("nl"));
-       assertEquals("String", cell.getXlDataType());
+       assertEquals("String", cell.getType());
        assertEquals("nl", cell.getData$());
        cell.setData("\"heden\"");
-       assertEquals("String", cell.getXlDataType());
+       assertEquals("String", cell.getType());
        assertEquals("\"heden\"", cell.getData$());
        cell.setData("'heden' & v < g & g > v");
-       assertEquals("String", cell.getXlDataType());
+       assertEquals("String", cell.getType());
        assertEquals("'heden' & v < g & g > v", cell.getData$());
        
        cell.setData('c');
-       assertEquals("String", cell.getXlDataType());
+       assertEquals("String", cell.getType());
        assertEquals("c", cell.getData$());
        
        cell.setData('&');
-       assertEquals("String", cell.getXlDataType());
+       assertEquals("String", cell.getType());
        assertEquals("&", cell.getData$());
        
        String s = null;
        cell.setData(s);
-       assertEquals("Error", cell.getXlDataType());
+       assertEquals("Error", cell.getType());
        assertEquals("#N/A", cell.getData$());
        assertEquals("=#N/A", cell.getFormula());
     }
     
     public void testDataTypeError() {
        cell.setError(Cell.ERRORVALUE_NA);
-       assertEquals("Error", cell.getXlDataType());
+       assertEquals("Error", cell.getType());
        assertEquals("#N/A", cell.getData$());
        assertEquals("=#N/A", cell.getFormula());
     }
@@ -185,7 +185,7 @@ public class SSCellTest extends XLElementTest {
     public void testInfinity() {
         cell.setData((double)25/0);
         assertEquals("Infinity", cell.getData$());
-        assertEquals("String", cell.getXlDataType());
+        assertEquals("String", cell.getType());
     }
     
     public void testAssembleStyle() {

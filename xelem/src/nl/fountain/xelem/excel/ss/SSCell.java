@@ -156,7 +156,7 @@ public class SSCell extends AbstractXLElement implements Cell {
         return mergedown;
     }
 
-    public String getXlDataType() { 
+    public String getType() { 
         return datatype;
     }
 
@@ -322,7 +322,7 @@ public class SSCell extends AbstractXLElement implements Cell {
     }
     
     public boolean hasError() {
-        return DATATYPE_ERROR.equals(getXlDataType());
+        return DATATYPE_ERROR.equals(getType());
     }
 
     public String getData$() {
@@ -397,7 +397,7 @@ public class SSCell extends AbstractXLElement implements Cell {
     public Element getDataElement(Document doc) {
         Element data = doc.createElement("Data");
         data.setAttributeNodeNS(
-                createAttributeNS(doc, "Type", getXlDataType()));
+                createAttributeNS(doc, "Type", getType()));
         data.appendChild(doc.createTextNode(getData$()));
         return data;
     }
