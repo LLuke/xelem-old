@@ -722,22 +722,26 @@ public class CreateDocumentTest extends TestCase {
         if (toFile) xmlToFile(wb);
     }
     
-    public void testActiveSheet() throws Exception {
+    public void test29() throws Exception {
         Workbook wb = new XLWorkbook("test29");
         wb.addSheet();
         wb.addSheet();
-        wb.addSheet().addCell("this sheet is selected; "
-                + "the workbooks structure and it's windows are protected.");
+        Worksheet sheet = wb.addSheet();
+        sheet.addCell("this sheet is selected; "
+                + "the workbooks structure is protected.");
+        sheet.addCellAt(2, 1).setData("choose >Tools >Protection >Unprotect Workbook");
         wb.addSheet();
         wb.addSheet();
         wb.getExcelWorkbook().setActiveSheet(2);
+        wb.getExcelWorkbook().setWindowHeight(3000);
+        wb.getExcelWorkbook().setWindowTopY(400);
         wb.getExcelWorkbook().setProtectStructure(true);
-        wb.getExcelWorkbook().setProtectWindows(true);
+        wb.getExcelWorkbook().setProtectWindows(false);
         
         String xml = xmlToString(wb);
         assertTrue(xml.indexOf("<x:ActiveSheet>2</x:ActiveSheet>") > 0);
         assertTrue(xml.indexOf("<x:ProtectStructure>True</x:ProtectStructure>") > 0);
-        assertTrue(xml.indexOf("<x:ProtectWindows>True</x:ProtectWindows>") > 0);
+        assertTrue(xml.indexOf("<x:ProtectWindows>False</x:ProtectWindows>") > 0);
         
         //System.out.println(xml);
         if (toFile) xmlToFile(wb);
@@ -747,20 +751,27 @@ public class CreateDocumentTest extends TestCase {
     public void testCellPointer() throws Exception {
         Workbook wb = new XLWorkbook("test30");
         Worksheet sheet = wb.addSheet();
-        for (int i = 0; i < 10; i++) {
-            sheet.addCell(sheet.getCellPointer().getAbsoluteAddress());
+        for (int r = 1; r < 3; r++) {
+	        for (int i = 0; i < 256; i++) {
+	            sheet.addCell(sheet.getCellPointer().getAbsoluteAddress());
+	        }
+	        sheet.getCellPointer().moveCRLF();
         }
-        sheet.getCellPointer().moveCRLF();
-        sheet.addCell(sheet.getCellPointer().getAbsoluteAddress());
-        
-//        sheet.getCellPointer().moveTo(15, 12);
-//        Cell cf = sheet.addCell();
-//        sheet.getCellPointer().moveTo(10, 10);
-//        cf.setFormula("=" + sheet.getCellPointer().getRelativeAddress(15, 12));
-//        sheet.addCell("bla bla");
         
         xmlToFile(wb);
     }
+    
+//    public void testNoDocumentCreation() {
+//    		 //goes out of memory at 1700 rows
+//        Workbook wb = new XLWorkbook("noname");
+//        Worksheet sheet = wb.addSheet();
+//        for (int r = 1; r < 1600; r++) {
+//	        for (int i = 0; i < 256; i++) {
+//	            sheet.addCell(sheet.getCellPointer().getAbsoluteAddress());
+//	        }
+//	        sheet.getCellPointer().moveCRLF();
+//        }
+//    }
     
     private String xmlToString(Workbook wb) throws Exception {
         StringWriter sw = new StringWriter();

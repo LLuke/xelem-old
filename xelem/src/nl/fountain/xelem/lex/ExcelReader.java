@@ -4,7 +4,10 @@
  */
 package nl.fountain.xelem.lex;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
@@ -25,13 +28,15 @@ import org.xml.sax.helpers.DefaultHandler;
 /**
  *
  */
-public class ExcelReader extends DefaultHandler {
+public class ExcelReader {
     
     private SAXParser parser;
     private XMLReader reader;
-    private Locator locator;
+    
     private Workbook currentWorkbook;
     private BuilderFactory factory;
+    private Handler handler;
+    private Map uris;
     
     public ExcelReader() throws ParserConfigurationException, SAXException {
         SAXParserFactory spf = SAXParserFactory.newInstance();
@@ -51,86 +56,119 @@ public class ExcelReader extends DefaultHandler {
     
     public Workbook read(InputSource in) throws IOException, SAXException {
         currentWorkbook = null;
+        getUris().clear();
         reader = parser.getXMLReader();
         
-        reader.setContentHandler(this);
-        reader.setErrorHandler(this);
+        reader.setContentHandler(getHandler());
+        reader.setErrorHandler(getHandler());
         //reader.setDTDHandler(this);
         reader.parse(in);
         return currentWorkbook;
     }
     
-    public void fatalError(SAXParseException e) throws SAXException {
-        //System.out.println("fatal error detected: " + e.getMessage());
-        throw e;
+    public Map getUris() {
+        if (uris == null) {
+            uris = new HashMap();
+        }
+        return uris;
     }
     
-    public void error(SAXParseException e) throws SAXException {
-        System.out.println("error detected: " + e.getMessage());
-    }
-    
-    public void warning(SAXParseException e) throws SAXException {
-        System.out.println("warning detected: " + e.getMessage());
-    }
-    
-//    public void setDocumentLocator(Locator locator) {
-//        System.out.println("recieved locator");
-//        this.locator = locator;
-//    }
-    
-    
-
-    public void startDocument() throws SAXException {        
-        //System.out.println("doc started: ");
-    }
-    
-    public void endDocument() throws SAXException {
-        //System.out.println("doc ended: ");
-    }
-    
-    public void startElement(String uri, String localName, String qName,
-            Attributes attributes) throws SAXException {
-//        System.out.println("startElement: "
-//                + "\n\turi=" + uri
-//                + "\n\tlcalName=" + localName
-//                + "\n\tqName=" + qName);
-        if (XLElement.XMLNS_SS.equals(uri) && "Workbook".equals(qName)) {
-            currentWorkbook = new XLWorkbook("this must be fixed");
-            Builder builder = getFactory().getXLWorkbookBuilder();
-            builder.build(reader, this, getFactory(), currentWorkbook);
-        }       
-    }
-    
-    // @see org.xml.sax.helpers.DefaultHandler#unparsedEntityDecl(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
-    public void unparsedEntityDecl(String name, String publicId,
-            String systemId, String notationName) throws SAXException {
-        System.out.println("unparsedEntityDecl:"
-                + "\n\tname=" + name
-                + "\n\tpublicId=" + publicId
-                + "\n\tsystemId=" + systemId
-                + "\n\tnotationName=" + notationName);
-    }
-    
-    public void notationDecl(String name, String publicId, String systemId)
-            throws SAXException {
-        System.out.println("notation decl: "
-                + "\n\tname=" + name
-                + "\n\tpublicId=" + publicId
-                + "\n\tsystemId=" + systemId);
-    }
-    
-//    public void startPrefixMapping(String prefix, String uri)
-//            throws SAXException {
-//        System.out.println("prefix mapping: "
-//                + "\n\tprefix=" + prefix
-//                + "\n\turi=" + uri);
-//    }
-    
-    private BuilderFactory getFactory() {
+    protected BuilderFactory getFactory() {
         if (factory == null) {
             factory = new BuilderFactory();
         }
         return factory;
+    }
+    
+    private Handler getHandler() {
+        if (handler == null) {
+            handler = new Handler();
+        }
+        return handler;
+    }
+      
+    
+    //////////////////////////////////////////////////////////////////////////////
+    
+    private class Handler extends DefaultHandler {
+        
+        private Locator locator;
+        
+        public void startPrefixMapping(String prefix, String uri) throws SAXException {
+//            System.out.println("prefix mapping: "
+//                    + "\n\tprefix=" + prefix
+//                    + "\n\turi=" + uri);
+            getUris().put(prefix, uri);
+        }
+        
+        public void notationDecl(String name, String publicId, String systemId)
+                throws SAXException {
+            System.out.println("notation decl: " + "\n\tname=" + name
+                    + "\n\tpublicId=" + publicId + "\n\tsystemId=" + systemId);
+        }
+        
+        public void unparsedEntityDecl(String name, String publicId,
+                String systemId, String notationName) throws SAXException {
+            System.out.println("unparsedEntityDecl:"
+                    + "\n\tname=" + name
+                    + "\n\tpublicId=" + publicId
+                    + "\n\tsystemId=" + systemId
+                    + "\n\tnotationName=" + notationName);
+        }
+        
+        public void startElement(String uri, String localName, String qName,
+                Attributes attributes) throws SAXException {
+//            System.out.println("startElement: "
+//                    + "\n\turi=" + uri
+//                    + "\n\tlcalName=" + localName
+//                    + "\n\tqName=" + qName);
+            if (XLElement.XMLNS_SS.equals(uri) && "Workbook".equals(localName)) {
+                String filename = getFileName();
+                currentWorkbook = new XLWorkbook(new File(getFileName()).getName());
+                currentWorkbook.setFileName(filename);
+                Builder builder = getFactory().getXLWorkbookBuilder();
+                builder.build(reader, this, getFactory(), currentWorkbook);
+            }       
+        }
+        
+        public void startDocument() throws SAXException {        
+            //System.out.println("doc started: ");
+        }
+        
+        public void endDocument() throws SAXException {
+            //System.out.println("doc ended: ");
+        }
+        
+        public void fatalError(SAXParseException e) throws SAXException {
+            //System.out.println("fatal error detected: " + e.getMessage());
+            throw e;
+        }
+        
+        public void error(SAXParseException e) throws SAXException {
+            System.out.println("error detected: " + e.getMessage());
+        }
+        
+        public void warning(SAXParseException e) throws SAXException {
+            System.out.println("warning detected: " + e.getMessage());
+        }
+        
+        public void setDocumentLocator(Locator locator) {
+            //System.out.println("recieved locator");
+            this.locator = locator;
+        }
+        
+        private String getFileName() {
+            String filename = "source";
+            if (locator != null) {
+                String temp = locator.getSystemId();
+                if (temp != null) {
+                    filename = temp;
+                }
+            }
+            return filename;
+        }
+        
+
     }
     
 

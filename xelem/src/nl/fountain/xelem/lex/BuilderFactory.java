@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import nl.fountain.xelem.excel.ss.XLWorkbookBuilder;
 
 /**
  *
@@ -16,6 +15,7 @@ import nl.fountain.xelem.excel.ss.XLWorkbookBuilder;
 public class BuilderFactory {
     
     private XLWorkbookBuilder xlworkbookbuilder;
+    private SSWorksheetBuilder ssworksheetbuilder;
     private List anonymousBuilders;
     
     public Builder getXLWorkbookBuilder() {
@@ -23,6 +23,13 @@ public class BuilderFactory {
             xlworkbookbuilder = new XLWorkbookBuilder();
         }
         return xlworkbookbuilder;
+    }
+    
+    public Builder getSSWorksheetBuilder() {
+        if (ssworksheetbuilder == null) {
+            ssworksheetbuilder = new SSWorksheetBuilder();
+        }
+        return ssworksheetbuilder;
     }
     
     public Builder getAnonymousBuilder() {

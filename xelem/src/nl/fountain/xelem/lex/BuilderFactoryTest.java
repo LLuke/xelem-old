@@ -45,6 +45,7 @@ public class BuilderFactoryTest extends TestCase {
         assertTrue(!builder1.isOccupied());
     }
     
+    
     private class MockReader extends XMLFilterImpl {
         
         public void setContentHandler(ContentHandler handler) {}

@@ -66,9 +66,21 @@ public interface Worksheet extends XLElement {
     void setProtected(boolean p);
     
     /**
+     * Specifies whether protection is applied to this worksheet.
+     * @return <code>true</code> if this worksheet is protected
+     */
+    boolean isProtected();
+    
+    /**
      * Sets whether this worksheet will be displayed from right to left.
      */
     void setRightToLeft(boolean r);
+    
+    /**
+     * Specifies whether this worksheet is displayed from right to left.
+     * @return <code>true</code> if this worksheet is displayed from right to left
+     */
+    boolean isRightToLeft();
     
     /**
      * Indicates whether WorksheetOptions was added to this worksheet.

@@ -4,10 +4,13 @@
  */
 package nl.fountain.xelem.lex;
 
+import java.util.Iterator;
+
 import junit.framework.TestCase;
 import nl.fountain.xelem.excel.DocumentProperties;
 import nl.fountain.xelem.excel.ExcelWorkbook;
 import nl.fountain.xelem.excel.Workbook;
+import nl.fountain.xelem.excel.Worksheet;
 
 import org.xml.sax.SAXParseException;
 
@@ -61,6 +64,13 @@ public class ExcelReaderTest extends TestCase {
         ExcelReader xlr = new ExcelReader();
         Workbook wb = xlr.read("testsuitefiles/ReaderTest/reader.xml");
         assertNotNull(wb);
+        assertEquals("reader.xml", wb.getName());
+        //System.out.println(wb.getFileName());
+//        Map map = xlr.getUris();
+//        for (Iterator iter = map.keySet().iterator(); iter.hasNext();) {
+//            Object element = iter.next();
+//            System.out.println(element + "=" + map.get(element));
+//        }
     }
     
     public void testDocumentProperties() throws Exception {
@@ -95,12 +105,27 @@ public class ExcelReaderTest extends TestCase {
         ExcelWorkbook exw = wb.getExcelWorkbook();
         
         assertEquals(0, exw.getActiveSheet());
-        assertEquals(8640, exw.getWindowHeight());
-        assertEquals(360, exw.getWindowTopX());
-        assertEquals(285, exw.getWindowTopY());
-        assertEquals(14940, exw.getWindowWidth());
+        assertEquals(8835, exw.getWindowHeight());
+        assertEquals(120, exw.getWindowTopX());
+        assertEquals(90, exw.getWindowTopY());
+        assertEquals(15180, exw.getWindowWidth());
         assertTrue(!exw.getProtectStructure());
         assertTrue(exw.getProtectWindows());
+    }
+    
+    public void testWorksheet() throws Exception {
+        ExcelReader xlr = new ExcelReader();
+        Workbook wb = xlr.read("testsuitefiles/ReaderTest/reader.xml");
+        Iterator iter = wb.getSheetNames().iterator();
+        
+        assertEquals("Tom Poes", iter.next());
+        assertEquals("Donald Duck", iter.next());
+        assertEquals("Asterix", iter.next());
+        
+        Worksheet sheet = wb.getWorksheet("Donald Duck");
+        assertTrue(sheet.isProtected());
+        sheet = wb.getWorksheet("Asterix");
+        assertTrue(sheet.isRightToLeft());
     }
     
     

@@ -53,11 +53,11 @@ public class AnonymousBuilder implements Builder {
         return occupied;
     }
     
-    protected void invokeMethod(Object obj, String qName, Object value) {
+    protected void invokeMethod(Object obj, String localName, Object value) {
         Class[] types = new Class[] {value.getClass()};
         Method method = null;
         try {
-            method = obj.getClass().getMethod("set" + qName, types);
+            method = obj.getClass().getMethod("set" + localName, types);
             method.invoke(obj, new Object[]{value});
         } catch (NoSuchMethodException e) {
             // no big deal
@@ -95,7 +95,7 @@ public class AnonymousBuilder implements Builder {
                 occupied = false;
                 return;
             }
-            invokeMethod(current, qName, contents.toString());
+            invokeMethod(current, localName, contents.toString());
         }
     }
 

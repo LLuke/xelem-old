@@ -111,7 +111,7 @@ public class ODocumentProperties extends AbstractXLElement implements DocumentPr
      * Method called by 
      * {@link nl.fountain.xelem.lex.ExcelReader}.
      * 
-     * @param created the node value of the tag <code>%gt;Created&lt;</code>
+     * @param created the node value of the tag <code>&lt;Created&gt;</code>
      */
     public void setCreated(String created) {
         this.created = created;
@@ -125,7 +125,7 @@ public class ODocumentProperties extends AbstractXLElement implements DocumentPr
      * Method called by 
      * {@link nl.fountain.xelem.lex.ExcelReader}.
      * 
-     * @param lastsaved the node value of the tag <code>%gt;LastSaved&lt;</code>
+     * @param lastsaved the node value of the tag <code>&lt;LastSaved&gt;</code>
      */
     public void setLastSaved(String lastsaved) {
         this.lastsaved = lastsaved;
@@ -135,7 +135,7 @@ public class ODocumentProperties extends AbstractXLElement implements DocumentPr
      * Method called by 
      * {@link nl.fountain.xelem.lex.ExcelReader}.
      * 
-     * @param lastprinted the node value of the tag <code>%gt;LastPrinted&lt;</code>
+     * @param lastprinted the node value of the tag <code>&lt;LastPrinted&gt;</code>
      */
     public void setLastPrinted(String lastprinted) {
         this.lastprinted = lastprinted;

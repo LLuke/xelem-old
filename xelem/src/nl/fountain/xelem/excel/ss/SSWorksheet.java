@@ -92,8 +92,36 @@ public class SSWorksheet extends AbstractXLElement implements Worksheet {
         protect = p;
     }
     
+    /**
+     * Method called by 
+     * {@link nl.fountain.xelem.lex.ExcelReader}.
+     * 
+     * @param s the value of the attribute <code>Protected</code>
+     */
+    public void setProtected(String s) {
+        protect = s.equals("1");
+    }
+    
+    public boolean isProtected() {
+        return protect;
+    }
+    
     public void setRightToLeft(boolean r) {
         righttoleft = r;
+    }
+    
+    /**
+     * Method called by 
+     * {@link nl.fountain.xelem.lex.ExcelReader}.
+     * 
+     * @param s the value of the attribute <code>RightToLeft</code>
+     */
+    public void setRightToLeft(String s) {
+        righttoleft = s.equals("1");
+    }
+    
+    public boolean isRightToLeft() {
+        return righttoleft;
     }
     
     public boolean hasWorksheetOptions() {

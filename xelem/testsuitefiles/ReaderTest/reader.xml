@@ -18,6 +18,7 @@
   <WindowWidth>14940</WindowWidth>
   <WindowTopX>360</WindowTopX>
   <WindowTopY>285</WindowTopY>
+  <ActiveSheet>2</ActiveSheet>
   <ProtectStructure>False</ProtectStructure>
   <ProtectWindows>False</ProtectWindows>
  </ExcelWorkbook>
@@ -52,7 +53,6 @@
    </Row>
   </Table>
   <WorksheetOptions xmlns="urn:schemas-microsoft-com:office:excel">
-   <Selected/>
    <Panes>
     <Pane>
      <Number>3</Number>
@@ -64,7 +64,7 @@
    <ProtectScenarios>False</ProtectScenarios>
   </WorksheetOptions>
  </Worksheet>
- <Worksheet ss:Name="Donald Duck">
+ <Worksheet ss:Name="Donald Duck" ss:Protected="1">
   <Table ss:ExpandedColumnCount="7" ss:ExpandedRowCount="11" x:FullColumns="1"
    x:FullRows="1">
    <Row ss:Index="4">
@@ -89,11 +89,11 @@
      <ActiveCol>4</ActiveCol>
     </Pane>
    </Panes>
-   <ProtectObjects>False</ProtectObjects>
-   <ProtectScenarios>False</ProtectScenarios>
+   <ProtectObjects>True</ProtectObjects>
+   <ProtectScenarios>True</ProtectScenarios>
   </WorksheetOptions>
  </Worksheet>
- <Worksheet ss:Name="Asterix">
+ <Worksheet ss:Name="Asterix" ss:RightToLeft="1">
   <Table ss:ExpandedColumnCount="3" ss:ExpandedRowCount="6" x:FullColumns="1"
    x:FullRows="1">
    <Row ss:Index="6">
@@ -101,11 +101,13 @@
    </Row>
   </Table>
   <WorksheetOptions xmlns="urn:schemas-microsoft-com:office:excel">
+   <Selected/>
+   <DisplayRightToLeft/>
    <Panes>
     <Pane>
      <Number>3</Number>
-     <ActiveRow>22</ActiveRow>
-     <ActiveCol>3</ActiveCol>
+     <ActiveRow>21</ActiveRow>
+     <ActiveCol>10</ActiveCol>
     </Pane>
    </Panes>
    <ProtectObjects>False</ProtectObjects>

@@ -1,0 +1,59 @@
+/*
+ * Created on 15-mrt-2005
+ *
+ */
+package nl.fountain.xelem.lex;
+
+import nl.fountain.xelem.excel.Worksheet;
+import nl.fountain.xelem.excel.XLElement;
+import nl.fountain.xelem.excel.ss.XLWorkbook;
+
+import org.xml.sax.Attributes;
+import org.xml.sax.ContentHandler;
+import org.xml.sax.SAXException;
+import org.xml.sax.XMLReader;
+
+/**
+ *
+ */
+public class XLWorkbookBuilder extends AnonymousBuilder {
+    
+    private XLWorkbook current;
+    
+    public void build(XMLReader reader, ContentHandler parent, 
+            BuilderFactory factory, XLElement xle) {
+        setUpBuilder(reader, parent, factory);
+        current = (XLWorkbook) xle;
+    }
+    
+    public void startElement(String uri, String localName, String qName,
+            Attributes atts) throws SAXException {
+        if (XLElement.XMLNS_O.equals(uri) && "DocumentProperties".equals(localName)) {
+            Builder builder = factory.getAnonymousBuilder();
+            builder.build(reader, this, factory, current.getDocumentProperties());
+        } else if (XLElement.XMLNS_X.equals(uri) && "ExcelWorkbook".equals(localName)) {
+            Builder builder = factory.getAnonymousBuilder();
+            builder.build(reader, this, factory, current.getExcelWorkbook());
+        } else if (XLElement.XMLNS_SS.equals(uri) && "Worksheet". equals(localName)) {
+            Builder builder = factory.getSSWorksheetBuilder();
+            Worksheet sheet = current.addSheet(
+                    atts.getValue(XLElement.XMLNS_SS, "Name"));
+            for (int i = 0; i < atts.getLength(); i++) {
+                invokeMethod(sheet, atts.getLocalName(i), atts.getValue(i));
+            }
+            builder.build(reader, this, factory, sheet);
+        }
+    }
+    
+    
+    public void endElement(String uri, String localName, String qName) throws SAXException {
+        if (current.getNameSpace().equals(uri)) {
+            if (current.getTagName().equals(qName)) {
+                reader.setContentHandler(parent);
+                return;
+            }
+        }
+    }
+    
+
+}
