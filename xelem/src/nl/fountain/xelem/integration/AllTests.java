@@ -10,7 +10,6 @@ import junit.textui.TestRunner;
 import nl.fountain.xelem.AddressTest;
 import nl.fountain.xelem.CellPointerTest;
 import nl.fountain.xelem.XFactoryTest;
-import nl.fountain.xelem.XLDocumentTest;
 import nl.fountain.xelem.XLUtilTest;
 import nl.fountain.xelem.excel.ss.CreateDocumentTest;
 import nl.fountain.xelem.excel.ss.SSCellTest;
@@ -21,6 +20,7 @@ import nl.fountain.xelem.excel.ss.SSWorksheetTest;
 import nl.fountain.xelem.excel.ss.XLWorkbookTest;
 import nl.fountain.xelem.excel.x.XPaneTest;
 import nl.fountain.xelem.excel.x.XWorksheetOptionsTest;
+import nl.fountain.xelem.expat.XLDocumentTest;
 
 /**
  *

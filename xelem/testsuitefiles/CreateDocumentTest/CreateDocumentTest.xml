@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- This is the configuration file used while running -->
+<!-- nl/fountain/xelem/excel.ss.CreateDocumentTest     -->
+
+<Xelem 	xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+		xmlns:o="urn:schemas-microsoft-com:office:office"
+		xmlns:x="urn:schemas-microsoft-com:office:excel"
+		xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+		xmlns:f="urn:schemas-fountain-nl:xelem:config"
+		xmlns:html="http://www.w3.org/TR/REC-html40">
+
+  <f:comment>      THIS IS AN EXCEL-FILE OF TYPE SpreadsheetML.        </f:comment>
+  <f:comment>                   IF YOU READ THIS                       </f:comment>
+  <f:comment>    YOU PROBABLY NEED A MORE RECENT VERSION OF EXCEL.     </f:comment>
+  
+  <Styles>
+  
+    <Style ss:ID="Default" ss:Name="Normal">
+      <Alignment ss:Vertical="Bottom"/>
+      <Borders/>
+      <Font/>
+      <Interior/>
+      <NumberFormat/>
+      <Protection/>
+    </Style>
+  
+    <Style ss:ID="bold">
+      <Font x:Family="Swiss" ss:Bold="1"/>
+    </Style>
+    
+    <Style ss:ID="b_yellow">
+      <Interior ss:Color="#FFFF00" ss:Pattern="Solid"/>
+    </Style>
+    
+    <Style ss:ID="b_lblue">
+      <Interior ss:Color="#99CCFF" ss:Pattern="Solid"/>
+    </Style>
+    
+    <Style ss:ID="gray_date">
+      <Alignment ss:Horizontal="Center" ss:Vertical="Bottom"/>
+      <Font x:Family="Swiss" ss:Bold="1"/>
+      <Interior ss:Color="#C0C0C0" ss:Pattern="Solid"/>
+      <NumberFormat ss:Format="d\ mmmm\ yyyy\ hh:mm:ss"/>
+    </Style>
+    
+    <Style ss:ID="currency" ss:Name="Currency">
+      <NumberFormat ss:Format="_-&quot;€&quot;\ * #,##0.00_-;_-&quot;€&quot;\ * #,##0.00\-;_-&quot;€&quot;\ * &quot;-&quot;??_-;_-@_-"/>
+    </Style>
+    
+    <Style ss:ID="wrap">
+      <Alignment ss:Vertical="Top" ss:WrapText="1"/>
+    </Style>
+    
+  </Styles>  
+</Xelem>

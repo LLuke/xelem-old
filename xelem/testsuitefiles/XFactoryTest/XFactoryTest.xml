@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- This is the configuration file for nl.fountain.xelem.XFactory,    -->
+<!-- Used while running nl.fountain.xelem.XFactoryTest.                -->
+
+<Xelem 	xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+		xmlns:o="urn:schemas-microsoft-com:office:office"
+		xmlns:x="urn:schemas-microsoft-com:office:excel"
+		xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+		xmlns:f="urn:schemas-fountain-nl:xelem:config"
+		xmlns:html="http://www.w3.org/TR/REC-html40">
+
+  <f:comment>      f:comment 1      </f:comment>
+  <f:comment>      f:comment 2      </f:comment>
+  <f:comment>      f:comment 3      </f:comment>
+  
+  <Styles>
+  
+    <Style ss:ID="decimal1" ss:Name="Decimal 1">
+      <NumberFormat ss:Format="0.0"/>
+    </Style>
+  
+    <Style ss:ID="decimal2" ss:Name="Decimal 2">
+      <NumberFormat ss:Format="0.00"/>
+    </Style>
+    
+    <Style ss:ID="b_yellow" ss:Name="Yellow background">
+      <Interior ss:Color="#FFFF00" ss:Pattern="Solid"/>
+    </Style>
+    
+    <Style ss:ID="bold" ss:Name="Bold">
+      <Font x:Family="Swiss" ss:Bold="1"/>
+    </Style>
+    
+  </Styles>  
+</Xelem>

@@ -25,6 +25,7 @@ import org.xml.sax.helpers.ParserAdapter;
 public class SheetReader extends DefaultHandler {
     
     private Worksheet sheet;
+    private String valueString;
     
     public SheetReader(String fileName) throws IOException {
         try {
@@ -49,11 +50,16 @@ public class SheetReader extends DefaultHandler {
     
     public void startElement(String uri, String localName, String qName,
             Attributes attributes) throws SAXException {
+        if (!"".equals(valueString)) System.out.println("text=" + valueString);
+        valueString = "";
         System.out.println("==============================================");
-        System.out.println("uri:" + uri);
-        System.out.println("localName:" + localName);
-        System.out.println("qName:" + qName);
-        System.out.println(attributes.getValue(0));
+        System.out.println("uri=" + uri);
+        System.out.println("localName=" + localName);
+        System.out.println("qName=" + qName);
+        for (int i = 0; i < attributes.getLength(); i++) {
+            System.out.print("\t" + attributes.getQName(i) + "=");
+            System.out.println(attributes.getValue(i));
+        }
     }
     
     public void characters(char[] ch, int start, int length)
@@ -61,8 +67,17 @@ public class SheetReader extends DefaultHandler {
         String temp2;
         temp2 = new String(ch, start, length).trim();
         if (!temp2.equals("")) {
-            System.out.println("temp2:" + temp2);
+            //System.out.println("temp2=" + temp2);
+            valueString += temp2;
         }
     }
+    
+//    public void endElement(String uri, String localName, String qName)
+//            throws SAXException {
+//        System.out.println("uri=" + uri);
+//        System.out.println("localName=" + localName);
+//        System.out.println("qName=" + qName);
+//        System.out.println("END text=" + valueString);
+//    }
 
 }

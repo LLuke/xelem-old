@@ -94,7 +94,8 @@ public interface Cell extends XLElement {
     public static final String ERRORVALUE_NAME = "#NAME?";
     
     /**
-     * The Excel error value indicating ... {@value}. 
+     * The Excel error value indicating 
+     * intersection of two cell ranges is empty {@value}. 
      */
     public static final String ERRORVALUE_NULL = "#NULL!";
     

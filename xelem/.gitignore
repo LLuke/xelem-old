@@ -1,10 +1,8 @@
 bin
 Book*
-test*
-javadoc
-javadoc.xml
+testoutput
+javadoc*
 xelem.mf
 fibonacci.xls
 HelloExcel.xls
-javadoc2.xml
-javadoc.xml
+
