@@ -34,6 +34,10 @@ public class SSComment extends AbstractXLElement implements Comment {
     public void setShowAlways(boolean show) {
         showAlways = show;
     }
+    
+    private void setShowAlways(String s) {
+        showAlways = "1".equals(s);
+    }
 
     public boolean showsAlways() {
         return showAlways;
@@ -96,7 +100,7 @@ public class SSComment extends AbstractXLElement implements Comment {
         
         Element dae = doc.createElementNS(XMLNS_SS, "Data");
         dae.setPrefix(PREFIX_SS);
-        dae.appendChild(doc.createTextNode(getDataStripped()));
+        dae.appendChild(doc.createTextNode(data));
         coe.appendChild(dae);
         
         parent.appendChild(coe);
@@ -111,6 +115,7 @@ public class SSComment extends AbstractXLElement implements Comment {
     }
     
     public void setChildElement(String localName, String content) {
+        //System.out.println(localName+"="+content);
         setData(content);
     }
     

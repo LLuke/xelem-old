@@ -48,8 +48,8 @@ public class SSCellBuilder extends AnonymousBuilder {
                 reader.setContentHandler(parent);
                 return;
             }
-            current.setChildElement(localName, contents.toString());
         }
+        current.setChildElement(localName, contents.toString());
     }
 
 }

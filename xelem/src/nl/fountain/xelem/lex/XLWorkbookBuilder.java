@@ -42,6 +42,7 @@ public class XLWorkbookBuilder extends AnonymousBuilder {
                     atts.getValue(XLElement.XMLNS_SS, "Name"), 
                     null);
             nr.setAttributes(atts);
+        // Worksheet
         } else if (XLElement.XMLNS_SS.equals(uri) && "Worksheet". equals(localName)) {
             Builder builder = factory.getSSWorksheetBuilder();
             Worksheet sheet = current.addSheet(
@@ -54,11 +55,12 @@ public class XLWorkbookBuilder extends AnonymousBuilder {
     
     public void endElement(String uri, String localName, String qName) throws SAXException {
         if (current.getNameSpace().equals(uri)) {
-            if (current.getTagName().equals(qName)) {
+            if (current.getTagName().equals(localName)) {
                 reader.setContentHandler(parent);
                 return;
             }
         }
+        // no child elements
     }
     
 

@@ -12,5 +12,6 @@ public class Test {
 
     public static void main(String[] args) {
         System.out.println(Integer.decode("#ffffff"));
+        System.out.println(Integer.toHexString(12345678));
     }
 }

@@ -52,19 +52,6 @@ public class AnonymousBuilder implements Builder {
         return occupied;
     }
     
-//    protected void invokeMethod(Object obj, String localName, Object value) {
-//        Class[] types = new Class[] {value.getClass()};
-//        Method method = null;
-//        try {
-//            method = obj.getClass().getMethod("set" + localName, types);
-//            method.invoke(obj, new Object[]{value});
-//        } catch (NoSuchMethodException e) {
-//            // no big deal
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
-
     public void setDocumentLocator(Locator locator) {
     }
 
@@ -83,20 +70,23 @@ public class AnonymousBuilder implements Builder {
 
     public void startElement(String uri, String localName, String qName,
             Attributes atts) throws SAXException {
-        contents.reset();
+        //System.out.println(localName);
+        if (!XLElement.XMLNS_HTML.equals(uri)) {
+            contents.reset();
+        }
     }
 
     public void endElement(String uri, String localName, String qName)
             throws SAXException {
+        //System.out.println(localName);
         if (current.getNameSpace().equals(uri)) {	        
-            if (current.getTagName().equals(qName)) {
+            if (current.getTagName().equals(localName)) {
                 reader.setContentHandler(parent);
                 occupied = false;
                 return;
             }
-            //invokeMethod(current, localName, contents.toString());
-            current.setChildElement(localName, contents.toString());
         }
+        current.setChildElement(localName, contents.toString());
     }
 
     public void characters(char[] ch, int start, int length)

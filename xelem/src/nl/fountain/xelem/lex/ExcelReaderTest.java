@@ -12,6 +12,7 @@ import junit.framework.TestCase;
 import nl.fountain.xelem.XSerializer;
 import nl.fountain.xelem.excel.Cell;
 import nl.fountain.xelem.excel.Column;
+import nl.fountain.xelem.excel.Comment;
 import nl.fountain.xelem.excel.DocumentProperties;
 import nl.fountain.xelem.excel.ExcelWorkbook;
 import nl.fountain.xelem.excel.NamedRange;
@@ -324,8 +325,12 @@ public class ExcelReaderTest extends TestCase {
         Cell cell = sheet.getCellAt(16, 5);
         
         assertTrue(cell.hasComment());
-        assertEquals("WF Hermans", cell.getComment().getAuthor());
-        
+        Comment comment = cell.getComment();
+        assertTrue(comment.showsAlways());
+        assertEquals("WF Hermans", comment.getAuthor());
+        char lf = 10;
+        assertEquals("WF Hermans:" + lf + "this is comment", comment.getData());
+        assertEquals("this is comment", comment.getDataClean());
     }
 
 }

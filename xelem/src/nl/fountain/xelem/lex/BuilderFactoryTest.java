@@ -32,16 +32,16 @@ public class BuilderFactoryTest extends TestCase {
         assertNotSame(builder1, builder2);
         XLElement xle = new XExcelWorkbook();
         builder2.build(new MockReader(), null, factory, xle);
-        builder2.endElement(XLElement.XMLNS_X, null, "ExcelWorkbook");
+        builder2.endElement(XLElement.XMLNS_X, "ExcelWorkbook", null);
         assertTrue(!builder2.isOccupied());
         AnonymousBuilder builder3 = (AnonymousBuilder) factory.getAnonymousBuilder();
         assertTrue(builder3.isOccupied());
         assertSame(builder2, builder3);
         builder3.build(new MockReader(), null, factory, xle);
-        builder3.endElement(XLElement.XMLNS_X, null, "ExcelWorkbook");
+        builder3.endElement(XLElement.XMLNS_X, "ExcelWorkbook", null);
         assertTrue(!builder3.isOccupied());
         builder1.build(new MockReader(), null, factory, xle);
-        builder1.endElement(XLElement.XMLNS_X, null, "ExcelWorkbook");
+        builder1.endElement(XLElement.XMLNS_X, "ExcelWorkbook", null);
         assertTrue(!builder1.isOccupied());
     }
     
