@@ -40,6 +40,7 @@ public interface WorksheetOptions extends XLElement {
     int getZoom();
     
     void setGridlineColor(int r, int g, int b);
+    String getGridlineColor();
     
     void setTabColorIndex(int ci);
     int getTabColorIndex();

@@ -23,6 +23,7 @@ import nl.fountain.xelem.XFactory;
 import nl.fountain.xelem.XelemException;
 import nl.fountain.xelem.excel.Cell;
 import nl.fountain.xelem.excel.Column;
+import nl.fountain.xelem.excel.Comment;
 import nl.fountain.xelem.excel.DocumentProperties;
 import nl.fountain.xelem.excel.ExcelWorkbook;
 import nl.fountain.xelem.excel.Pane;
@@ -767,7 +768,35 @@ public class CreateDocumentTest extends TestCase {
 	        sheet.getCellPointer().moveCRLF();
         }
         
-        xmlToFile(wb);
+        if (toFile) xmlToFile(wb);
+    }
+    
+    public void testComments31() throws Exception {
+        Workbook wb = new XLWorkbook("test31");
+        Worksheet sheet = wb.addSheet();
+        sheet.getCellPointer().moveTo(10, 5);
+        sheet.addCell("no comment").addComment();
+        Comment comment = sheet.addCell("1e commentaar").addComment();
+        comment.setData("this is comment");
+        
+        comment = sheet.addCell("2e commentaar").addComment();
+        comment.setShowAlways(true);
+        comment.setData("this comment shows always.");
+        sheet.getCellPointer().move(0, 3);
+        sheet.addCell("3e commentaar").addComment(comment);
+        
+        sheet.getCellPointer().moveCRLF();
+        comment = sheet.addCell("empty comment").addComment();
+        comment.setData("");
+        
+        comment = sheet.addCell("lf comment").addComment();
+        comment.setAuthor("the great author");
+        comment.setData("<B><I><Font html:Face=\"Tahoma\" html:Size=\"9\" "
+                + "html:Color=\"#000000\">the great author:</Font></I></B>"
+                + "<Font html:Face=\"Tahoma\" html:Size=\"9\" "
+                + "html:Color=\"#000000\">&#10;dit is&#10;commentaar.</Font>");
+        
+        if (toFile) xmlToFile(wb);
     }
     
 //    public void testNoDocumentCreation() {

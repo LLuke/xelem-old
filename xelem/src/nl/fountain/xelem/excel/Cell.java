@@ -155,7 +155,7 @@ public interface Cell extends XLElement {
      * Gets the formula that was set on this cell.
      * 
      * @return 	The formula that was set on this cell or
-     * 			<code>null</code> if no formula was previously set.
+     * 			<code>null</code> if the cell has no formula.
      */
     String getFormula();
     
@@ -171,9 +171,14 @@ public interface Cell extends XLElement {
      * Gets the ss:HRef-attribute value that was set on this cell.
      * 
      * @return 	The HRef that was set on this cell or
-     * 			<code>null</code> if no HRef was previously set.
+     * 			<code>null</code> if this cell has no HRef.
      */
     String getHRef();
+    
+    Comment addComment();
+    Comment addComment(Comment comment);
+    boolean hasComment();
+    Comment getComment();
     
     /**
      * Merges this cell with adjacent cells on the same row. 
@@ -406,7 +411,7 @@ public interface Cell extends XLElement {
      * 
      * @return The value of the ss:Type-attribute of the Data-element.
      */
-    String getType();
+    String getXLDataType();
     
     boolean hasData();
     

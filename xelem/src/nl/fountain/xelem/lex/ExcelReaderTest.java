@@ -198,7 +198,7 @@ public class ExcelReaderTest extends TestCase {
         
         assertEquals(10, table.getExpandedColumnCount());
         assertEquals(25, table.getExpandedRowCount());
-        assertEquals("s21", table.getStyleID());
+        assertEquals("s22", table.getStyleID());
     }
     
     public void testColumn() throws Exception {
@@ -206,13 +206,13 @@ public class ExcelReaderTest extends TestCase {
         Table table = wb.getWorksheet("Tom Poes").getTable();
         
         Column column1 = table.getColumnAt(1);
-        assertEquals("s22", column1.getStyleID());
+        assertEquals("s23", column1.getStyleID());
         assertTrue(!column1.getAutoFitWith());
         assertEquals(0, column1.getSpan());
         assertEquals(78.75D, column1.getWidth(), 0.0D);
         
         Column column7 = table.getColumnAt(7);
-        assertEquals("s22", column7.getStyleID());
+        assertEquals("s23", column7.getStyleID());
         assertTrue(column7.getAutoFitWith());
         
         Column column9 = table.getColumnAt(9);
@@ -229,7 +229,7 @@ public class ExcelReaderTest extends TestCase {
         assertTrue(table.hasRowAt(3));
         
         Row row3 = table.getRowAt(3);
-        assertEquals("s24", row3.getStyleID());
+        assertEquals("s25", row3.getStyleID());
         assertEquals(27.0D, row3.getHeight(), 0.0D);
         assertTrue(row3.isHidden());
         assertEquals(0, row3.getSpan());
@@ -239,7 +239,7 @@ public class ExcelReaderTest extends TestCase {
         assertTrue(table.hasRowAt(20));
         assertTrue(table.hasRowAt(22));
         
-        assertEquals(8, table.getRows().size());
+        assertEquals(9, table.getRows().size());
     }
     
     public void testCell() throws Exception {
@@ -249,19 +249,19 @@ public class ExcelReaderTest extends TestCase {
         Row row3 = table.getRowAt(3);
         assertTrue(row3.hasCellAt(1));
         Cell cell = row3.getCellAt(1);
-        assertEquals("String", cell.getType());
+        assertEquals("String", cell.getXLDataType());
         assertEquals("blaadje 1", cell.getData$());
         assertTrue(cell.hasData());
         assertTrue(!cell.hasError());
         
         cell = table.getRowAt(6).getCellAt(2);
         assertEquals("=R[-2]C[1]+R[-1]C[1]", cell.getFormula());
-        assertEquals("Number", cell.getType());
+        assertEquals("Number", cell.getXLDataType());
         assertEquals("0", cell.getData$());
         
         cell = table.getRowAt(10).getCellAt(2);
         assertEquals("=5/R[-4]C", cell.getFormula());
-        assertEquals("Error", cell.getType());
+        assertEquals("Error", cell.getXLDataType());
         assertEquals("#DIV/0!", cell.getData$());
         assertTrue(cell.hasData());
         assertTrue(cell.hasError());
@@ -269,8 +269,9 @@ public class ExcelReaderTest extends TestCase {
         cell = table.getRowAt(20).getCellAt(2);
         assertEquals(1, cell.getMergeAcross());
         assertEquals(5, cell.getMergeDown());
-        assertEquals("", cell.getData$());
-        assertTrue(!cell.hasData());
+        assertEquals("foo", cell.getData$());
+        assertTrue(cell.hasData());
+        assertEquals("#foo", cell.getHRef());
     }
     
     public void testWorksheetOptions() throws Exception {
@@ -288,6 +289,7 @@ public class ExcelReaderTest extends TestCase {
         assertTrue(!wso.displaysNoGridlines());
         assertTrue(!wso.displaysFormulas());
         assertEquals("SheetVisible", wso.getVisible());
+        assertNull(wso.getGridlineColor());
         
         sheet = wb.getWorksheet("Donald Duck");
         wso = sheet.getWorksheetOptions();
@@ -300,10 +302,30 @@ public class ExcelReaderTest extends TestCase {
         assertTrue(!wso.isSelected());
         assertEquals(12, wso.getTabColorIndex());
         assertTrue(wso.displaysFormulas());
+        assertEquals("#FF0000", wso.getGridlineColor());
         
         sheet = wb.getWorksheet("Sponge Bob");
         wso = sheet.getWorksheetOptions();
         assertEquals("SheetHidden", wso.getVisible());
+    }
+    
+    public void testAutoFilter() throws Exception {
+        Workbook wb = getReaderWorkbook();
+        
+        Worksheet sheet = wb.getWorksheet("Tom Poes");  
+        assertTrue(sheet.hasAutoFilter());
+        sheet = wb.getWorksheet("Sponge Bob");
+        assertTrue(!sheet.hasAutoFilter());
+    }
+    
+    public void testComment() throws Exception {
+        Workbook wb = getReaderWorkbook();
+        Worksheet sheet = wb.getWorksheet("Tom Poes");
+        Cell cell = sheet.getCellAt(16, 5);
+        
+        assertTrue(cell.hasComment());
+        assertEquals("WF Hermans", cell.getComment().getAuthor());
+        
     }
 
 }

@@ -42,6 +42,8 @@ public class SSWorksheetBuilder extends AnonymousBuilder {
                 WorksheetOptions wso = current.getWorksheetOptions();
                 Builder builder = factory.getAnonymousBuilder();
                 builder.build(reader, this, factory, wso);
+            } else if ("AutoFilter".equals(localName)) {
+                current.setAutoFilter(atts.getValue(XLElement.XMLNS_X, "Range"));
             }
         }        
     }

@@ -14,6 +14,7 @@ import nl.fountain.xelem.XLUtilTest;
 import nl.fountain.xelem.excel.ss.CreateDocumentTest;
 import nl.fountain.xelem.excel.ss.SSCellTest;
 import nl.fountain.xelem.excel.ss.SSColumnTest;
+import nl.fountain.xelem.excel.ss.SSCommentTest;
 import nl.fountain.xelem.excel.ss.SSRowTest;
 import nl.fountain.xelem.excel.ss.SSTableTest;
 import nl.fountain.xelem.excel.ss.SSWorksheetTest;
@@ -45,6 +46,7 @@ public class AllTests extends TestCase {
         suite.addTestSuite(CellPointerTest.class);       
         suite.addTestSuite(XLUtilTest.class);
         suite.addTestSuite(SSCellTest.class);
+        suite.addTestSuite(SSCommentTest.class);
         suite.addTestSuite(SSColumnTest.class);
         suite.addTestSuite(SSRowTest.class);
         suite.addTestSuite(SSTableTest.class);

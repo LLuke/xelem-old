@@ -28,6 +28,7 @@ import nl.fountain.xelem.GIO;
 import nl.fountain.xelem.XLUtil;
 import nl.fountain.xelem.excel.AbstractXLElement;
 import nl.fountain.xelem.excel.Cell;
+import nl.fountain.xelem.excel.Comment;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -80,6 +81,7 @@ public class SSCell extends AbstractXLElement implements Cell {
     private String datatype;
     private int mergeacross;
     private int mergedown;
+    private Comment comment;
     
     /**
      * Creates a new SSCell with an initial datatype of "String" and an
@@ -132,6 +134,24 @@ public class SSCell extends AbstractXLElement implements Cell {
         return href;
     }
     
+    public Comment addComment() {
+        comment = new SSComment();
+        return comment;
+    }
+    
+    public Comment addComment(Comment comment) {
+        this.comment = comment;
+        return comment;
+    }
+    
+    public boolean hasComment() {
+        return comment != null;
+    }
+    
+    public Comment getComment() {
+        return comment;
+    }
+    
     public void setMergeAcross(int m) {
         mergeacross = m;
     }
@@ -156,7 +176,7 @@ public class SSCell extends AbstractXLElement implements Cell {
         return mergedown;
     }
 
-    public String getType() { 
+    public String getXLDataType() { 
         return datatype;
     }
 
@@ -322,7 +342,7 @@ public class SSCell extends AbstractXLElement implements Cell {
     }
     
     public boolean hasError() {
-        return DATATYPE_ERROR.equals(getType());
+        return DATATYPE_ERROR.equals(getXLDataType());
     }
 
     public String getData$() {
@@ -366,6 +386,11 @@ public class SSCell extends AbstractXLElement implements Cell {
             Element data = getDataElement(doc);
             ce.appendChild(data);
         }
+        
+        if (comment != null) {
+            comment.assemble(ce, gio);
+        }
+        
         return ce;
     }
     
@@ -397,7 +422,7 @@ public class SSCell extends AbstractXLElement implements Cell {
     public Element getDataElement(Document doc) {
         Element data = doc.createElement("Data");
         data.setAttributeNodeNS(
-                createAttributeNS(doc, "Type", getType()));
+                createAttributeNS(doc, "Type", getXLDataType()));
         data.appendChild(doc.createTextNode(getData$()));
         return data;
     }

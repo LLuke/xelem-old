@@ -43,8 +43,8 @@ import nl.fountain.xelem.excel.Pane;
 public class XPane extends AbstractXLElement implements Pane {
     
     private int number;
-    private int activeCol;
-    private int activeRow;
+    private int activeCol = -1;
+    private int activeRow = -1;
     private String rangeSelection;
     
     /**

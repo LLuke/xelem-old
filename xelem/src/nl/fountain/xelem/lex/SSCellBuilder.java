@@ -4,13 +4,14 @@
  */
 package nl.fountain.xelem.lex;
 
+import nl.fountain.xelem.excel.Comment;
+import nl.fountain.xelem.excel.XLElement;
+import nl.fountain.xelem.excel.ss.SSCell;
+
 import org.xml.sax.Attributes;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
-
-import nl.fountain.xelem.excel.XLElement;
-import nl.fountain.xelem.excel.ss.SSCell;
 
 /**
  *
@@ -28,9 +29,16 @@ public class SSCellBuilder extends AnonymousBuilder {
     public void startElement(String uri, String localName, String qName,
             Attributes atts) throws SAXException {
         contents.reset();
-        if (XLElement.XMLNS_SS.equals(uri) && "Data".equals(localName)) {
-            // this time only the atts of the data-element are set.
-            current.setAttributes(atts);
+        if (XLElement.XMLNS_SS.equals(uri)) {
+            if ("Data".equals(localName)) {
+	            // set the atts of the data element
+	            current.setAttributes(atts);
+            } else if ("Comment".equals(localName)) {
+                Comment comment = current.addComment();
+                comment.setAttributes(atts);
+                Builder builder = factory.getAnonymousBuilder();
+                builder.build(reader, this, factory, comment);
+            }
         }
     }
     

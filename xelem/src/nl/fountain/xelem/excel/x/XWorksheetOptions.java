@@ -56,6 +56,7 @@ public class XWorksheetOptions extends AbstractXLElement implements WorksheetOpt
     private int activePane = -1;
     private int splitVertical;
     private boolean freezePanes;
+    private Pane currentPane;
     
     /**
      * Constructs a new XWorksheetOptions.
@@ -223,7 +224,11 @@ public class XWorksheetOptions extends AbstractXLElement implements WorksheetOpt
      * 
      */
     public void setRangeSelection(String rcRange) {
-        getPane(3).setRangeSelection(rcRange);
+        if (currentPane == null) { // normal condition.
+            getPane(3).setRangeSelection(rcRange);
+        } else { // condition while reading the <Pane> element.
+            currentPane.setRangeSelection(rcRange);
+        }
     }
     
     /**
@@ -270,10 +275,38 @@ public class XWorksheetOptions extends AbstractXLElement implements WorksheetOpt
         }       
     }
     
+    private void setFreezePanes(String s) {
+        freezePanes = "".equals(s);
+    }
+    private void setSplitHorizontal(String s) {
+        splitHorizontal = Integer.parseInt(s);
+    }
+    private void setTopRowBottomPane(String s) {
+        topRowBottomPane = Integer.parseInt(s);
+    }
+    private void setSplitVertical(String s) {
+        splitVertical = Integer.parseInt(s);
+    }
+    private void setLeftColumnRightPane(String s) {
+        leftColumnRightPane = Integer.parseInt(s);
+    }
+    private void setActivePane(String s) {
+        activePane = Integer.parseInt(s);
+    }
+    
     
     // @see nl.fountain.xelem.excel.x.WorksheetOptions#setGridlineColorIndex(int)
     public void setGridlineColor(int r, int g, int b) {
         gridlineColor = XLUtil.convertToHex(r, g , b);
+    }
+    
+    private void setGridlineColor(String s) {
+        gridlineColor = s;
+    }
+    
+    // @see nl.fountain.xelem.excel.WorksheetOptions#getGridlineColor()
+    public String getGridlineColor() {
+        return gridlineColor;
     }
     
     // @see nl.fountain.xelem.excel.XLElement#getTagName()
@@ -391,6 +424,24 @@ public class XWorksheetOptions extends AbstractXLElement implements WorksheetOpt
         }
         return pane;
     }
+    
+    // start reading Pane-element ///////////////////////////////
+    // hopefully the <Number> element is the first child of a <Pane> element.
+    // obviously this thing will go haywire if this presumption is not true.
+    private void setNumber(String s) {
+        currentPane = getPane(Integer.parseInt(s));
+    }
+    private void setActiveRow(String s) {
+        currentPane.setActiveRow(Integer.parseInt(s) + 1);
+    }
+    private void setActiveCol(String s) {
+        currentPane.setActiveCol(Integer.parseInt(s) + 1);
+    }
+    private void setPane(String s) {
+        currentPane = null; // endElement
+        if (s == null) {}
+    }
+    // end reading Pane-element //////////////////////////////////
     
     public void setChildElement(String localName, String content) {
         //System.out.println(localName+"="+content);
