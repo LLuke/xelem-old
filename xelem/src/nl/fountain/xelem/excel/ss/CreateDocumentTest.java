@@ -223,13 +223,13 @@ public class CreateDocumentTest extends TestCase {
         
         Column column = table.addColumn(5);
         column.setStyleID("b_yellow");
-        column.setSpan(5);
         column.setWidth(25.2);
-        table.addColumn().setStyleID("b_lblue");
+        column.setSpan(5);
         
-        // TODO setSpan how many columns?
-        //illegal: first free index = 5 + (5+1) + 1 = 12
+        //illegal: first free index = 5 + 5 + 1 = 11
         //Column column2 = table.addColumn(8);
+        
+        table.addColumn().setStyleID("b_lblue");
         
         Column column2 = table.addColumn(12);
         column2.setStyleID("bold");
@@ -255,13 +255,13 @@ public class CreateDocumentTest extends TestCase {
         
         Row row = sheet.addRow(5);
         row.setStyleID("b_yellow");
-        row.setSpan(5);
         row.setHeight(25.2);
-        sheet.addRow().setStyleID("b_lblue");
+        row.setSpan(5);
         
-        // TODO setSpan how many rows?
-        //illegal: first free index = 5 + (5+1) + 1 = 12
+        //illegal: first free index = 5 + 5 + 1 = 11
         //Row row2 = sheet.addRow(8);
+        
+        sheet.addRow().setStyleID("b_lblue");
         
         Row row2 = sheet.addRow(12);
         row2.setStyleID("bold");
@@ -687,6 +687,34 @@ public class CreateDocumentTest extends TestCase {
         //System.out.println(xml);
         if (toFile) xmlToFile(wb);
     }
+    
+    public void testRangeSelection() throws Exception {
+        Workbook wb = new XLWorkbook("test26");
+        WorksheetOptions wso = wb.addSheet().getWorksheetOptions();
+        wso.setRangeSelection("R3C4:R12C8");
+        wso.setActiveCell(3, 4);
+        
+        String xml = xmlToString(wb);
+        assertTrue(xml.indexOf("<x:RangeSelection>R3C4:R12C8</x:RangeSelection>") > 0);
+        
+        //System.out.println(xml);
+        if (toFile) xmlToFile(wb);
+    }
+    
+    public void testRangeSelection2() throws Exception {
+        Workbook wb = new XLWorkbook("test27");
+        WorksheetOptions wso = wb.addSheet().getWorksheetOptions();
+        wso.setRangeSelection(Pane.BOTTOM_RIGHT, "R10C5:R12C8");
+        wso.setActiveCell(Pane.BOTTOM_RIGHT, 11, 6);
+        wso.freezePanesAt(5, 2);
+        String xml = xmlToString(wb);
+        assertTrue(xml.indexOf("<x:RangeSelection>R10C5:R12C8</x:RangeSelection>") > 0);
+        
+        //System.out.println(xml);
+        
+        if (toFile) xmlToFile(wb);
+    }
+    
     
     private String xmlToString(Workbook wb) throws Exception {
         StringWriter sw = new StringWriter();

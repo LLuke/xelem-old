@@ -57,11 +57,11 @@ public interface Column extends XLElement {
      *         Column column = table.addColumn(5); // adds a column with index 5
      *         column.setWidth(25.2);              // do some formatting on the column
      *         column.setSpan(3);                  // span a total of 4 columns
-     *         // illegal: first free index = 5 + (3+1) + 1 = 10
+     *         // illegal: first free index = 5 + 3 + 1 = 9
      *         // Column column2 = table.addColumn(8);
      * </PRE>
      * 
-     * @param 	s	The number of columns to include in the span.
+     * @param 	s	The number of additional columns to include in the span.
      */
     void setSpan(int s);
     

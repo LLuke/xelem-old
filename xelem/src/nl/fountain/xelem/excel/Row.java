@@ -51,11 +51,11 @@ public interface Row extends XLElement {
      *         Row row = table.addRow(5); // adds a row with index 5
      *         row.setHeight(25.2);       // do some formatting on the row
      *         row.setSpan(3);            // span a total of 4 rows
-     *         // illegal: first free index = 5 + (3+1) + 1 = 10
+     *         // illegal: first free index = 5 + 3 + 1 = 9
      *         // Row row2 = table.addRow(8);
      * </PRE>
      * 
-     * @param 	s	The number of rows to include in the span.
+     * @param 	s	The number of additional rows to include in the span.
      */
     void setSpan(int s);
     

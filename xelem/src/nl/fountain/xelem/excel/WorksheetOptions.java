@@ -43,7 +43,17 @@ public interface WorksheetOptions extends XLElement {
     
     void setActiveCell(int r, int c);
     void setActiveCell(int paneNumber, int r, int c);
+    
+    /**
+     * Sets a range selection. The active cell must also be set within
+     * the range in order for this method to have effect.
+     * 
+     * @param rcRange A String in R1C1 reference style.
+     * @see #setActiveCell(int, int)
+     */
     void setRangeSelection(String rcRange);
+    
+    
     void setRangeSelection(int paneNumber, String rcRange);
     
     void splitHorizontal(int points, int topRow);

@@ -198,25 +198,6 @@ public class XWorksheetOptionsTest extends XLElementTest {
         //System.out.println(xml);
     }
     
-    /*
-     * TODO test range selection
-     */
-    public void testRangeSelection() {
-        wso.setRangeSelection("R10C3:R15:C7");
-        
-        String xml = xmlToString(wso, new GIO());
-        //System.out.println(xml);
-    }
     
-    /*
-     * TODO test range selection
-     */
-    public void testPaneRangeSelection() {
-        wso.setRangeSelection(Pane.BOTTOM_RIGHT, "R10C3:R15:C7");
-        wso.freezePanesAt(5, 6);
-        
-        String xml = xmlToString(wso, new GIO());
-        //System.out.println(xml);
-    }
 
 }
