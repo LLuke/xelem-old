@@ -96,7 +96,8 @@ public class ODocumentProperties extends AbstractXLElement implements DocumentPr
         return PREFIX_O;
     }
 
-    public Element assemble(Document doc, Element parent, GIO gio) {
+    public Element assemble(Element parent, GIO gio) {
+        Document doc = parent.getOwnerDocument();
         Element dpe = assemble(doc, gio);
         
         if (title != null) dpe.appendChild(

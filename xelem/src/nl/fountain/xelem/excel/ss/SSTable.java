@@ -210,7 +210,8 @@ public class SSTable extends AbstractXLElement implements Table {
     } 
     
     // @see nl.fountain.xelem.excel.ss.Table#assemble(org.w3c.dom.Document, org.w3c.dom.Node, nl.fountain.xelem.excel.GIO)
-    public Element assemble(Document doc, Element parent, GIO gio) {
+    public Element assemble(Element parent, GIO gio) {
+        Document doc = parent.getOwnerDocument();
         Element te = assemble(doc, gio);
         
         if (getStyleID() != null) {
@@ -227,13 +228,13 @@ public class SSTable extends AbstractXLElement implements Table {
         Iterator iter = columnIterator();
         while (iter.hasNext()) {
             Column column = (Column) iter.next();
-            column.assemble(doc, te, gio);
+            column.assemble(te, gio);
         }
         
         iter = rowIterator();
         while (iter.hasNext()) {
             Row row = (Row) iter.next();
-            row.assemble(doc, te, gio);
+            row.assemble(te, gio);
         }
         return te;
     }

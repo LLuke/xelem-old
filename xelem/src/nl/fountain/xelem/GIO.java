@@ -15,7 +15,7 @@ import java.util.TreeSet;
  * assure that the produced xml will open in Excel, this class 
  * collects global information about a workbook during assembly.
  * The Workbook uses the information to set additional elements or element-
- * attributes when producing a {@link org.w3c.dom.Document} with 
+ * attributes when producing a {@link org.w3c.dom.Document} with the method
  * {@link nl.fountain.xelem.excel.Workbook#createDocument() createDocument}.
  * 
  * 

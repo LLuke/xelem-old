@@ -35,7 +35,6 @@ import nl.fountain.xelem.excel.x.XExcelWorkbook;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 
 /**
  *
@@ -93,9 +92,8 @@ public class XLWorkbook extends AbstractXLElement implements Workbook {
         }
     }
     
-    // @see nl.fountain.xelem.excel.Workbook#setAppendInfoSheet(boolean)
-    public void setAppendInfoSheet(boolean append) {
-        appendInfoSheet = append;
+    public void appendInfoSheet() {
+        appendInfoSheet = true;
     }
     
     public DocumentProperties addDocumentProperties() {
@@ -231,11 +229,12 @@ public class XLWorkbook extends AbstractXLElement implements Workbook {
         GIO gio = new GIO();
         Document doc = getDoc();
         Element root = doc.getDocumentElement();
-        assemble(doc, root, gio);
+        assemble(root, gio);
         return doc;
     }
     
-    public Element assemble(Document doc, Element root, GIO gio) {
+    public Element assemble(Element root, GIO gio) {
+        Document doc = root.getOwnerDocument();
         warnings = null;
         gio.setPrintComments(isPrintingComments());
         doc.insertBefore(doc.createProcessingInstruction("mso-application",
@@ -263,11 +262,11 @@ public class XLWorkbook extends AbstractXLElement implements Workbook {
 
         //o:DocumentProperties
         if (hasDocumentProperties()) {
-            documentProperties.assemble(doc, root, gio);
+            documentProperties.assemble(root, gio);
         }
 
         //x:ExcelWorkbook
-        Element xlwbe = getExcelWorkbook().assemble(doc, root, gio);
+        Element xlwbe = getExcelWorkbook().assemble(root, gio);
 
         //Styles
         Element styles = doc.createElement("Styles");
@@ -280,7 +279,7 @@ public class XLWorkbook extends AbstractXLElement implements Workbook {
             root.appendChild(names);
             for (Iterator iter = namedRanges.values().iterator(); iter.hasNext();) {
                 NamedRange nr = (NamedRange) iter.next();
-                nr.assemble(doc, names, gio);
+                nr.assemble(names, gio);
             }
         }
 
@@ -290,17 +289,16 @@ public class XLWorkbook extends AbstractXLElement implements Workbook {
         }
         for (Iterator iter = getWorksheets().iterator(); iter.hasNext();) {
             Worksheet ws = (Worksheet) iter.next();
-            ws.assemble(doc, root, gio);
+            ws.assemble(root, gio);
         }
         
         // append xelem-info sheet
         if (appendInfoSheet) {
-	        Node infoWS = doc.importNode(getFactory().getSheet(INFO_WORKSHEET), true);
-	        root.appendChild(infoWS);
-	        gio.addStyleID("info_def");
-	        gio.addStyleID("info_desc");
-	        gio.addStyleID("hyperlink");
-	        gio.addStyleID("info_hyperlink");
+            try {
+                getFactory().appendInfoSheet(root, gio);
+            } catch (XelemException e) {
+                addWarning(e.getCause());
+            }
         }
         
         // append Global Information

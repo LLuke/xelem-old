@@ -6,9 +6,6 @@ package nl.fountain.xelem.excel;
 
 import java.util.Collection;
 
-
-
-
 /**
  * Represents the Worksheet element.
  */
@@ -36,6 +33,7 @@ public interface Worksheet extends XLElement {
     Cell addCell(double data, String styleID);
     Cell addCell(int data);
     Cell addCell(int data, String styleID);
+    
     Cell addCellAt(int rowIndex, int columnIndex);
     Cell addCellAt(int rowIndex, int columnIndex, Cell cell);
     

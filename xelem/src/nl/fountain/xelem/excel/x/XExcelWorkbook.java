@@ -64,7 +64,8 @@ public class XExcelWorkbook extends AbstractXLElement implements ExcelWorkbook {
         return PREFIX_X;
     }
     
-    public Element assemble(Document doc, Element parent, GIO gio) {
+    public Element assemble(Element parent, GIO gio) {
+        Document doc = parent.getOwnerDocument();
         Element ewbe = assemble(doc, gio);
         
         if (windowHeight > 0)

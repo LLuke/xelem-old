@@ -235,8 +235,8 @@ public class SSWorksheet extends AbstractXLElement implements Worksheet {
         return autoFilter != null;
     }
     
-    // @see nl.fountain.xelem.excel.ss.Worksheet#assemble(org.w3c.dom.Document, org.w3c.dom.Node, nl.fountain.xelem.excel.GIO)
-    public Element assemble(Document doc, Element parent, GIO gio) {
+    public Element assemble(Element parent, GIO gio) {
+        Document doc = parent.getOwnerDocument();
         Element wse = assemble(doc, gio);
         
         wse.setAttributeNodeNS(createAttributeNS(doc, "Name", getName()));
@@ -248,13 +248,13 @@ public class SSWorksheet extends AbstractXLElement implements Worksheet {
         parent.appendChild(wse);
         
         if (hasTable()) {
-            getTable().assemble(doc, wse, gio);
+            getTable().assemble(wse, gio);
         }
         if (hasWorksheetOptions()) {
-            getWorksheetOptions().assemble(doc, wse, gio);
+            getWorksheetOptions().assemble(wse, gio);
         }
         if (hasAutoFilter()) {
-            autoFilter.assemble(doc, wse, gio);
+            autoFilter.assemble(wse, gio);
         }
         return wse;
     }

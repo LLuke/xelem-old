@@ -45,8 +45,8 @@ public class SSNamedRange extends AbstractXLElement implements NamedRange {
         return PREFIX_SS;
     }
 
-    // @see nl.fountain.xelem.excel.XLElement#assemble(org.w3c.dom.Document, org.w3c.dom.Element, nl.fountain.xelem.GIO)
-    public Element assemble(Document doc, Element parent, GIO gio) {
+    public Element assemble(Element parent, GIO gio) {
+        Document doc = parent.getOwnerDocument();
         Element nre = assemble(doc, gio);
         
         nre.setAttributeNodeNS(createAttributeNS(doc, "Name", name));

@@ -216,7 +216,8 @@ public class XWorksheetOptions extends AbstractXLElement implements WorksheetOpt
     /**
      * @return the newly assembled element
      */
-    public Element assemble(Document doc, Element parent, GIO gio) {
+    public Element assemble(Element parent, GIO gio) {
+        Document doc = parent.getOwnerDocument();
         Element wsoe = assemble(doc, gio);
         
         parent.appendChild(wsoe);
@@ -279,22 +280,22 @@ public class XWorksheetOptions extends AbstractXLElement implements WorksheetOpt
             
             Pane pane3 = (Pane) panes.get(new Integer(3));
             if (pane3 != null) {
-                pane3.assemble(doc, panesE, gio);
+                pane3.assemble(panesE, gio);
             }
             
             Pane pane2 = (Pane) panes.get(new Integer(2));
             if (pane2 != null && splitH) {
-                pane2.assemble(doc, panesE, gio);
+                pane2.assemble(panesE, gio);
             }
             
             Pane pane1 = (Pane) panes.get(new Integer(1));
             if (pane1 != null && splitV) {
-                pane1.assemble(doc, panesE, gio);
+                pane1.assemble(panesE, gio);
             }
             
             Pane pane0 = (Pane) panes.get(new Integer(0));
             if (pane0 != null && splitH && splitV) {
-                pane0.assemble(doc, panesE, gio);
+                pane0.assemble(panesE, gio);
             }
         }
         

@@ -8,7 +8,6 @@ import java.util.List;
 
 import nl.fountain.xelem.GIO;
 
-import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 
@@ -107,12 +106,11 @@ public interface XLElement {
      * {@link org.w3c.dom.Element}. Attaches the new element to it's
      * parent-element if needed.
      * 
-     * @param 	doc	the enveloping Document
      * @param 	parent the parent-element to which the new formed element 
      * 			will be appended
      * @param 	gio a global information object
      * 
      * @return	the newly assembled element. may be null.
      */
-    Element assemble(Document doc, Element parent, GIO gio);
+    Element assemble(Element parent, GIO gio);
 }

@@ -34,7 +34,7 @@ import org.w3c.dom.Node;
  */
 public abstract class XLElementTest extends TestCase {
     
-    private Document getDoc() throws ParserConfigurationException {
+    protected Document getDoc() throws ParserConfigurationException {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setNamespaceAware(true);
         DocumentBuilder builder = factory.newDocumentBuilder();
@@ -63,7 +63,7 @@ public abstract class XLElementTest extends TestCase {
         try {
             Document doc = getDoc();
             Element parent = doc.getDocumentElement();
-            xle.assemble(doc, parent, gio);
+            xle.assemble(parent, gio);
             xml = xmlToString(doc);
         } catch (TransformerConfigurationException e) {
             e.printStackTrace();

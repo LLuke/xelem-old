@@ -8,9 +8,14 @@ import java.io.FileNotFoundException;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.xml.parsers.ParserConfigurationException;
+
+import nl.fountain.xelem.excel.XLElement;
 import nl.fountain.xelem.excel.XLElementTest;
 
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 
 
 public class XFactoryTest extends XLElementTest {
@@ -154,6 +159,31 @@ public class XFactoryTest extends XLElementTest {
         
         assertTrue(xml.indexOf("<NumberFormat ss:Format=\"0.00\"/>") > 0);
         assertEquals(-1, xml.indexOf("<NumberFormat ss:Format=\"0.0\"/>"));
+    }
+    
+    public void testGetInfoSheet() throws XelemException {
+        XFactory x = XFactory.newInstance();
+        Node infoSheet = x.loadInfoSheet();
+        
+        String xml = xmlToString(infoSheet);
+        assertTrue(xml.indexOf("<ss:Worksheet ss:Name=") > 0);
+        //System.out.println(xml);
+    }
+    
+    public void testAppendInfoSheet() throws ParserConfigurationException, XelemException {
+        Document doc = getDoc();
+        XFactory x = XFactory.newInstance();
+        GIO gio = new GIO();
+        
+        x.appendInfoSheet(doc.getDocumentElement(), gio);
+        // depends on whether the infoSheet.xml will declare styles
+        assertTrue(gio.getStyleIDSet().size() > 0);
+        assertTrue(!gio.getStyleIDSet().contains("Default"));
+        
+        String xml = xmlToString(doc.getElementsByTagNameNS(
+                XLElement.XMLNS_SS, "Worksheet").item(0));
+        assertTrue(xml.indexOf("<ss:Worksheet ss:Name=") > 0);
+        //System.out.println(xml);
     }
 
 }

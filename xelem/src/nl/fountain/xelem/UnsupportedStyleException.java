@@ -9,10 +9,6 @@ package nl.fountain.xelem;
  */
 public class UnsupportedStyleException extends Exception {
     
-    public UnsupportedStyleException() {
-        super();
-    }
-    
     public UnsupportedStyleException(String message) {
         super(message);
     }

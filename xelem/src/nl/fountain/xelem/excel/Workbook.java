@@ -25,8 +25,6 @@ import org.w3c.dom.Document;
  */
 public interface Workbook extends XLElement {
     
-    public static final String INFO_WORKSHEET = "xelem-info";
-    
     /**
      * Sets the name of this Workbook.
      */
@@ -84,7 +82,7 @@ public interface Workbook extends XLElement {
      */
     boolean isPrintingDocComments();
     
-    void setAppendInfoSheet(boolean append);
+    void appendInfoSheet();
     
     
     DocumentProperties addDocumentProperties();

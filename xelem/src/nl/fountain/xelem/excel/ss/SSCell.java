@@ -268,7 +268,8 @@ public class SSCell extends AbstractXLElement implements Cell {
         return PREFIX_SS;
     }
 
-    public Element assemble(Document doc, Element parent, GIO gio) {
+    public Element assemble(Element parent, GIO gio) {
+        Document doc = parent.getOwnerDocument();
         Element ce = assemble(doc, gio);
         
         if (idx != 0) ce.setAttributeNodeNS(

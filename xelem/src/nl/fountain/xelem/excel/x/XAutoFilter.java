@@ -43,8 +43,8 @@ public class XAutoFilter extends AbstractXLElement implements AutoFilter {
         return PREFIX_X;
     }
 
-    // @see nl.fountain.xelem.excel.XLElement#assemble(org.w3c.dom.Document, org.w3c.dom.Element, nl.fountain.xelem.GIO)
-    public Element assemble(Document doc, Element parent, GIO gio) {
+    public Element assemble(Element parent, GIO gio) {
+        Document doc = parent.getOwnerDocument();
         if (getRange() != null) {
 	        Element afe = assemble(doc, gio);
 	        afe.setAttributeNodeNS(createAttributeNS(doc, "Range", getRange()));

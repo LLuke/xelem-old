@@ -6,11 +6,13 @@ package nl.fountain.xelem;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeSet;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -51,7 +53,8 @@ public class XFactory {
     private static boolean loaded = false;
     private static List doc_comments;
     private static Map styles;
-    private static Map sheets;
+    private static Set issStyles;
+    private static Node infoSheet;
     
     private XFactory() throws XelemException {
         if (!loaded) loadConfiguration(getConfigurationFileName());
@@ -112,6 +115,7 @@ public class XFactory {
      * Gets the file name of the configuration file. If no configuration
      * file was set previously, returns the default configuration file name:
      * <code>config/xelem.xml</code>.
+     * 
      * @return the file name (may include path) of the configuration file
      */
     public static String getConfigurationFileName() {
@@ -176,10 +180,6 @@ public class XFactory {
         return styles.keySet();
     }
     
-    public Element getSheet(String name) {
-        return (Element) sheets.get(name);
-    }
-    
     /**
      * Merges two SpreadsheetML Style elements. If a style element with the
      * ss:ID <code>newID</code> allready was present in the factory, nothing happens.
@@ -237,11 +237,29 @@ public class XFactory {
         styles.put(newID, ne);
     }
     
+    /**
+     * Appends a Worksheet element with general information to the root element. 
+     * Adds all used styles in the info sheet to the factory 
+     * and their id's to the gio.
+     * 
+     * @param 	root 	the root element.
+     * @param 	gio		the GIO used while assembling the Workbook.
+     * 
+     * @throws 	XelemException	if the info sheet could not be loaded.
+     * 
+     * @see 	nl.fountain.xelem.excel.Workbook#appendInfoSheet()
+     */
+    public void appendInfoSheet(Element root, GIO gio) throws XelemException {
+        if (infoSheet == null) {
+            infoSheet = loadInfoSheet();
+        }
+        root.appendChild(root.getOwnerDocument().importNode(infoSheet, true));
+        gio.getStyleIDSet().addAll(issStyles);
+    }
     
     private void init() {
         doc_comments = new ArrayList();
         styles = new HashMap();
-        sheets = new HashMap();
     }
     
     private void loadConfiguration(String fileName) throws XelemException {
@@ -268,15 +286,6 @@ public class XFactory {
                 styles.put(id, style);
             }
             
-            NodeList sheetList = config.getElementsByTagNameNS(
-                    XLElement.XMLNS_SS, "Worksheet");
-            for (int i = 0; i < sheetList.getLength(); i++) {
-                Node sheet = sheetList.item(i);
-                String name = sheet.getAttributes().getNamedItemNS(
-                        XLElement.XMLNS_SS, "Name").getNodeValue();
-                sheets.put(name, sheet);
-            }
-            
         } catch (DOMException e) {
             throw new XelemException(e.fillInStackTrace());
         } catch (FactoryConfigurationError e) {
@@ -291,7 +300,38 @@ public class XFactory {
         loaded = true;
     }
 
-
+    protected Node loadInfoSheet() throws XelemException {
+        issStyles = new TreeSet();
+        try {
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            factory.setNamespaceAware(true);
+            DocumentBuilder builder = factory.newDocumentBuilder();
+            InputStream is = this.getClass().getResourceAsStream("infoSheet.xml");
+            Document infosh = builder.parse(is);
+            
+            NodeList styleList = infosh.getElementsByTagName("Style");
+            for (int i = 0; i < styleList.getLength(); i++) {
+                Node style = styleList.item(i);
+                String id = style.getAttributes().getNamedItemNS(
+                        XLElement.XMLNS_SS, "ID").getNodeValue();
+                if (!"Default".equals(id)) {
+                    issStyles.add(id);
+                    styles.put(id, style);
+                }
+            }
+            NodeList sheets = 
+                infosh.getElementsByTagNameNS(XLElement.XMLNS_SS, "Worksheet");
+            infoSheet = sheets.item(0);
+            
+        } catch (ParserConfigurationException e) {
+            throw new XelemException(e.fillInStackTrace());
+        } catch (SAXException e) {
+            throw new XelemException(e.fillInStackTrace());
+        } catch (IOException e) {
+            throw new XelemException(e.fillInStackTrace());
+        }
+        return infoSheet;
+    }
 
 
 }

@@ -4,9 +4,7 @@
  */
 package nl.fountain.xelem.excel.ss;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
@@ -182,24 +180,8 @@ public class SSRow extends AbstractXLElement implements Row {
         return new CellIterator();
     }
     
-    public Collection getAttributes() {
-        Collection attrs = new ArrayList();
-        if (idx != 0) attrs.add(" ss:Index=\"" + idx + "\"");
-        if (styleID != null) attrs.add(" ss:StyleID=\"" + styleID + "\"");
-        return attrs;
-    }
-    
-    public Map getAttributesMap() {
-        Map attrs = new HashMap();
-        if (idx != 0) attrs.put("Index", "" + idx);
-        if (styleID != null) attrs.put("StyleID", styleID);
-        if (span > 0) attrs.put("Span", "" + span);
-        if (height > 0.0) attrs.put("Height", "" + height);
-        if (hidden) attrs.put("Hidden", "1");
-        return attrs;
-    }
-    
-    public Element assemble(Document doc, Element parent, GIO gio) {
+    public Element assemble(Element parent, GIO gio) {
+        Document doc = parent.getOwnerDocument();
         Element re = assemble(doc, gio);
         
         if (idx != 0) re.setAttributeNodeNS(
@@ -222,7 +204,7 @@ public class SSRow extends AbstractXLElement implements Row {
         Iterator iter = cellIterator();
         while (iter.hasNext()) {
             Cell cell = (Cell) iter.next();
-            cell.assemble(doc, re, gio);
+            cell.assemble(re, gio);
         }
         
         return re;

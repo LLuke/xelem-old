@@ -24,18 +24,27 @@ import nl.fountain.xelem.excel.Workbook;
 
 import org.w3c.dom.Document;
 
-
+/**
+ * A conveniance class for serializing Workbooks.
+ */
 public class XSerializer {
     
     private Transformer xformer;
     
-    
+    /**
+     * 
+     */
     public String serializeToString(Workbook wb) throws XelemException {
         StringWriter out = new StringWriter();
         serialize(wb, out);
         return out.toString();
     }
     
+    /**
+     * Serializes the Workbook to the file specified with the Workbook's
+     * {@link nl.fountain.xelem.excel.Workbook#getFileName() getFileName}-method.
+     * 
+     */
     public void serialize(Workbook wb) throws XelemException {
         File out = new File(wb.getFileName());
         serialize(wb, out);
