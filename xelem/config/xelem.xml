@@ -46,23 +46,37 @@
   <!--
   	Here are some examples of other styles.
   -->
-    <Style ss:ID="bold">
-      <Font x:Family="Swiss" ss:Bold="1"/>
+    <Style ss:ID="title">
+     <Font x:Family="Swiss" ss:Size="14" ss:Color="#000080" ss:Bold="1"/>
     </Style>
     
-    <Style ss:ID="b_yellow">
-      <Interior ss:Color="#FFFF00" ss:Pattern="Solid"/>
+    <Style ss:ID="bg_white">
+      <Interior ss:Color="#FFFFFF" ss:Pattern="Solid"/>
     </Style>
     
-    <Style ss:ID="b_lblue">
-      <Interior ss:Color="#99CCFF" ss:Pattern="Solid"/>
+    <Style ss:ID="bg_yellow">
+      <Interior ss:Color="#FFFF99" ss:Pattern="Solid"/>
     </Style>
     
-    <Style ss:ID="gray_date">
-      <Alignment ss:Horizontal="Center" ss:Vertical="Bottom"/>
-      <Font x:Family="Swiss" ss:Bold="1"/>
-      <Interior ss:Color="#C0C0C0" ss:Pattern="Solid"/>
-      <NumberFormat ss:Format="d\ mmmm\ yyyy\ hh:mm:ss"/>
+    <Style ss:ID="table_heading">
+     <Alignment ss:Horizontal="Center" ss:Vertical="Bottom"/>
+     <Borders>
+      <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1"/>
+      <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1"/>
+     </Borders>
+     <Font x:Family="Swiss" ss:Color="#0000FF" ss:Bold="1"/>
+    </Style>
+  
+    <Style ss:ID="dec_0">
+     <NumberFormat ss:Format="#,##0"/>
+    </Style>
+
+    <Style ss:ID="hyperlink">
+     <Font ss:Color="#0000FF" ss:Underline="Single"/>
+    </Style>
+    
+    <Style ss:ID="date_time">
+     <NumberFormat ss:Format="dd/mm/yyyy\ hh:mm:ss"/>
     </Style>
     
     <Style ss:ID="currency" ss:Name="Currency">
