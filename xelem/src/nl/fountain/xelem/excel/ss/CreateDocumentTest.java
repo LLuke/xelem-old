@@ -219,22 +219,21 @@ public class CreateDocumentTest extends TestCase {
     public void testColumnAttributes() throws Exception {
         Workbook wb = new XLWorkbook("test07");
         Worksheet sheet = wb.addSheet();
-        Table table = sheet.getTable();
         
-        Column column = table.addColumn(5);
+        Column column = sheet.addColumn(5);
         column.setStyleID("b_yellow");
         column.setWidth(25.2);
         column.setSpan(5);
         
         //illegal: first free index = 5 + 5 + 1 = 11
-        //Column column2 = table.addColumn(8);
+        //Column column2 = sheet.addColumn(8);
         
-        table.addColumn().setStyleID("b_lblue");
+        sheet.addColumn().setStyleID("b_lblue");
         
-        Column column2 = table.addColumn(12);
+        Column column2 = sheet.addColumn(12);
         column2.setStyleID("bold");
         
-        Column b = table.addColumn(2);
+        Column b = sheet.addColumn(2);
         b.setHidden(true);
         
         String xml = xmlToString(wb);
@@ -283,13 +282,12 @@ public class CreateDocumentTest extends TestCase {
     public void testColumnsAndRows() throws Exception {
         Workbook wb = new XLWorkbook("test09");
         Worksheet sheet = wb.addSheet();
-        Table table = sheet.getTable();
         
-        Column column = table.addColumn(5);
+        Column column = sheet.addColumn(5);
         column.setStyleID("b_yellow");
         column.setSpan(5);
         column.setWidth(25.2);
-        table.addColumn().setStyleID("b_lblue");
+        sheet.addColumn().setStyleID("b_lblue");
         
         Row row = sheet.addRow(5);
         row.setStyleID("b_yellow");
@@ -362,7 +360,7 @@ public class CreateDocumentTest extends TestCase {
         c4.setFormula("=NOW()");
         c4.setStyleID("gray_date");
         
-        sheet.getTable().addColumn(2).setWidth(200);
+        sheet.addColumn(2).setWidth(200);
         
         sheet.addCellAt(9, 1);
         sheet.addCell("&1<2>3\" ' € @         ");
@@ -563,8 +561,8 @@ public class CreateDocumentTest extends TestCase {
         sheet.addCell(new Date(), "gray_date");
         sheet.addCell(new Date(), "gray_date");
         
-        sheet.getTable().addColumn(2).setAutoFitWidth(false);
-        sheet.getTable().addColumn(3).setAutoFitWidth(true);
+        sheet.addColumn(2).setAutoFitWidth(false);
+        sheet.addColumn(3).setAutoFitWidth(true);
         
         String xml = xmlToString(wb);
         assertTrue(xml.indexOf("<ss:Column ss:Index=\"2\" ss:AutoFitWidth=\"0\"/>") > 0);

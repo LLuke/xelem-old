@@ -35,7 +35,6 @@ public class SSRow extends AbstractXLElement implements Row {
      * Constructs a new SSRow.
      * 
      * @see nl.fountain.xelem.excel.Worksheet#addRow()
-     * @see nl.fountain.xelem.excel.Table#addRow()
      */
     public SSRow() {
         cells = new TreeMap();

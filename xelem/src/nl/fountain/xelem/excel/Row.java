@@ -19,7 +19,7 @@ import java.util.TreeMap;
  * if necessary. See also: {@link nl.fountain.xelem.excel.Table#rowIterator()}.
  * 
  * @see nl.fountain.xelem.excel.Worksheet#addRow()
- * @see nl.fountain.xelem.excel.Table#addRow()
+ * @see nl.fountain.xelem.excel.Table#addRow(CellPointer)
  */
 public interface Row extends XLElement {
     

@@ -26,7 +26,7 @@ public class SSColumn extends AbstractXLElement implements Column {
     /**
      * Creates a new SSColumn.
      * 
-     * @see nl.fountain.xelem.excel.Table#addColumn()
+     * @see nl.fountain.xelem.excel.Worksheet#addColumn()
      */
     public SSColumn() {}
 

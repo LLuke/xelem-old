@@ -156,6 +156,7 @@ public interface Workbook extends XLElement {
      * Adds a new Worksheet to this workbook. The new sheet will have 
      * the name "Sheet[x]", where [x] is 
      * a sequential number to prevent the duplication of sheet names.
+     * The worksheets cellpointer will be at position row 1, column 1.
      * 
      * @return A new Worksheet.
      */
@@ -163,6 +164,7 @@ public interface Workbook extends XLElement {
     
     /**
      * Adds a new Worksheet to this workbook with the given name as name.
+     * The worksheets cellpointer will be at position row 1, column 1.
      * 
      * @param name	The name that is to be given to the new worksheet.
      * 
@@ -171,7 +173,7 @@ public interface Workbook extends XLElement {
      * @throws DuplicateNameException if a sheet with this name is allready 
      * 			present in this workbook.
      */
-    Worksheet addSheet(String name) throws DuplicateNameException;
+    Worksheet addSheet(String name);
     
     /**
      * Adds the given Worksheet to this workbook.
@@ -183,7 +185,7 @@ public interface Workbook extends XLElement {
      * @throws DuplicateNameException if a sheet with such a name is allready 
      * 			present in this workbook.
      */
-    Worksheet addSheet(Worksheet sheet) throws DuplicateNameException; 
+    Worksheet addSheet(Worksheet sheet); 
     
     /**
      * Removes the sheet with the given name.

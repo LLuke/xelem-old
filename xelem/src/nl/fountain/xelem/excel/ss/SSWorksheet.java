@@ -6,10 +6,12 @@ package nl.fountain.xelem.excel.ss;
 
 import java.util.Collection;
 
+import nl.fountain.xelem.CellPointer;
 import nl.fountain.xelem.GIO;
 import nl.fountain.xelem.excel.AbstractXLElement;
 import nl.fountain.xelem.excel.AutoFilter;
 import nl.fountain.xelem.excel.Cell;
+import nl.fountain.xelem.excel.Column;
 import nl.fountain.xelem.excel.Row;
 import nl.fountain.xelem.excel.Table;
 import nl.fountain.xelem.excel.Worksheet;
@@ -25,6 +27,7 @@ import org.w3c.dom.Element;
  */
 public class SSWorksheet extends AbstractXLElement implements Worksheet {
     
+    private CellPointer cellPointer;
     private String name;
     private boolean protect;
     private boolean righttoleft;
@@ -34,11 +37,13 @@ public class SSWorksheet extends AbstractXLElement implements Worksheet {
     
     /**
      * Constructs a new SSWorksheet with the given name.
+     * The worksheets cellpointer will be at position row 1, column 1.
      * 
      * @see nl.fountain.xelem.excel.Workbook#addSheet()
      */
     public SSWorksheet(String name) {
         this.name = name;
+        cellPointer = new CellPointer();
     }
 
     public String getName() {
@@ -74,49 +79,77 @@ public class SSWorksheet extends AbstractXLElement implements Worksheet {
     public boolean hasTable() {
         return table != null;
     }
+    
+    protected void doS() {
+        
+    }
+    
+    public CellPointer getCellPointer() {
+        return cellPointer;
+    }
 
     public Cell addCell() {
-        return getTable().currentRow().addCell();
-    }
-    
-    public Cell addCell(Object data) {
-        return getTable().currentRow().addCell(data);
-    }
-    
-    public Cell addCell(Object data, String styleID) {
-        return getTable().currentRow().addCell(data, styleID);
-    }
-    
-    public Cell addCell(double data) {
-        return getTable().currentRow().addCell(data);
-    }
-    
-    public Cell addCell(double data, String styleID) {
-        return getTable().currentRow().addCell(data, styleID);
-    }
-    
-    public Cell addCell(int data) {
-        return getTable().currentRow().addCell(data);
-    }
-    
-    public Cell addCell(int data, String styleID) {
-        return getTable().currentRow().addCell(data, styleID);
+        return addCell(new SSCell());
     }
     
     public Cell addCell(Cell cell) {
-        return getTable().currentRow().addCell(cell);
+        boolean withinSheet = cellPointer.isWithinSheet();
+        int prevRow = cellPointer.getRowIndex();
+        int prevColumn = cellPointer.getColumnIndex();
+        cellPointer.move();
+        if (withinSheet) {
+            getTable().getRow(prevRow, cellPointer).addCellAt(prevColumn, cell);
+        } else {
+            throw new IndexOutOfBoundsException("rowIndex = "
+                    + prevRow + ", columnIndex = " + prevColumn);
+        }       
+        return cell;
+    }
+    
+    public Cell addCell(Object data) {
+        Cell cell = addCell();
+        cell.setData(data);
+        return cell;
+    }
+    
+    public Cell addCell(Object data, String styleID) {
+        Cell cell = addCell(data);
+        cell.setStyleID(styleID);
+        return cell;
+    }
+    
+    public Cell addCell(double data) {
+        Cell cell = addCell();
+        cell.setData(data);
+        return cell;
+    }
+    
+    public Cell addCell(double data, String styleID) {
+        Cell cell = addCell(data);
+        cell.setStyleID(styleID);
+        return cell;
+    }
+    
+    public Cell addCell(int data) {
+        Cell cell = addCell();
+        cell.setData(data);
+        return cell;
+    }
+    
+    public Cell addCell(int data, String styleID) {
+        Cell cell = addCell(data);
+        cell.setStyleID(styleID);
+        return cell;
     }
 
     public Cell addCellAt(int rowIndex, int columnIndex) {
-        Row row = getTable().getRow(rowIndex);
-        if (row == null) row = getTable().addRow(rowIndex);
-        return row.addCellAt(columnIndex);
+        cellPointer.moveTo(rowIndex, columnIndex);
+        return addCell();
     }
     
     public Cell addCellAt(int rowIndex, int columnIndex, Cell cell) {
-        Row row = getTable().getRow(rowIndex);
-        if (row == null) row = getTable().addRow(rowIndex);
-        return row.addCellAt(columnIndex, cell);
+        cellPointer.moveTo(rowIndex, columnIndex);
+        return addCell(cell);
     }
     
     public Cell getCellAt(int rowIndex, int columnIndex) {
@@ -132,19 +165,19 @@ public class SSWorksheet extends AbstractXLElement implements Worksheet {
     }
 
     public Row addRow() {
-        return getTable().addRow();
+        return getTable().addRow(cellPointer);
     }
 
     public Row addRow(int rowIndex) {
-        return getTable().addRow(rowIndex);
+        return getTable().addRow(rowIndex, cellPointer);
     }
 
     public Row addRow(Row row) {
-        return getTable().addRow(row);
+        return getTable().addRow(row, cellPointer);
     }
     
     public Row addRow(int index, Row row) {
-        return getTable().addRow(index, row);
+        return getTable().addRow(index, row, cellPointer);
     }
 
     public Row removeRow(int rowIndex) {
@@ -159,8 +192,32 @@ public class SSWorksheet extends AbstractXLElement implements Worksheet {
         return getTable().getRow(rowIndex);
     }
     
-    public Row currentRow() {
-        return getTable().currentRow();
+    public Column addColumn() {
+        return getTable().addColumn(cellPointer);
+    }
+    
+    public Column addColumn(int index) {
+        return getTable().addColumn(index, cellPointer);
+    }
+    
+    public Column addColumn(Column column) {
+        return getTable().addColumn(column, cellPointer);
+    }
+    
+    public Column addColumn(int index, Column column) {
+        return getTable().addColumn(index, column, cellPointer);
+    }
+    
+    public Column removeColumn(int columnIndex) {
+        return getTable().removeColumn(columnIndex);
+    }
+    
+    public Collection getColumns() {
+        return getTable().getColumns();
+    }
+    
+    public Column getColumn(int columnIndex) {
+        return getTable().getColumn(columnIndex);
     }
     
     public String getTagName() {

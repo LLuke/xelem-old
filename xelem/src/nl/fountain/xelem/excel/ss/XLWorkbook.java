@@ -159,23 +159,17 @@ public class XLWorkbook extends AbstractXLElement implements Workbook {
         do
             name = "Sheet" + ++nr;
         while(sheetList.contains(name));
-        Worksheet ws = null;
-        try {
-            ws = addSheet(name);
-        } catch (DuplicateNameException e) {
-           // will not happen
-        }
-        return ws;
+        return addSheet(name);
     }
     
-    public Worksheet addSheet(String name) throws DuplicateNameException {
+    public Worksheet addSheet(String name) {
         if (name == null || "".equals(name)) {
             return addSheet();
         }
         return addSheet(new SSWorksheet(name));
     }
 
-    public Worksheet addSheet(Worksheet sheet) throws DuplicateNameException {
+    public Worksheet addSheet(Worksheet sheet) {
         if (sheetList.contains(sheet.getName())) {
            throw new DuplicateNameException(
                    "Duplicate name in worksheets collection: '"

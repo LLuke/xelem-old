@@ -8,6 +8,8 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.TreeMap;
 
+import nl.fountain.xelem.CellPointer;
+
 
 
 /**
@@ -51,18 +53,28 @@ public interface Table extends XLElement {
      * the column will be added at index 1. Otherwise the column will be added
      * at {@link #maxColumnIndex()} + 1.
      * 
+     * @param cellpointer A CellPointer with information regarding
+     * 			first and last column indexes.
      * @return A new column.
+     * @throws IndexOutOfBoundsException If the calculated index is less then
+     * 			{@link nl.fountain.xelem.CellPointer#firstColumn} or greater
+     * 			then {@link nl.fountain.xelem.CellPointer#lastColumn}.
      */
-    Column addColumn();
+    Column addColumn(CellPointer cellpointer);
     
     /**
      * Adds a new Column at the given index to this table. If the index 
      * was allready occupied by another column, replaces this column.
      * 
-     * @param index The index (column number) of the column.	
+     * @param index The index (column number) of the column.
+     * @param cellpointer A CellPointer with information regarding
+     * 			first and last column indexes.	
      * @return A new column.
+     * @throws IndexOutOfBoundsException If the given index is less then
+     * 			{@link nl.fountain.xelem.CellPointer#firstColumn} or greater
+     * 			then {@link nl.fountain.xelem.CellPointer#lastColumn}.
      */
-    Column addColumn(int index);
+    Column addColumn(int index, CellPointer cellpointer);
     
     /**
      * Adds the given column to this table. If no columns were previously added
@@ -70,10 +82,14 @@ public interface Table extends XLElement {
      * at {@link #maxColumnIndex()} + 1.
      * 
      * @param column	The column to be added.
-     * 
+     * @param cellpointer A CellPointer with information regarding
+     * 			first and last column indexes.	
      * @return The passed column.
+     * @throws IndexOutOfBoundsException If the calculated index is less then
+     * 			{@link nl.fountain.xelem.CellPointer#firstColumn} or greater
+     * 			then {@link nl.fountain.xelem.CellPointer#lastColumn}.
      */
-    Column addColumn(Column column);
+    Column addColumn(Column column, CellPointer cellpointer);
     
     /**
      * Adds the given Column at the given index to this table. If the index 
@@ -81,10 +97,14 @@ public interface Table extends XLElement {
      * 
      * @param index The index (column number) of the column.
      * @param column	The column to be added.
-     * 
+     * @param cellpointer A CellPointer with information regarding
+     * 			first and last column indexes.	
      * @return The passed column.
+     * @throws IndexOutOfBoundsException If the calculated index is less then
+     * 			{@link nl.fountain.xelem.CellPointer#firstColumn} or greater
+     * 			then {@link nl.fountain.xelem.CellPointer#lastColumn}.
      */
-    Column addColumn(int index, Column column);
+    Column addColumn(int index, Column column, CellPointer cellpointer);
     
     /**
      * Removes the column at the given index.
@@ -126,18 +146,28 @@ public interface Table extends XLElement {
      * the row will be added at index 1. Otherwise the row will be added
      * at {@link #maxRowIndex()} + 1.
      * 
-     * @return A new row.
+     * @param cellpointer A CellPointer with information regarding
+     * 			first and last row indexes.
+     * @return A new Row.
+     * @throws IndexOutOfBoundsException If the calculated index is less then
+     * 			{@link nl.fountain.xelem.CellPointer#firstRow} or greater
+     * 			then {@link nl.fountain.xelem.CellPointer#lastRow}.
      */
-    Row addRow();
+    Row addRow(CellPointer cellpointer);
     
     /**
-     * Adds a new row at the given index to this table. If the index 
+     * Adds a new Row at the given index to this table. If the index 
      * was allready occupied by another row, replaces this row.
      * 
-     * @param index The index (row number) of the row.	
-     * @return A new row.
+     * @param index The index (row number) of the row.
+     * @param cellpointer A CellPointer with information regarding
+     * 			first and last row indexes.	
+     * @return A new Row.
+     * @throws IndexOutOfBoundsException If the given index is less then
+     * 			{@link nl.fountain.xelem.CellPointer#firstRow} or greater
+     * 			then {@link nl.fountain.xelem.CellPointer#lastRow}.
      */
-    Row addRow(int index);
+    Row addRow(int index, CellPointer cellpointer);
     
     /**
      * Adds the given row to this table. If no rows were previously added
@@ -145,21 +175,29 @@ public interface Table extends XLElement {
      * at {@link #maxRowIndex()} + 1.
      * 
      * @param row	The row to be added.
-     * 
+     * @param cellpointer A CellPointer with information regarding
+     * 			first and last row indexes.	
      * @return The passed row.
+     * @throws IndexOutOfBoundsException If the calculated index is less then
+     * 			{@link nl.fountain.xelem.CellPointer#firstRow} or greater
+     * 			then {@link nl.fountain.xelem.CellPointer#lastRow}.
      */
-    Row addRow(Row row);
+    Row addRow(Row row, CellPointer cellpointer);
     
     /**
-     * Adds the given row at the given index to this table. If the index 
+     * Adds the given Row at the given index to this table. If the index 
      * was allready occupied by another row, replaces this row.
      * 
      * @param index The index (row number) of the row.
      * @param row	The row to be added.
-     * 
+     * @param cellpointer A CellPointer with information regarding
+     * 			first and last row indexes.	
      * @return The passed row.
+     * @throws IndexOutOfBoundsException If the given index is less then
+     * 			{@link nl.fountain.xelem.CellPointer#firstRow} or greater
+     * 			then {@link nl.fountain.xelem.CellPointer#lastRow}.
      */
-    Row addRow(int index, Row row); 
+    Row addRow(int index, Row row, CellPointer cellpointer); 
     
     /**
      * Removes the row at the given index.
@@ -172,25 +210,24 @@ public interface Table extends XLElement {
     Row removeRow(int index); 
     
     /**
-     * Gets the row at the given index.
+     * Gets the row at the given index. If no row was at the given index,
+     * returns a new row at that index.
      * 
      * @param index The index (row number) of the row.
-     * 
-     * @return The row at the given index or <code>null</code> 
-     * 			if there was no row at the given index.
+     * @param cellpointer A CellPointer with information regarding
+     * 			first and last row indexes.	
+     * @return The row at the given index.
+     * @throws IndexOutOfBoundsException If the given index is less then
+     * 			{@link nl.fountain.xelem.CellPointer#firstRow} or greater
+     * 			then {@link nl.fountain.xelem.CellPointer#lastRow}.
      */
-    Row getRow(int index); 
+    Row getRow(int index, CellPointer cellpointer); 
     
     /**
-     * Returns the current row (never <code>null</code>).
-     * The current row is at index 1 if no rows were previously added to this table.
-     * Otherwise the current row is the one last added. If the current row was
-     * removed, the current row returned by this method will be a new row
-     * at the index {@link #maxRowIndex()} + 1.
-     * 
-     * @return 	The current row (never <code>null</code>).
+     * Gets the row at the given index, or <code>null</code> if no row
+     * was at that index.
      */
-    Row currentRow();
+    Row getRow(int index);
     
     /**
      * Gets all the rows of this table in the order of their index.

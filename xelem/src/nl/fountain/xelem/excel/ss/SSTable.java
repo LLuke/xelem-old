@@ -8,6 +8,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.TreeMap;
 
+import nl.fountain.xelem.CellPointer;
 import nl.fountain.xelem.GIO;
 import nl.fountain.xelem.excel.AbstractXLElement;
 import nl.fountain.xelem.excel.Column;
@@ -24,7 +25,6 @@ public class SSTable extends AbstractXLElement implements Table {
     
     private TreeMap columns;
     private TreeMap rows;
-    private Row currentRow;
     private String styleID;
     private double rowheight;
     private double columnwidth;
@@ -55,20 +55,22 @@ public class SSTable extends AbstractXLElement implements Table {
         columnwidth = points;
     }
     
-    public Column addColumn() {
-        return addColumn(0, new SSColumn());
+    public Column addColumn(CellPointer cellpointer) {
+        return addColumn(maxColumnIndex() + 1, new SSColumn(), cellpointer);
     }
     
-    public Column addColumn(int index) {
-        return addColumn(index, new SSColumn());
+    public Column addColumn(int index, CellPointer cellpointer) {
+        return addColumn(index, new SSColumn(), cellpointer);
     }
     
-    public Column addColumn(Column column) {
-        return addColumn(0, column);
+    public Column addColumn(Column column, CellPointer cellpointer) {
+        return addColumn(maxColumnIndex() + 1, column, cellpointer);
     }
     
-    public Column addColumn(int index, Column column) {
-        if (index < 1) index = maxColumnIndex() + 1;
+    public Column addColumn(int index, Column column, CellPointer cellpointer) {
+        if (index < cellpointer.firstColumn || index > cellpointer.lastColumn) {
+            throw new IndexOutOfBoundsException("columnIndex = " + index);
+        }
         columns.put(new Integer(index), column);
         return column;
     }
@@ -85,30 +87,28 @@ public class SSTable extends AbstractXLElement implements Table {
         return columns.values();
     }
 
-    public Row addRow() {
-        return addRow(0, new SSRow());
+    public Row addRow(CellPointer cellpointer) {
+        return addRow(maxRowIndex() + 1, new SSRow(), cellpointer);
     }
 
-    public Row addRow(int index) {
-        return addRow(index, new SSRow());
+    public Row addRow(int index, CellPointer cellpointer) {
+        return addRow(index, new SSRow(), cellpointer);
     }
 
-    public Row addRow(Row row) {
-        return addRow(0, row);
+    public Row addRow(Row row, CellPointer cellpointer) {
+        return addRow(maxRowIndex() + 1, row, cellpointer);
     }
     
-    public Row addRow(int index, Row row) {
-        if (index < 1) index = maxRowIndex() + 1;
+    public Row addRow(int index, Row row, CellPointer cellpointer) {
+        if (index < cellpointer.firstRow || index > cellpointer.lastRow) {
+            throw new IndexOutOfBoundsException("rowIndex = " + index);
+        }
         rows.put(new Integer(index), row);
-        currentRow = row;
         return row;
     }
 
     public Row removeRow(int rowIndex) {
         Row row = (Row) rows.remove(new Integer(rowIndex));
-        if (currentRow().equals(row)) {
-            currentRow = null;
-        }
         return row;
     }
 
@@ -120,15 +120,16 @@ public class SSTable extends AbstractXLElement implements Table {
         return rows;
     }
 
-    public Row getRow(int rowIndex) {
-        return (Row) rows.get(new Integer(rowIndex));
-    }
-
-    public Row currentRow() {
-        if (currentRow == null) {
-            currentRow = addRow();
+    public Row getRow(int rowIndex, CellPointer cellpointer) {
+        Row row = (Row) rows.get(new Integer(rowIndex));
+        if (row == null) {
+            row = addRow(rowIndex, cellpointer);
         }
-        return currentRow;
+        return row;
+    }
+    
+    public Row getRow(int index) {
+        return (Row) rows.get(new Integer(index));
     }
 
     public int rowCount() {

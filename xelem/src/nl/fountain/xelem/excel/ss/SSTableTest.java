@@ -6,6 +6,7 @@ package nl.fountain.xelem.excel.ss;
 
 import java.util.Iterator;
 
+import nl.fountain.xelem.CellPointer;
 import nl.fountain.xelem.GIO;
 import nl.fountain.xelem.excel.Row;
 import nl.fountain.xelem.excel.Table;
@@ -34,10 +35,10 @@ public class SSTableTest extends XLElementTest {
      */
     public void testAddRow() {
         assertEquals(0, table.rowCount());
-        Row row = table.addRow();
+        Row row = table.addRow(new CellPointer());
         assertEquals(1, table.rowCount());
         assertSame(row, table.getRowMap().get(new Integer(1)));
-        Row row2 = table.addRow();
+        Row row2 = table.addRow(new CellPointer());
         assertEquals(2, table.rowCount());
         assertSame(row2, table.getRowMap().get(new Integer(2)));
         assertNotSame(row, row2);
@@ -57,15 +58,15 @@ public class SSTableTest extends XLElementTest {
      */
     public void testAddRow_index() {
         assertEquals(0, table.rowCount());
-        Row row = table.addRow(5);
+        Row row = table.addRow(5, new CellPointer());
         assertEquals(1, table.rowCount());
         assertSame(row, table.getRowMap().get(new Integer(5)));
         
-        Row row6 = table.addRow();
+        Row row6 = table.addRow(new CellPointer());
         assertEquals(2, table.rowCount());
         assertSame(row6, table.getRowMap().get(new Integer(6)));
         
-        Row row3 = table.addRow(3);
+        Row row3 = table.addRow(3, new CellPointer());
         assertEquals(3, table.rowCount());
         assertSame(row3, table.getRowMap().get(new Integer(3)));
         
@@ -79,11 +80,11 @@ public class SSTableTest extends XLElementTest {
         } catch (Exception e) {
         }
         
-        Row row5 = table.addRow(5);
+        Row row5 = table.addRow(5, new CellPointer());
         assertEquals(3, table.rowCount());
         assertSame(row5, table.getRowMap().get(new Integer(5)));
         
-        Row row7 = table.addRow();
+        Row row7 = table.addRow(new CellPointer());
         assertEquals(4, table.rowCount());
         assertSame(row7, table.getRowMap().get(new Integer(7)));
         
@@ -102,7 +103,7 @@ public class SSTableTest extends XLElementTest {
     public void testAddRow_Row() {
         assertEquals(0, table.rowCount());
         Row row = new SSRow();
-        Row returnRow = table.addRow(row);
+        Row returnRow = table.addRow(row, new CellPointer());
         assertEquals(1, table.rowCount());
         assertSame(row, returnRow);
         assertSame(row, table.getRowMap().get(new Integer(1)));
@@ -111,26 +112,31 @@ public class SSTableTest extends XLElementTest {
     public void testAddRow_index_Row() {
         assertEquals(0, table.rowCount());
         Row row = new SSRow();
-        Row returnRow = table.addRow(-1, row);
+        table.addRow(row, new CellPointer());
+        try {
+            table.addRow(-1, row, new CellPointer());
+            fail("geen exceptie gegooid");
+        } catch (IndexOutOfBoundsException e) {
+            assertEquals("rowIndex = -1", e.getMessage());
+        }
         assertEquals(1, table.rowCount());
-        assertSame(row, returnRow);
         assertSame(row, table.getRowMap().get(new Integer(1)));
         
-        Row returnRow2 = table.addRow(5, row);
+        Row returnRow2 = table.addRow(5, row, new CellPointer());
         assertEquals(2, table.rowCount());
         assertSame(row, returnRow2);
         assertSame(row, table.getRowMap().get(new Integer(5)));
     }
     
     public void testRemoveRow() {
-       table.addRow();
-       Row row = table.addRow();
-       table.addRow();
+       table.addRow(new CellPointer());
+       Row row = table.addRow(new CellPointer());
+       table.addRow(new CellPointer());
        assertEquals(3, table.rowCount());
        assertSame(row, table.removeRow(2));
        assertEquals(2, table.rowCount());
        
-       table.addRow();
+       table.addRow(new CellPointer());
        Iterator iter = table.getRowMap().keySet().iterator();
        assertEquals(new Integer(1), iter.next());
        assertEquals(new Integer(3), iter.next());
@@ -142,43 +148,11 @@ public class SSTableTest extends XLElementTest {
        }
     }
     
-    public void testCurrentRow() {
-       Row row = table.currentRow();
-       assertNotNull(row);
-       assertEquals(1, table.rowCount());
-       assertSame(row, table.getRowMap().get(new Integer(1)));
-       
-       table.removeRow(1);
-       assertEquals(0, table.rowCount());
-       
-       row = table.currentRow();
-       assertNotNull(row);
-       assertEquals(1, table.rowCount());
-       assertSame(row, table.getRowMap().get(new Integer(1)));  
-    }
     
-    public void testCurrentRow2() {
-       Row row1 = table.addRow();
-       Row returnRow1 = table.currentRow();
-       
-       assertEquals(1, table.rowCount());
-       assertSame(row1, returnRow1);
-       
-       Row row2 = table.addRow();
-       Row returnRow2 = table.currentRow();
-       
-       assertEquals(2, table.rowCount());
-       assertSame(row2, returnRow2);
-       
-       table.removeRow(1);
-       assertEquals(1, table.rowCount());
-       Row newReturnRow2 = table.currentRow();
-       assertSame(row2, newReturnRow2);
-    }
     
     public void testIterator() {
-       Row row1 = table.addRow();
-       Row row2 = table.addRow();
+       Row row1 = table.addRow(new CellPointer());
+       Row row2 = table.addRow(new CellPointer());
        
        Iterator iter = table.rowIterator();
        assertEquals(row1, iter.next());
@@ -200,9 +174,9 @@ public class SSTableTest extends XLElementTest {
     }
     
     public void testIterator2() {
-        Row row1 = table.addRow();
-        Row row2 = table.addRow(5);
-        Row row3 = table.addRow(7, row2);
+        Row row1 = table.addRow(new CellPointer());
+        Row row2 = table.addRow(5, new CellPointer());
+        Row row3 = table.addRow(7, row2, new CellPointer());
         
         Iterator iter = table.rowIterator();
         Row r1 = (Row) iter.next();
@@ -218,8 +192,8 @@ public class SSTableTest extends XLElementTest {
     
     public void testAssemble() {
         table.setStyleID("foo");
-        table.addColumn(5).setStyleID("col");
-        table.addRow(7).addCell(new Double(1.2345), "currency");
+        table.addColumn(5, new CellPointer()).setStyleID("col");
+        table.addRow(7, new CellPointer()).addCell(new Double(1.2345), "currency");
         GIO gio = new GIO();
         String xml = xmlToString(table, gio);
         
