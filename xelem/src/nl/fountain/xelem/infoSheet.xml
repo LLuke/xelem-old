@@ -44,7 +44,7 @@
     <ss:Cell ss:StyleID="iss_DD"/>
    </ss:Row>
    <ss:Row ss:AutoFitHeight="0" ss:Height="129.75">
-    <ss:Cell ss:StyleID="iss_DT"><Data ss:Type="String">SpreadseetML: </Data></ss:Cell>
+    <ss:Cell ss:StyleID="iss_DT"><Data ss:Type="String">SpreadsheetML: </Data></ss:Cell>
     <ss:Cell ss:StyleID="iss_DD"><Data ss:Type="String">Since the introduction of Microsoft® Office XP, it is possible to create spreadsheets using SpreadsheetML, an XML dialect developed by Microsoft to represent the information in an Excel spreadsheet. This kind of document is referred to as an XML spreadsheet. Because XML spreadsheets are text documents, they can be sent wherever a text document can, using any text-based messaging system (for example, e-mail, Web services, and Web-based applications). In addition, an XML spreadsheet can be processed by any XML processor, making XML spreadsheets true cross-platform documents. An XML spreadsheet can be created with any text-editing tool.</Data></ss:Cell>
    </ss:Row>
    <ss:Row>
