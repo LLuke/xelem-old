@@ -392,6 +392,8 @@ public class CreateDocumentTest extends TestCase {
                         + "12345678901234567890123456789012345678901234567890"
                         + "12345678901234567890123456789012345678901234567890"
                         + "1234567890123456789"));
+        sheet.addCellAt(20, 3).setData(Double.NaN);
+        sheet.addCellAt(21, 3).setData(Double.NEGATIVE_INFINITY);
         
         String xml = xmlToString(wb);
         assertTrue(xml.indexOf("<ss:Cell ss:StyleID=\"bold\">") > 0);

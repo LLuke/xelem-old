@@ -5,13 +5,13 @@
 package nl.fountain.xelem.ztest;
 
 
+
 /**
  *
  */
 public class Test {
 
     public static void main(String[] args) {
-        System.out.println(Integer.decode("#ffffff"));
-        System.out.println(Integer.toHexString(12345678));
+        System.out.println((int)'A');
     }
 }

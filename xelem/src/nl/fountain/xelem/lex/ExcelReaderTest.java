@@ -5,6 +5,7 @@
 package nl.fountain.xelem.lex;
 
 import java.io.File;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -197,7 +198,7 @@ public class ExcelReaderTest extends TestCase {
         Workbook wb = getReaderWorkbook();
         Table table = wb.getWorksheet("Tom Poes").getTable();
         
-        assertEquals(10, table.getExpandedColumnCount());
+        assertEquals(14, table.getExpandedColumnCount());
         assertEquals(25, table.getExpandedRowCount());
         assertEquals("s22", table.getStyleID());
     }
@@ -219,7 +220,7 @@ public class ExcelReaderTest extends TestCase {
         Column column9 = table.getColumnAt(9);
         assertEquals(1, column9.getSpan());
         
-        assertEquals(3, table.getColumns().size());
+        assertEquals(5, table.getColumns().size());
     }
     
     public void testRow() throws Exception {
@@ -240,7 +241,7 @@ public class ExcelReaderTest extends TestCase {
         assertTrue(table.hasRowAt(20));
         assertTrue(table.hasRowAt(22));
         
-        assertEquals(9, table.getRows().size());
+        assertEquals(13, table.getRows().size());
     }
     
     public void testCell() throws Exception {
@@ -273,6 +274,54 @@ public class ExcelReaderTest extends TestCase {
         assertEquals("foo", cell.getData$());
         assertTrue(cell.hasData());
         assertEquals("#foo", cell.getHRef());
+    }
+    
+    public void testCellValues() throws Exception {
+        Workbook wb = getReaderWorkbook();
+        Worksheet sheet = wb.getWorksheet("Tom Poes");
+        
+        Cell cell = sheet.getCellAt(8, 9);
+        assertTrue(cell.booleanValue());
+        Boolean boo = (Boolean) cell.getData();
+        assertTrue(boo.booleanValue());
+        assertEquals(1, cell.intValue());
+        assertEquals(1.0, cell.doubleValue(), 0.0D);
+        
+        cell = sheet.getCellAt(9, 9);
+        assertFalse(cell.booleanValue());
+        boo = (Boolean) cell.getData();
+        assertFalse(boo.booleanValue());
+        assertEquals(0, cell.intValue());
+        assertEquals(0.0, cell.doubleValue(), 0.0);
+        
+        cell = sheet.getCellAt(10, 9);
+        assertFalse(cell.booleanValue());
+        assertEquals(0, cell.intValue());
+        Date date = (Date) cell.getData();
+        assertEquals(1112306400000L, date.getTime());
+        
+        cell = sheet.getCellAt(11, 9);
+        date = (Date) cell.getData();
+        assertEquals(-2209033800000L, date.getTime());
+        assertEquals("1899-12-31T12:30:00.000", cell.getData$());
+        //System.out.println(date);
+        
+        cell = sheet.getCellAt(12, 9);
+        assertEquals(1, cell.intValue());
+        assertEquals(1.234, cell.doubleValue(), 0.0);
+        assertFalse(cell.booleanValue());
+        
+        cell = sheet.getCellAt(13, 9);
+        Double doo = (Double) cell.getData();
+        assertEquals(5, doo.intValue());
+        assertEquals(5.0, cell.doubleValue(), 0.0D);
+        assertEquals(5, cell.intValue());
+        
+        cell = sheet.getCellAt(14, 9);
+        assertEquals("#NAME?", cell.getData());
+        
+        cell = sheet.getCellAt(15, 9);
+        assertEquals("xelem", cell.getData());
     }
     
     public void testWorksheetOptions() throws Exception {

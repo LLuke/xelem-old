@@ -224,6 +224,96 @@ public class SSCellTest extends XLElementTest {
         //System.out.println(xml);
     }
     
-
+    public void testGetData() {
+        Cell cell = new SSCell();
+        
+        cell.setData(true);
+        assertEquals(Boolean.class, cell.getData().getClass());
+        Boolean boo = (Boolean) cell.getData();
+        assertTrue(boo.booleanValue());
+        
+        cell.setData(new Boolean(false));
+        assertEquals(Boolean.class, cell.getData().getClass());
+        boo = (Boolean) cell.getData();
+        assertTrue(!boo.booleanValue());
+        
+        byte b = 5;
+        cell.setData(b);
+        assertEquals(Double.class, cell.getData().getClass());
+        Double doo = (Double) cell.getData();
+        assertEquals(5, doo.intValue() );
+        
+        char c = 10;
+        cell.setData(c);
+        assertEquals(String.class, cell.getData().getClass());
+        assertEquals("\n", cell.getData());
+        
+        cell.setData(new Date(123456789L));
+        assertEquals(Date.class, cell.getData().getClass());
+        Date date = (Date) cell.getData();
+        assertEquals(123456000L, date.getTime());
+        //System.out.println(new Date(123456789L));
+        //System.out.println(cell.getData());
+        
+        BigDecimal big = 
+            new BigDecimal(Double.MAX_VALUE).add(new BigDecimal(Double.MAX_VALUE));
+        cell.setData(big);
+        assertEquals("Infinity", cell.getData());
+        doo = new Double(cell.getData().toString());
+        assertTrue(doo.isInfinite());
+        assertTrue(doo.doubleValue() > Double.MAX_VALUE);
+        
+        cell.setData(Double.MAX_VALUE);
+        assertEquals(Double.class, cell.getData().getClass());
+        doo = (Double) cell.getData();
+        assertEquals(1.7976931348623157E308, doo.doubleValue(), 0.0D);
+        
+        Object obj = null;
+        cell.setData(obj);
+        assertEquals("#N/A", cell.getData());
+        assertTrue(cell.hasError());
+        
+        cell.setData(cell);
+        assertEquals(cell.toString(), cell.getData());
+    }
+    
+    public void testIntValue() {
+        Cell cell = new SSCell();
+        assertEquals(0, cell.intValue());
+        cell.setData(5.499999D);
+        assertEquals(5, cell.intValue());
+        Double doo = null;
+        cell.setData(doo);
+        assertEquals(0, cell.intValue());
+        assertTrue(cell.hasError());
+        cell.setData("123.456");
+        assertEquals(123, cell.intValue());
+    }
+    
+    public void testDoubleValue() {
+        Cell cell = new SSCell();
+        assertEquals(0.0D, cell.doubleValue(), 0.0D);
+        cell.setData(Double.MIN_VALUE);
+        assertEquals(4.9E-324D, cell.doubleValue(), 0.0D);
+        cell.setData(Double.NaN);
+        assertEquals("NaN", cell.doubleValue()+"");
+        cell.setData(Double.NEGATIVE_INFINITY);
+        assertEquals("-Infinity", cell.doubleValue()+"");
+    }
+    
+    public void testBooleanValue() {
+        Cell cell = new SSCell();
+        assertFalse(cell.booleanValue());
+        cell.setData(true);
+        assertTrue(cell.booleanValue());
+        cell.setData("1");
+        assertTrue(cell.booleanValue());
+        cell.setData(1);
+        assertTrue(cell.booleanValue());
+        cell.setData(0);
+        assertFalse(cell.booleanValue());
+        cell.setData("True");
+        assertFalse(cell.booleanValue());
+    }
 
 }

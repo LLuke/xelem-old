@@ -6,13 +6,13 @@ package nl.fountain.xelem.excel.ss;
 
 import java.lang.reflect.Method;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.xml.sax.Attributes;
-
 import nl.fountain.xelem.GIO;
 import nl.fountain.xelem.excel.AbstractXLElement;
 import nl.fountain.xelem.excel.Comment;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.xml.sax.Attributes;
 
 /**
  *
@@ -50,22 +50,10 @@ public class SSComment extends AbstractXLElement implements Comment {
     public String getData() {
         return data;
     }
-
-    public String getDataStripped() {
-        if (data != null) {
-            char lf = 10;
-            String lfs = "" + lf;
-            String s = data.replaceAll("\\<.*?\\>","");
-            return s.replaceAll("&#10;", lfs);
-        } else {
-            return data;
-        }
-    }
     
     public String getDataClean() {
         if (data != null) {            
-            String s = data.replaceAll("\\<.*?\\>","");
-            s = s.replaceAll("&#10;", " ");
+            String s = data;
             if (author != null) {
                 s = s.replaceFirst(author + ":", "");
             }

@@ -16,25 +16,11 @@ public class SSCommentTest extends XLElementTest {
     public static void main(String[] args) {
         junit.textui.TestRunner.run(SSCommentTest.class);
     }
-    
-    public void testGetDataStripped() {
-        Comment comment = new SSComment();
-        comment.setData("<B><I><Font html:Face=\"Tahoma\" html:Size=\"9\" "
-                + "html:Color=\"#000000\">the great author:</Font></I></B>"
-                + "<Font html:Face=\"Tahoma\" html:Size=\"9\" "
-                + "html:Color=\"#000000\">&#10;dit is&#10;commentaar.</Font>");
-        char lf = 10;
-        assertEquals("the great author:" + lf + "dit is" + lf + "commentaar.", 
-                comment.getDataStripped());
-        
-    }
-    
+       
     public void testGetDataClean() {
         Comment comment = new SSComment();
-        comment.setData("<B><I><Font html:Face=\"Tahoma\" html:Size=\"9\" "
-                + "html:Color=\"#000000\">the great author:</Font></I></B>"
-                + "<Font html:Face=\"Tahoma\" html:Size=\"9\" "
-                + "html:Color=\"#000000\">&#10;dit is&#10;commentaar.</Font>");
+        char lf = 10;
+        comment.setData("the great author:" + lf + "dit is commentaar.");
         comment.setAuthor("the great author");
         assertEquals("dit is commentaar.", comment.getDataClean());
     }
@@ -48,12 +34,8 @@ public class SSCommentTest extends XLElementTest {
         assertTrue(xml.indexOf("<ss:Data>commentaartekst</ss:Data>") > 0);
         assertTrue(xml.indexOf("</ss:Comment>") > 0);
         
-//        comment.setData("<B><I><Font html:Face=\"Tahoma\" html:Size=\"9\" "
-//                + "html:Color=\"#000000\">the great author:</Font></I></B>"
-//                + "<Font html:Face=\"Tahoma\" html:Size=\"9\" "
-//                + "html:Color=\"#000000\">&#10;dit is&#10;commentaar.</Font>");
-//        xml = xmlToString(comment, gio);
         //System.out.println(xml);
     }
+    
 
 }

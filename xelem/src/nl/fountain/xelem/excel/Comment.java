@@ -17,7 +17,6 @@ public interface Comment extends XLElement {
     
     void setData(String data);
     String getData();
-    String getDataStripped();
     String getDataClean();
 
 }

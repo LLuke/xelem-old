@@ -121,6 +121,7 @@ public interface Cell extends XLElement {
      * is being used: {@value}.
      */
     public static final String ERRORVALUE_VALUE = "#VALUE!";
+       
     
     /**
      * Sets the ss:StyleID on this cell. If no styleID is set on a cell,
@@ -177,6 +178,7 @@ public interface Cell extends XLElement {
     
     Comment addComment();
     Comment addComment(Comment comment);
+    Comment addComment(String text);
     boolean hasComment();
     Comment getComment();
     
@@ -416,6 +418,14 @@ public interface Cell extends XLElement {
     boolean hasData();
     
     boolean hasError();
+    
+    Object getData();
+    
+    int intValue();
+    
+    double doubleValue();
+    
+    boolean booleanValue();
     
     Element getDataElement(Document doc);
 }

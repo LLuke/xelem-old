@@ -51,22 +51,6 @@ public class AnonymousBuilder implements Builder {
     protected boolean isOccupied() {
         return occupied;
     }
-    
-    public void setDocumentLocator(Locator locator) {
-    }
-
-    public void startDocument() throws SAXException {
-    }
-
-    public void endDocument() throws SAXException {
-    }
-
-    public void startPrefixMapping(String prefix, String uri)
-            throws SAXException {
-    }
-
-    public void endPrefixMapping(String prefix) throws SAXException {
-    }
 
     public void startElement(String uri, String localName, String qName,
             Attributes atts) throws SAXException {
@@ -92,6 +76,22 @@ public class AnonymousBuilder implements Builder {
     public void characters(char[] ch, int start, int length)
 		throws SAXException {
         contents.write(ch, start, length);
+    }
+    
+    public void setDocumentLocator(Locator locator) {
+    }
+
+    public void startDocument() throws SAXException {
+    }
+
+    public void endDocument() throws SAXException {
+    }
+
+    public void startPrefixMapping(String prefix, String uri)
+            throws SAXException {
+    }
+
+    public void endPrefixMapping(String prefix) throws SAXException {
     }
 
     public void ignorableWhitespace(char[] ch, int start, int length)

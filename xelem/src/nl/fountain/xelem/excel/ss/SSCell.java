@@ -67,6 +67,13 @@ import org.xml.sax.Attributes;
  * results to <code>true</code> the resulting xml will have a datatype set to
  * "String" and the cell will display "Infinite" when the spreadsheet is opened.
  * 
+ * <P id="nanvalues">
+ * <b>NaN values</b><br>
+ * If the passed parameter is of type Double, Float or the primitive representation 
+ * of these objects and the method {@link java.lang.Double#isNaN() isNaN}
+ * results to <code>true</code> the resulting xml will have a datatype set to
+ * "String" and the cell will display "NaN" when the spreadsheet is opened.
+ * 
  * @see nl.fountain.xelem.excel.Worksheet#addCell()
  * @see nl.fountain.xelem.excel.Row#addCell()
  */
@@ -144,6 +151,12 @@ public class SSCell extends AbstractXLElement implements Cell {
         return comment;
     }
     
+    public Comment addComment(String text) {
+        comment = new SSComment();
+        comment.setData(text);
+        return comment;
+    }
+    
     public boolean hasComment() {
         return comment != null;
     }
@@ -202,7 +215,7 @@ public class SSCell extends AbstractXLElement implements Cell {
             setError(ERRORVALUE_NA);
             return;
         }
-        if (data.isInfinite()) {
+        if (data.isInfinite() || data.isNaN()) {
             datatype = DATATYPE_STRING;
         } else {
             datatype = DATATYPE_NUMBER;
@@ -224,7 +237,7 @@ public class SSCell extends AbstractXLElement implements Cell {
             setError(ERRORVALUE_NA);
             return;
         }
-        if (data.isInfinite()) {
+        if (data.isInfinite() || data.isNaN()) {
             datatype = DATATYPE_STRING;
         } else {
             datatype = DATATYPE_NUMBER;
@@ -302,7 +315,7 @@ public class SSCell extends AbstractXLElement implements Cell {
     }
     
     public void setData(float data) {
-        if (Float.isInfinite(data)) {
+        if (Float.isInfinite(data) || Float.isNaN(data)) {
             datatype = DATATYPE_STRING;
         } else {
             datatype = DATATYPE_NUMBER;
@@ -311,7 +324,7 @@ public class SSCell extends AbstractXLElement implements Cell {
     }
 
     public void setData(double data) {
-        if (Double.isInfinite(data)) {
+        if (Double.isInfinite(data) || Double.isNaN(data)) {
             datatype = DATATYPE_STRING;
         } else {
             datatype = DATATYPE_NUMBER;
@@ -335,6 +348,7 @@ public class SSCell extends AbstractXLElement implements Cell {
     private void setData$(String s) {
         data$ = s;
         hasdata = true;
+        //System.out.println(data$);
     }
     
     public boolean hasData() {
@@ -347,6 +361,37 @@ public class SSCell extends AbstractXLElement implements Cell {
 
     public String getData$() {
         return data$;
+    }
+    
+    public Object getData() {
+        if (DATATYPE_NUMBER.equals(datatype)) {
+            return new Double(data$);
+        } else if (DATATYPE_DATE_TIME.equals(datatype)) {
+            return XLUtil.parse(data$);
+        } else if (DATATYPE_BOOLEAN.equals(datatype)) {
+            return new Boolean("1".equals(data$));
+        }
+        return data$;
+    }
+    
+    public int intValue() {
+        try {
+            return new Double(data$).intValue();
+        } catch (NumberFormatException e) {
+            return 0;
+        }
+    }
+    
+    public double doubleValue() {
+        try {
+            return new Double(data$).doubleValue();
+        } catch (NumberFormatException e) {
+            return 0.0D;
+        }
+    }
+    
+    public boolean booleanValue() {
+        return "1".equals(data$);
     }
 
     public String getTagName() {
@@ -425,6 +470,14 @@ public class SSCell extends AbstractXLElement implements Cell {
                 createAttributeNS(doc, "Type", getXLDataType()));
         data.appendChild(doc.createTextNode(getData$()));
         return data;
+    }
+    
+    /**
+     * @deprecated	as of xelem.2.0 use {@link #setType(String)}
+     * @param type	one of Cell's DATATYPE_XXX values
+     */
+    protected void setXLDataType(String type) {
+        setType(type);
     }
 
     /**

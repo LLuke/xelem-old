@@ -3,6 +3,9 @@
 <Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
  xmlns:o="urn:schemas-microsoft-com:office:office"
  xmlns:x="urn:schemas-microsoft-com:office:excel"
+ xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882"
+ xmlns:s="uuid:BDC6E3F0-6DA3-11d1-A2A3-00AA00C14882"
+ xmlns:rs="urn:schemas-microsoft-com:rowset" xmlns:z="#RowsetSchema"
  xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
  xmlns:html="http://www.w3.org/TR/REC-html40">
  <DocumentProperties xmlns="urn:schemas-microsoft-com:office:office">
@@ -48,23 +51,98 @@
   <Style ss:ID="s26">
    <Interior ss:Color="#CCFFCC" ss:Pattern="Solid"/>
   </Style>
-  <Style ss:ID="s29" ss:Parent="s21">
-   <Alignment ss:Horizontal="Center" ss:Vertical="Bottom"/>
-   <Interior ss:Color="#FFFF99" ss:Pattern="Solid"/>
+  <Style ss:ID="s27">
+   <Borders>
+    <Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1"
+     ss:Color="#000000"/>
+    <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1"
+     ss:Color="#000000"/>
+   </Borders>
+  </Style>
+  <Style ss:ID="s28">
+   <Borders>
+    <Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1"
+     ss:Color="#000000"/>
+    <Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1"
+     ss:Color="#000000"/>
+    <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1"
+     ss:Color="#000000"/>
+   </Borders>
+  </Style>
+  <Style ss:ID="s29">
+   <Borders>
+    <Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1"
+     ss:Color="#000000"/>
+    <Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1"
+     ss:Color="#000000"/>
+    <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1"
+     ss:Color="#000000"/>
+   </Borders>
+   <NumberFormat/>
+  </Style>
+  <Style ss:ID="s30">
+   <Borders>
+    <Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1"
+     ss:Color="#000000"/>
+   </Borders>
   </Style>
   <Style ss:ID="s31">
+   <Borders>
+    <Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1"
+     ss:Color="#000000"/>
+    <Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1"
+     ss:Color="#000000"/>
+   </Borders>
+   <NumberFormat/>
+  </Style>
+  <Style ss:ID="s32">
+   <Borders>
+    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1"
+     ss:Color="#000000"/>
+    <Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1"
+     ss:Color="#000000"/>
+    <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1"
+     ss:Color="#000000"/>
+   </Borders>
+  </Style>
+  <Style ss:ID="s33">
+   <Borders>
+    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1"
+     ss:Color="#000000"/>
+    <Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1"
+     ss:Color="#000000"/>
+    <Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1"
+     ss:Color="#000000"/>
+    <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1"
+     ss:Color="#000000"/>
+   </Borders>
+   <NumberFormat/>
+  </Style>
+  <Style ss:ID="s36" ss:Parent="s21">
    <Alignment ss:Horizontal="Center" ss:Vertical="Bottom"/>
    <Interior ss:Color="#FFFF99" ss:Pattern="Solid"/>
   </Style>
-  <Style ss:ID="s33">
+  <Style ss:ID="s38">
+   <Alignment ss:Horizontal="Center" ss:Vertical="Bottom"/>
+   <Interior ss:Color="#FFFF99" ss:Pattern="Solid"/>
+  </Style>
+  <Style ss:ID="s40">
    <Alignment ss:Horizontal="Center" ss:Vertical="Bottom"/>
    <Interior ss:Color="#CC99FF" ss:Pattern="Solid"/>
   </Style>
-  <Style ss:ID="s35">
+  <Style ss:ID="s43">
    <Alignment ss:Horizontal="Center" ss:Vertical="Bottom"/>
   </Style>
-  <Style ss:ID="s36">
+  <Style ss:ID="s44">
    <Alignment ss:Horizontal="Right" ss:Vertical="Bottom"/>
+  </Style>
+  <Style ss:ID="s46">
+   <Interior ss:Color="#CCFFFF" ss:Pattern="Solid"/>
+   <NumberFormat ss:Format="d/mmm"/>
+  </Style>
+  <Style ss:ID="s47">
+   <Interior ss:Color="#CCFFFF" ss:Pattern="Solid"/>
+   <NumberFormat ss:Format="Short Time"/>
   </Style>
  </Styles>
  <Names>
@@ -75,11 +153,13 @@
    <NamedRange ss:Name="_FilterDatabase" ss:RefersTo="='Tom Poes'!R8C4:R11C5"
     ss:Hidden="1"/>
   </Names>
-  <Table ss:ExpandedColumnCount="10" ss:ExpandedRowCount="25" x:FullColumns="1"
+  <Table ss:ExpandedColumnCount="14" ss:ExpandedRowCount="25" x:FullColumns="1"
    x:FullRows="1" ss:StyleID="s22">
    <Column ss:StyleID="s23" ss:AutoFitWidth="0" ss:Width="78.75"/>
    <Column ss:Index="7" ss:StyleID="s23" ss:AutoFitWidth="1"/>
    <Column ss:Index="9" ss:StyleID="s24" ss:AutoFitWidth="0" ss:Span="1"/>
+   <Column ss:Index="13" ss:StyleID="s22" ss:Width="55.5"/>
+   <Column ss:StyleID="s22" ss:AutoFitWidth="0" ss:Width="28.5"/>
    <Row ss:Index="3" ss:AutoFitHeight="0" ss:Height="27" ss:Hidden="1"
     ss:StyleID="s25">
     <Cell><Data ss:Type="String">blaadje 1</Data></Cell>
@@ -92,36 +172,64 @@
       ss:Name="_FilterDatabase"/></Cell>
     <Cell ss:StyleID="s26"><Data ss:Type="String">bar</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
+    <Cell ss:Index="9"><Data ss:Type="Boolean">1</Data></Cell>
    </Row>
    <Row>
     <Cell ss:Index="4"><Data ss:Type="Number">1</Data><NamedCell ss:Name="foo"/><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
     <Cell><Data ss:Type="String">a</Data><NamedCell ss:Name="_FilterDatabase"/></Cell>
+    <Cell ss:Index="9"><Data ss:Type="Boolean">0</Data></Cell>
+    <Cell ss:Index="13" ss:StyleID="s27"><Data ss:Type="String">Sum of foo</Data></Cell>
+    <Cell ss:StyleID="s28"/>
    </Row>
    <Row>
     <Cell ss:Index="2" ss:Formula="=5/R[-4]C"><Data ss:Type="Error">#DIV/0!</Data></Cell>
     <Cell ss:Index="4"><Data ss:Type="Number">2</Data><NamedCell ss:Name="foo"/><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
     <Cell><Data ss:Type="String">b</Data><NamedCell ss:Name="_FilterDatabase"/></Cell>
+    <Cell ss:Index="9" ss:StyleID="s46"><Data ss:Type="DateTime">2005-04-01T00:00:00.000</Data></Cell>
+    <Cell ss:Index="13" ss:StyleID="s27"><Data ss:Type="String">bar</Data></Cell>
+    <Cell ss:StyleID="s28"><Data ss:Type="String">Total</Data></Cell>
    </Row>
    <Row>
     <Cell ss:Index="4"><Data ss:Type="Number">3</Data><NamedCell ss:Name="foo"/><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
     <Cell><Data ss:Type="String">c</Data><NamedCell ss:Name="_FilterDatabase"/></Cell>
+    <Cell ss:Index="9" ss:StyleID="s47"><Data ss:Type="DateTime">1899-12-31T12:30:00.000</Data></Cell>
+    <Cell ss:Index="13" ss:StyleID="s27"><Data ss:Type="String">a</Data></Cell>
+    <Cell ss:StyleID="s29"><Data ss:Type="Number">1</Data></Cell>
    </Row>
-   <Row ss:Index="16">
+   <Row>
+    <Cell ss:Index="9"><Data ss:Type="Number">1.234</Data></Cell>
+    <Cell ss:Index="13" ss:StyleID="s30"><Data ss:Type="String">b</Data></Cell>
+    <Cell ss:StyleID="s31"><Data ss:Type="Number">2</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="9"><Data ss:Type="Number">5</Data></Cell>
+    <Cell ss:Index="13" ss:StyleID="s30"><Data ss:Type="String">c</Data></Cell>
+    <Cell ss:StyleID="s31"><Data ss:Type="Number">3</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="9" ss:Formula="=A0"><Data ss:Type="Error">#NAME?</Data></Cell>
+    <Cell ss:Index="13" ss:StyleID="s32"><Data ss:Type="String">Grand Total</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="Number">6</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="9"><Data ss:Type="String">xelem</Data></Cell>
+   </Row>
+   <Row>
     <Cell ss:Index="5"><Comment ss:Author="WF Hermans" ss:ShowAlways="1"><ss:Data
        xmlns="http://www.w3.org/TR/REC-html40"><B><Font html:Face="Tahoma"
          html:Size="9" html:Color="#000000">WF Hermans:</Font></B><Font
         html:Face="Tahoma" html:Size="9" html:Color="#000000">&#10;this is comment</Font></ss:Data></Comment></Cell>
    </Row>
    <Row ss:Index="20">
-    <Cell ss:Index="2" ss:MergeAcross="1" ss:MergeDown="5" ss:StyleID="s29"
+    <Cell ss:Index="2" ss:MergeAcross="1" ss:MergeDown="5" ss:StyleID="s36"
      ss:HRef="#foo"><Data ss:Type="String">foo</Data></Cell>
-    <Cell ss:Index="6" ss:MergeAcross="1" ss:MergeDown="1" ss:StyleID="s31"/>
+    <Cell ss:Index="6" ss:MergeAcross="1" ss:MergeDown="1" ss:StyleID="s38"/>
    </Row>
    <Row ss:Index="22">
-    <Cell ss:Index="7" ss:MergeDown="3" ss:StyleID="s33"/>
+    <Cell ss:Index="7" ss:MergeDown="3" ss:StyleID="s40"/>
    </Row>
   </Table>
   <WorksheetOptions xmlns="urn:schemas-microsoft-com:office:excel">
@@ -146,6 +254,70 @@
    <ProtectObjects>False</ProtectObjects>
    <ProtectScenarios>False</ProtectScenarios>
   </WorksheetOptions>
+  <PivotTable xmlns="urn:schemas-microsoft-com:office:excel">
+   <Name>PivotTable1</Name>
+   <ImmediateItemsOnDrop/>
+   <ShowPageMultipleItemLabel/>
+   <Location>R9C13:R14C14</Location>
+   <VersionLastUpdate>2</VersionLastUpdate>
+   <DefaultVersion>1</DefaultVersion>
+   <PivotField>
+    <Name>foo</Name>
+    <DataType>Integer</DataType>
+   </PivotField>
+   <PivotField>
+    <Name>bar</Name>
+    <Orientation>Row</Orientation>
+    <Position>1</Position>
+    <PivotItem>
+     <Name>a</Name>
+    </PivotItem>
+    <PivotItem>
+     <Name>b</Name>
+    </PivotItem>
+    <PivotItem>
+     <Name>c</Name>
+    </PivotItem>
+   </PivotField>
+   <PivotField>
+    <DataField/>
+    <Name>Data</Name>
+    <Orientation>Row</Orientation>
+    <Position>-1</Position>
+   </PivotField>
+   <PivotField>
+    <Name>Sum of foo</Name>
+    <ParentField>foo</ParentField>
+    <Orientation>Data</Orientation>
+    <Position>1</Position>
+   </PivotField>
+   <PTLineItems>
+    <PTLineItem>
+     <Item>0</Item>
+    </PTLineItem>
+    <PTLineItem>
+     <Item>1</Item>
+    </PTLineItem>
+    <PTLineItem>
+     <Item>2</Item>
+    </PTLineItem>
+    <PTLineItem>
+     <ItemType>Grand</ItemType>
+     <Item>0</Item>
+    </PTLineItem>
+   </PTLineItems>
+   <PTSource>
+    <CacheIndex>1</CacheIndex>
+    <VersionLastRefresh>2</VersionLastRefresh>
+    <RefreshName>henk van den berg</RefreshName>
+    <RefreshDate>2005-04-01T11:09:05</RefreshDate>
+    <RefreshDateCopy>2005-04-01T11:09:05</RefreshDateCopy>
+    <ConsolidationReference>
+     <FileName>[reader.xml]Tom Poes</FileName>
+     <Reference>R8C4:R11C5</Reference>
+    </ConsolidationReference>
+   </PTSource>
+  </PivotTable>
   <AutoFilter x:Range="R8C4:R11C5"
    xmlns="urn:schemas-microsoft-com:office:excel">
   </AutoFilter>
@@ -160,7 +332,7 @@
     <Cell ss:Index="2"><Data ss:Type="String">blaadje 1</Data></Cell>
    </Row>
    <Row ss:Index="7">
-    <Cell ss:Index="3" ss:MergeAcross="1" ss:MergeDown="1" ss:StyleID="s35"><Data
+    <Cell ss:Index="3" ss:MergeAcross="1" ss:MergeDown="1" ss:StyleID="s43"><Data
       ss:Type="String">merged over 2r2c</Data></Cell>
    </Row>
    <Row ss:Index="11">
@@ -170,7 +342,7 @@
     <Cell ss:Index="10"><Data ss:Type="String">top</Data></Cell>
    </Row>
    <Row ss:Index="19">
-    <Cell ss:Index="8" ss:StyleID="s36"><Data ss:Type="String">left</Data></Cell>
+    <Cell ss:Index="8" ss:StyleID="s44"><Data ss:Type="String">left</Data></Cell>
     <Cell ss:Index="13"><Data ss:Type="String">right</Data></Cell>
    </Row>
    <Row ss:Index="23">
@@ -291,4 +463,25 @@
    <ProtectScenarios>False</ProtectScenarios>
   </WorksheetOptions>
  </Worksheet>
+ <PivotCache xmlns="urn:schemas-microsoft-com:office:excel">
+  <CacheIndex>1</CacheIndex>
+  <Schema s:id="RowsetSchema" xmlns="uuid:BDC6E3F0-6DA3-11d1-A2A3-00AA00C14882">
+   <ElementType s:name="row" s:content="eltOnly">
+    <attribute s:type="Col1"/>
+    <attribute s:type="Col2"/>
+    <extends s:type="rs:rowbase"/>
+   </ElementType>
+   <AttributeType s:name="Col1" rs:name="foo">
+    <datatype dt:type="int"/>
+   </AttributeType>
+   <AttributeType s:name="Col2" rs:name="bar">
+    <datatype dt:maxLength="255"/>
+   </AttributeType>
+  </Schema>
+  <data xmlns="urn:schemas-microsoft-com:rowset">
+   <row Col1="1" Col2="a" xmlns="#RowsetSchema"/>
+   <row Col1="2" Col2="b" xmlns="#RowsetSchema"/>
+   <row Col1="3" Col2="c" xmlns="#RowsetSchema"/>
+  </data>
+ </PivotCache>
 </Workbook>
