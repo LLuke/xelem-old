@@ -7,6 +7,8 @@ package nl.fountain.xelem.lex;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -49,31 +51,71 @@ public class ExcelReader {
         return parser;
     }
     
+    public void setBuildArea(Area area) {
+        getFactory().setBuildArea(area);
+    }
+    
+    public void clearBuildArea() {
+        getFactory().setBuildArea(null);
+    }
+    
+    public Area getBuildArea() {
+        if (getFactory().hasBuildArea()) {
+            return getFactory().getBuildArea();
+        } else {
+            return null;
+        }
+    }
+    
+    public boolean hasBuildArea() {
+        return getFactory().hasBuildArea();
+    }
+    
+    public List getListeners() {
+        return getFactory().getListeners();
+    }
+    
+    public void addExcelReaderListener(ExcelReaderListener l) {
+        getFactory().addExcelReaderListener(l);
+    }
+    
+    public boolean removeExcelReaderListener(ExcelReaderListener l) {
+        return getFactory().removeExcelReaderListener(l);
+    }
+    
+    public void clearExcelReaderListeners() {
+        getFactory().clearExcelReaderListeners();
+    }
+    
+    public void setListenOnly(boolean listen) {
+        getFactory().setListenOnly(listen);
+    }
+    
+    public boolean isListeningOnly() {
+        return getFactory().isListeningOnly();
+    }
+    
     public Workbook read(String filename) throws IOException, SAXException {
         InputSource in = new InputSource(filename);
         return read(in);
     }
     
-    public Workbook partialRead(String filename, Area readArea) throws SAXException, IOException {
-        InputSource in = new InputSource(filename);
-        return partialRead(in, readArea);
-    }
-    
     public Workbook read(InputSource in) throws IOException, SAXException {
-        getFactory().setReadArea(null);
-        readWB(in);
+        currentWorkbook = null;
+        getPrefixMap().clear();
+        reader = parser.getXMLReader();
+        
+        reader.setContentHandler(getHandler());
+        reader.setErrorHandler(getHandler());
+        //reader.setDTDHandler(this);
+        reader.parse(in);
         return currentWorkbook;
     }
     
-    public Workbook partialRead(InputSource in, Area readArea) throws SAXException, IOException {
-        getFactory().setReadArea(readArea);
-        readWB(in);
-        return currentWorkbook;
-    }
     
     private void readWB(InputSource in) throws SAXException, IOException {
         currentWorkbook = null;
-        getUris().clear();
+        getPrefixMap().clear();
         reader = parser.getXMLReader();
         
         reader.setContentHandler(getHandler());
@@ -82,7 +124,7 @@ public class ExcelReader {
         reader.parse(in);
     }
 
-    public Map getUris() {
+    public Map getPrefixMap() {
         if (uris == null) {
             uris = new HashMap();
         }
@@ -102,16 +144,6 @@ public class ExcelReader {
         }
         return handler;
     }
-    
-    protected String getWorkbookName(String systemId) {
-        File file = new File(systemId);
-        String[] s = file.getName().split("\\.");
-        if (s.length > 0) {
-            return s[0];
-        } else {
-            return "";
-        }
-    }
       
     
     //////////////////////////////////////////////////////////////////////////////
@@ -121,10 +153,7 @@ public class ExcelReader {
         private Locator locator;
         
         public void startPrefixMapping(String prefix, String uri) throws SAXException {
-//            System.out.println("prefix mapping: "
-//                    + "\n\tprefix=" + prefix
-//                    + "\n\turi=" + uri);
-            getUris().put(prefix, uri);
+            getPrefixMap().put(prefix, uri);
         }
         
         public void notationDecl(String name, String publicId, String systemId)
@@ -146,11 +175,30 @@ public class ExcelReader {
                 Attributes attributes) throws SAXException {
             if (XLElement.XMLNS_SS.equals(uri) && "Workbook".equals(localName)) {
                 String systemId = getSystemId();
-                currentWorkbook = new XLWorkbook(getWorkbookName(systemId));
-                currentWorkbook.setFileName(systemId);
-                Builder builder = getFactory().getXLWorkbookBuilder();
-                builder.build(reader, this, getFactory(), currentWorkbook);
+                String wbName = getWorkbookName(systemId);
+                BuilderFactory bfac = getFactory();
+                Builder builder = bfac.getXLWorkbookBuilder(); 
+                
+                //if (!bfac.isListeningOnly()) {                   
+	                currentWorkbook = new XLWorkbook(wbName);
+	                currentWorkbook.setFileName(systemId);
+                //}
+                for (Iterator iter = bfac.getListeners().iterator(); iter.hasNext();) {
+                    ExcelReaderListener l = (ExcelReaderListener) iter.next();
+                    l.setWorkbook(systemId, wbName);
+                }
+                
+                builder.build(reader, this, bfac, currentWorkbook);               
             }       
+        }
+        
+        public void endElement(String uri, String localName, String qName)
+                throws SAXException {
+            System.out.println(qName);
+        }
+        
+        public void endPrefixMapping(String prefix) throws SAXException {
+            //System.out.println(prefix);
         }
         
         public void startDocument() throws SAXException {        
@@ -190,7 +238,15 @@ public class ExcelReader {
             return systemId;
         }
         
-
+        private String getWorkbookName(String systemId) {
+            File file = new File(systemId);
+            String[] s = file.getName().split("\\.");
+            if (s.length > 0) {
+                return s[0];
+            } else {
+                return "";
+            }
+        }
         
 
     }

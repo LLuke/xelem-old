@@ -5,7 +5,13 @@
 package nl.fountain.xelem.lex;
 
 import java.io.CharArrayWriter;
+import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
+import nl.fountain.xelem.excel.DocumentProperties;
+import nl.fountain.xelem.excel.ExcelWorkbook;
 import nl.fountain.xelem.excel.XLElement;
 
 import org.xml.sax.Attributes;
@@ -19,6 +25,7 @@ import org.xml.sax.XMLReader;
  */
 public class AnonymousBuilder implements Builder {
     
+    private Map methodMap;
     private boolean occupied;
     protected XMLReader reader;
     protected ContentHandler parent;
@@ -51,6 +58,47 @@ public class AnonymousBuilder implements Builder {
     protected boolean isOccupied() {
         return occupied;
     }
+    
+    private Method getMethod(String tagName) {
+        return (Method) getMethodMap().get(tagName);
+    }
+    
+    private Map getMethodMap() {
+        if (methodMap == null) {
+            methodMap = new HashMap();
+            Object[][] methods = null;
+            try {
+                methods = new Object[][]{
+                       {"DocumentProperties",  ExcelReaderListener.class.getMethod("setDocumentProperties", new Class[]{DocumentProperties.class})},
+                       {"ExcelWorkbook", ExcelReaderListener.class.getMethod("setExcelWorkbook", new Class[]{ExcelWorkbook.class})}
+                };
+            } catch (SecurityException e) {
+                e.printStackTrace();
+            } catch (NoSuchMethodException e) {
+                e.printStackTrace();
+            }
+            for (int i = 0; i < methods.length; i++) {
+                methodMap.put(methods[i][0], methods[i][1]);
+            }
+        }
+        return methodMap;
+    }
+    
+    private void informListeners() {
+        if (factory.getListeners().size() > 0) {
+            Method m = getMethod(current.getTagName());
+            if (m != null) {
+	            try {
+	                for (Iterator iter = factory.getListeners().iterator(); iter.hasNext();) {
+	                    ExcelReaderListener listener = (ExcelReaderListener) iter.next();
+	                    m.invoke(listener, new Object[] { current });
+	                }
+	            } catch (Exception e) {
+	                e.printStackTrace();
+	            } 
+            }
+        }
+    }
 
     public void startElement(String uri, String localName, String qName,
             Attributes atts) throws SAXException {
@@ -65,6 +113,7 @@ public class AnonymousBuilder implements Builder {
         //System.out.println(localName);
         if (current.getNameSpace().equals(uri)) {	        
             if (current.getTagName().equals(localName)) {
+                informListeners();
                 reader.setContentHandler(parent);
                 occupied = false;
                 return;

@@ -31,7 +31,7 @@ import org.xml.sax.SAXParseException;
  */
 public class ExcelReaderTest extends TestCase {
     
-    private Workbook readerwb;
+    private static Workbook readerwb;
 
     public static void main(String[] args) {
         junit.textui.TestRunner.run(ExcelReaderTest.class);
@@ -46,19 +46,6 @@ public class ExcelReaderTest extends TestCase {
         assertNotNull(xlr.getSaxParser());
     }
     
-    public void testGetWorkbookName() throws Exception {
-        ExcelReader xlr = new ExcelReader();
-        String systemId = "A:/foo/bar/file.xml";
-        assertEquals("file", xlr.getWorkbookName(systemId));
-        systemId = "source";
-        assertEquals("source", xlr.getWorkbookName(systemId));
-        systemId = ".xml";
-        assertEquals("", xlr.getWorkbookName(systemId));
-        systemId = "";
-        assertEquals("", xlr.getWorkbookName(systemId));
-        systemId = "A:/foo/bar/.";
-        assertEquals("", xlr.getWorkbookName(systemId));
-    }
     
     public void testReadNoXML() throws Exception {
         ExcelReader xlr = new ExcelReader();
@@ -94,12 +81,14 @@ public class ExcelReaderTest extends TestCase {
         Workbook wb = getReaderWorkbook();
         assertNotNull(wb);
         assertEquals("reader", wb.getName());
+        
     }
     
     private Workbook getReaderWorkbook() throws Exception {
         if (readerwb == null) {
 	        ExcelReader xlr = new ExcelReader();
 	        readerwb = xlr.read("testsuitefiles/ReaderTest/reader.xml");
+	        
         }
         return readerwb;
     }
@@ -165,6 +154,13 @@ public class ExcelReaderTest extends TestCase {
         
         assertTrue(wb.hasExcelWorkbook());
         assertTrue(!wb.hasDocumentProperties());
+        
+        Map prfxs = xlr.getPrefixMap();
+        assertEquals("urn:schemas-microsoft-com:office:spreadsheet", prfxs.get(""));
+        assertEquals("urn:schemas-microsoft-com:office:office", prfxs.get("o"));
+        assertEquals("http://www.w3.org/TR/REC-html40", prfxs.get("html"));
+        assertEquals("urn:schemas-microsoft-com:office:spreadsheet", prfxs.get("ss"));
+        assertEquals("urn:schemas-microsoft-com:office:excel", prfxs.get("x"));
     }
     
     public void testNamedRange() throws Exception {
@@ -409,8 +405,19 @@ public class ExcelReaderTest extends TestCase {
     public void testPartialRead() throws Exception {
         ExcelReader xlr = new ExcelReader();
         Area area = new Area("E11:M16");
-        Workbook wb = xlr.partialRead("testsuitefiles/ReaderTest/reader.xml", area);
-        Worksheet sheet;
+        xlr.setBuildArea(area);
+        Workbook wb = xlr.read("testsuitefiles/ReaderTest/reader.xml");        
+        Worksheet sheet = wb.getWorksheetAt(0);
+        assertFalse(sheet.hasColumnAt("A"));
+        assertTrue(sheet.hasColumnAt("G"));
+        assertFalse(sheet.hasRowAt(10));
+        assertTrue(sheet.hasRowAt(11));
+        assertTrue(sheet.hasRowAt(16));
+        assertFalse(sheet.hasRowAt(20));
+        assertEquals("c", sheet.getCellAt("E11").getData());
+        Date date = (Date) sheet.getCellAt("I11").getData();
+        assertEquals(-2209033800000L, date.getTime());
+        
         int i = 0;
         while ((sheet = wb.getWorksheetAt(i++)) != null) {
             // cannot set proper rangeselection on split sheets

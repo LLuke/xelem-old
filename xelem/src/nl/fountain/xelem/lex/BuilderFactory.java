@@ -23,18 +23,53 @@ public class BuilderFactory {
     private SSRowBuilder ssrowbuilder;
     private SSCellBuilder sscellbuilder;
     private List anonymousBuilders;
-    private Area readArea;
+    private Area buildArea;
+    private List listeners;
+    private boolean listeningOnly;
     
-    public void setReadArea(Area area) {
-        readArea = area;
+    public void setBuildArea(Area area) {
+        buildArea = area;
     }
     
-    public Area getReadArea() {
-        if (readArea == null) {
-            readArea = new Area(Worksheet.firstRow, Worksheet.firstColumn,
+    public Area getBuildArea() {
+        if (buildArea == null) {
+            buildArea = new Area(Worksheet.firstRow, Worksheet.firstColumn,
                     Worksheet.lastRow, Worksheet.lastColumn);
         }
-        return readArea;
+        return buildArea;
+    }
+    
+    public boolean hasBuildArea() {
+        return buildArea != null;
+    }
+    
+    public List getListeners() {
+        if (listeners == null) {
+            listeners = new ArrayList();
+        }
+        return listeners;
+    }
+    
+    public void addExcelReaderListener(ExcelReaderListener l) {
+        if (!getListeners().contains(l)) {
+            getListeners().add(l);
+        }
+    }
+    
+    public boolean removeExcelReaderListener(ExcelReaderListener l) {
+        return getListeners().remove(l);
+    }
+    
+    public void clearExcelReaderListeners() {
+        getListeners().clear();
+    }
+    
+    public void setListenOnly(boolean listen) {
+        listeningOnly = listen;
+    }
+    
+    public boolean isListeningOnly() {
+        return listeningOnly;
     }
     
     public XLWorkbookBuilder getXLWorkbookBuilder() {
@@ -88,5 +123,7 @@ public class BuilderFactory {
         }
         return anonymousBuilders;
     }
+    
+    
 
 }

@@ -39,7 +39,7 @@ public class SSRowBuilder extends AnonymousBuilder {
                 } else {
                     currentCellIndex++;
                 }
-                if (factory.getReadArea().isColumnPartOfArea(currentCellIndex)) {
+                if (factory.getBuildArea().isColumnPartOfArea(currentCellIndex)) {
 	                Cell cell = currentRow.addCellAt(currentCellIndex);
 	                cell.setAttributes(atts);
 	                Builder builder = factory.getSSCellBuilder();

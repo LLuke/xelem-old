@@ -59,7 +59,7 @@ public class SSWorksheetBuilder extends AnonymousBuilder {
             } else {
                 currentRowIndex++;
             }
-            if (factory.getReadArea().isRowPartOfArea(currentRowIndex)) {
+            if (factory.getBuildArea().isRowPartOfArea(currentRowIndex)) {
 	            currentRow = currentTable.addRowAt(currentRowIndex);
 	            currentRow.setAttributes(atts);
 	            Builder builder = factory.getSSRowBuilder();
@@ -72,7 +72,7 @@ public class SSWorksheetBuilder extends AnonymousBuilder {
             } else {
                 currentColumnIndex++;
             }
-            if (factory.getReadArea().isColumnPartOfArea(currentColumnIndex)) {
+            if (factory.getBuildArea().isColumnPartOfArea(currentColumnIndex)) {
 	            Column column = currentTable.addColumnAt(currentColumnIndex);
 	            column.setAttributes(atts);
             }
