@@ -21,6 +21,8 @@
  */
 package nl.fountain.xelem.excel;
 
+import nl.fountain.xelem.Area;
+
 
 /**
  * Represents the WorksheetOptions element.
@@ -71,13 +73,18 @@ public interface WorksheetOptions extends XLElement {
      * @see #setActiveCell(int, int)
      */
     void setRangeSelection(String rcRange);
-    
+    void setRangeSelection(Area area);
     
     void setRangeSelection(int paneNumber, String rcRange);
     
     void splitHorizontal(int points, int topRow);
     void splitVertical(int points, int leftColumn);
     
+    boolean hasHorizontalSplit();
+    boolean hasVerticalSplit();
+    boolean hasSplit();
+    
     void freezePanesAt(int r, int c);
+    boolean hasFrozenPanes();
     
 }

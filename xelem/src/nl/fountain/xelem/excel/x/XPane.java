@@ -24,6 +24,7 @@ package nl.fountain.xelem.excel.x;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import nl.fountain.xelem.Area;
 import nl.fountain.xelem.GIO;
 import nl.fountain.xelem.excel.AbstractXLElement;
 import nl.fountain.xelem.excel.Pane;
@@ -88,6 +89,10 @@ public class XPane extends AbstractXLElement implements Pane {
 
     public void setRangeSelection(String rc) {
         rangeSelection = rc;
+    }
+    
+    public void setRangeSelection(Area area) {
+        rangeSelection = area.getAbsoluteRange();
     }
 
     public String getRangeSelection() {

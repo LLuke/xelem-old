@@ -34,30 +34,32 @@ import nl.fountain.xelem.CellPointer;
 public interface Worksheet extends XLElement {
     
     /**
-     * The left-most limit of the worksheets columns. The default is 1.
+     * The left-most limit of the worksheets columns.
      */
     public static int firstColumn = 1;
     /**
-     * The top row of the worksheet. The default is 1.
+     * The top row of the worksheet.
      */
     public static int firstRow = 1;
     /**
-     * The right-most limit of the worksheets columns. The default is 256.
+     * The right-most limit of the worksheets columns.
      */
     public static int lastColumn = 256;
     /**
-     * The bottom row of the worksheet. The default is 65536.
+     * The bottom row of the worksheet.
      */
     public static int lastRow = 65536;
     
     /**
      * Returns the name of this worksheet.
-     * 
+     * @return the name of this worksheet
      */
     String getName();
     
     /**
      * Returns the name of this worksheet for purposes of reference.
+     * @return the name of this worksheet or, if there are spaces in the name,
+     * 		the name of this worksheet between single quoutes ('...')
      */
     String getReferenceName();
     
@@ -91,8 +93,9 @@ public interface Worksheet extends XLElement {
      * on the worksheet level has precedence over the one defined on the
      * workbook level. 
      * <P>
-     * The string <code>refersTo</code> should be in R1C1-reference style or
-     * should be in the format <code>[worksheet name]!R1C1:R1C1</code>.
+     * The string <code>refersTo</code> should be in R1C1-reference style i.e.
+     * in the format <code>[worksheet name]!R1C1:R1C1</code>. You may skip
+     * the worksheet indicator: <code>R1C1:R1C1</code> will do as well.
      * 
      * @param name		The name to apply to the range.
      * @param refersTo	A String of R1C1-reference style.
@@ -104,6 +107,8 @@ public interface Worksheet extends XLElement {
     /**
      * Gets all the NamedRanges that were added to this worksheet. The map-keys
      * are equal to their names.
+     * 
+     * @return a map with NamedRanges
      */
     Map getNamedRanges();
     
@@ -342,6 +347,29 @@ public interface Worksheet extends XLElement {
     Cell addCellAt(int rowIndex, int columnIndex);
     
     /**
+     * Adds a new cell at the address specified by the A1-reference string. 
+     * If this worksheet
+     * didn't have a row at the row index specified, a new row will be added. If the
+     * place at the given coordinates was allredy occupied by another cell,
+     * replaces this cell. If this worksheet did not have a table, 
+     * a new table will be added.
+     * <br>
+     * Moves the cellpointer to a new position relative to
+     * the address specified by the A1-reference string.
+     * 
+     * @param a1_ref	a string in A1-reference style
+     * 
+     * @return A new cell with an initial datatype of "String" and an
+     * 			empty ("") value.
+     * 
+     * @throws IndexOutOfBoundsException if the position
+     * 			is not within the limits of the worksheet.
+     * 
+     * @see nl.fountain.xelem.CellPointer#move()
+     */
+    Cell addCellAt(String a1_ref);
+    
+    /**
      * Adds the given cell at the given address. If this worksheet
      * didn't have a row at the row index of the given address, 
      * a new row will be added. If there was a cell at the given address,
@@ -386,6 +414,29 @@ public interface Worksheet extends XLElement {
     Cell addCellAt(int rowIndex, int columnIndex, Cell cell);
     
     /**
+     * Adds the given cell at the address specified by the A1-reference string.
+     * If this worksheet
+     * didn't have a row at the index specified, a new row will be added. If the
+     * place at the given coordinates was allredy occupied by another cell,
+     * replaces this cell. If this worksheet did not have a table, 
+     * a new table will be added. 
+     * <br>
+     * Moves the cellpointer to a new position relative to
+     * the address specified by the A1-reference string.
+     * 
+     * @param a1_ref		a string of A1-reference style
+     * @param cell			the cell to be added.
+     * 
+     * @return The passed cell.
+     * 
+     * @throws IndexOutOfBoundsException if the position
+     * 			is not within the limits of the worksheet.
+     * 
+     * @see nl.fountain.xelem.CellPointer#move()
+     */
+    Cell addCellAt(String a1_ref, Cell cell);
+    
+    /**
      * Removes the cell at the given address.
      * 
      * @param address	The position of the cell to remove.
@@ -402,6 +453,15 @@ public interface Worksheet extends XLElement {
      * @return The removed cell or <code>null</code>.
      */
     Cell removeCellAt(int rowIndex, int columnIndex);
+    
+    /**
+     * Removes the cell at the address specified by the A1-reference string.
+     * 
+     * @param a1_ref	a string of A1-reference style	
+     * 
+     * @return The removed cell or <code>null</code>.
+     */
+    Cell removeCellAt(String a1_ref);
     
     /**
      * Gets the cell at the given address.
@@ -424,6 +484,16 @@ public interface Worksheet extends XLElement {
     Cell getCellAt(int rowIndex, int columnIndex);
     
     /**
+     * Gets the cell at address specified by the given string in A1-reference style.
+     * 
+     * @param a1_ref	a string of A1-reference style
+     * 
+     * @return The cell at the given coordinates or <code>null</code> 
+     * 			if no cell was at that position.
+     */
+    Cell getCellAt(String a1_ref);
+    
+    /**
      * Specifies whether there is a cell at the given address.
      */
     boolean hasCellAt(Address address);
@@ -433,6 +503,12 @@ public interface Worksheet extends XLElement {
      * row and column index.
      */
     boolean hasCellAt(int rowIndex, int columnIndex);
+    
+    /**
+     * Specifies whether there is a cell at the address specified by the 
+     * given string in A1-reference style.
+     */
+    boolean hasCellAt(String a1_ref);
     
     /**
      * Adds a new Row to this worksheet. If no rows were previously added
@@ -509,6 +585,9 @@ public interface Worksheet extends XLElement {
      * @param rowIndex The index (row number) of the row.
      * 
      * @return The row at the given index, never <code>null</code>.
+     * @throws IndexOutOfBoundsException If the calculated index is less then
+     * 			{@link #firstRow} or greater
+     * 			then {@link #lastRow}.
      */
     Row getRowAt(int rowIndex);
     
@@ -543,6 +622,20 @@ public interface Worksheet extends XLElement {
     Column addColumnAt(int index);
     
     /**
+     * Adds a new Column at the index specified by the given label.
+     * If the index 
+     * was allready occupied by another column, replaces this column.
+     * 
+     * @param label a string ("A" through "IV" inclusive) 
+     * 				corresponding to the column index
+     * @return A new column.
+     * @throws IndexOutOfBoundsException If the given index is less then
+     * 			{@link #firstColumn} or greater
+     * 			then {@link #lastColumn}.
+     */
+    Column addColumnAt(String label);
+    
+    /**
      * Adds the given column to this worksheet. If no columns were previously added
      * the column will be added at index 1. Otherwise the ccolumn will be added at 
      * {@link nl.fountain.xelem.excel.Table#maxColumnIndex() maxColumnIndex} 
@@ -570,6 +663,21 @@ public interface Worksheet extends XLElement {
     Column addColumnAt(int index, Column column);
     
     /**
+     * Adds the given Column at the given index specified by the given label.
+     * If the index 
+     * was allready occupied by another column, replaces this column.
+     * 
+     * @param label 	a string ("A" through "IV" inclusive) 
+     * 					corresponding to the column index
+     * @param column	The column to be added.
+     * @return The passed column.
+     * @throws IndexOutOfBoundsException If the given index is less then
+     * 			{@link #firstColumn} or greater
+     * 			then {@link #lastColumn}.
+     */
+    Column addColumnAt(String label, Column column);
+    
+    /**
      * Removes the column at the given index.
      * 
      * @param columnIndex The index (column number) of the column.
@@ -578,6 +686,17 @@ public interface Worksheet extends XLElement {
      * 			by a column.
      */
     Column removeColumnAt(int columnIndex);
+    
+    /**
+     * Removes the column at the index specified by the given label.
+     * 
+     * @param label 	a string ("A" through "IV" inclusive) 
+     * 					corresponding to the column index
+     * 
+     * @return The removed column or <code>null</code> if the index was not occupied
+     * 			by a column.
+     */
+    Column removeColumnAt(String label);
     
     /**
      * Gets all the columns of this worksheet in the order of their index.
@@ -593,13 +712,39 @@ public interface Worksheet extends XLElement {
      * @param columnIndex The index (column number) of the column.
      * 
      * @return The column at the given index. Never <code>null</code>.
+     * @throws IndexOutOfBoundsException If the given index is less then
+     * 			{@link #firstColumn} or greater
+     * 			then {@link #lastColumn}.
      */
     Column getColumnAt(int columnIndex);
+    
+    /**
+     * Gets the column at the index specified by the given label. 
+     * If no column was at the index,
+     * returns a new column.
+     * 
+     * @param label 	a string ("A" through "IV" inclusive) 
+     * 					corresponding to the column index
+     * 
+     * @return The column at the given index. Never <code>null</code>.
+     * @throws IndexOutOfBoundsException If the given index is less then
+     * 			{@link #firstColumn} or greater
+     * 			then {@link #lastColumn}.
+     */
+    Column getColumnAt(String label);
     
     /**
      * Specifies whether there is a column at the given column index.
      */
     boolean hasColumnAt(int columnIndex);
+    
+    /**
+     * Specifies whether there is a column at the index specified by the given label.
+     * 
+     * @param label 	a string ("A" through "IV" inclusive) 
+     * 					corresponding to the column index
+     */
+    boolean hasColumnAt(String label);
     
     /**
      * Sets the AutoFilter-option on the specified range.

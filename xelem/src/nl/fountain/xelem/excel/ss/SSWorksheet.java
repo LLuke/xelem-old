@@ -59,7 +59,8 @@ import org.xml.sax.Attributes;
  *          Address adr = sheet.getCellPointer().getAddress();
  *          Cell cell = sheet.addCell();
  * </PRE>
- * The addCellAt-methods, which take an address or a row/column pair of ints as
+ * The addCellAt-methods, which take an address, a string or a 
+ * row/column pair of ints as
  * parameter, move the cellPointer to the specified position, add a cell and
  * leave the cellPointer pointing to the next position.
  */
@@ -222,6 +223,11 @@ public class SSWorksheet extends AbstractXLElement implements Worksheet {
         return addCell();
     }
     
+    public Cell addCellAt(String a1_ref) {
+        return addCellAt(
+                Address.calculateRow(a1_ref), Address.calculateColumn(a1_ref));
+    }
+    
     public Cell addCellAt(Address address, Cell cell) {
         return addCellAt(address.getRowIndex(), address.getColumnIndex(), cell);
     }
@@ -229,6 +235,11 @@ public class SSWorksheet extends AbstractXLElement implements Worksheet {
     public Cell addCellAt(int rowIndex, int columnIndex, Cell cell) {
         cellPointer.moveTo(rowIndex, columnIndex);
         return addCell(cell);
+    }
+    
+    public Cell addCellAt(String a1_ref, Cell cell) {
+        return addCellAt(
+                Address.calculateRow(a1_ref), Address.calculateColumn(a1_ref), cell);
     }
     
     public Cell getCellAt(Address address) {
@@ -241,6 +252,11 @@ public class SSWorksheet extends AbstractXLElement implements Worksheet {
         return row.getCellAt(columnIndex);
     }
     
+    public Cell getCellAt(String a1_ref) {
+        return getCellAt(
+                Address.calculateRow(a1_ref), Address.calculateColumn(a1_ref));
+    }
+    
     public Cell removeCellAt(Address address) {
         return removeCellAt(address.getRowIndex(), address.getColumnIndex());
     }
@@ -249,6 +265,11 @@ public class SSWorksheet extends AbstractXLElement implements Worksheet {
         Row row = getTable().getRowAt(rowIndex);
         if (row == null) return null;
         return row.removeCellAt(columnIndex);
+    }
+    
+    public Cell removeCellAt(String a1_ref) {
+        return removeCellAt(
+                Address.calculateRow(a1_ref), Address.calculateColumn(a1_ref));
     }
     
     public boolean hasCellAt(Address address) {
@@ -260,6 +281,11 @@ public class SSWorksheet extends AbstractXLElement implements Worksheet {
             return false;
         }
         return getTable().getRowAt(rowIndex).getCellAt(columnIndex) != null;
+    }
+    
+    public boolean hasCellAt(String a1_ref) {
+        return hasCellAt(
+                Address.calculateRow(a1_ref), Address.calculateColumn(a1_ref));
     }
 
     public Row addRow() {
@@ -302,6 +328,10 @@ public class SSWorksheet extends AbstractXLElement implements Worksheet {
         return getTable().addColumnAt(index);
     }
     
+    public Column addColumnAt(String label) {
+        return getTable().addColumnAt(Address.calculateColumn(label));
+    }
+    
     public Column addColumn(Column column) {
         return getTable().addColumn(column);
     }
@@ -310,8 +340,16 @@ public class SSWorksheet extends AbstractXLElement implements Worksheet {
         return getTable().addColumnAt(index, column);
     }
     
+    public Column addColumnAt(String label, Column column) {
+        return getTable().addColumnAt(Address.calculateColumn(label));
+    }
+    
     public Column removeColumnAt(int columnIndex) {
         return getTable().removeColumnAt(columnIndex);
+    }
+    
+    public Column removeColumnAt(String label) {
+        return getTable().removeColumnAt(Address.calculateColumn(label));
     }
     
     public Collection getColumns() {
@@ -322,8 +360,16 @@ public class SSWorksheet extends AbstractXLElement implements Worksheet {
         return getTable().getColumnAt(columnIndex);
     }
     
+    public Column getColumnAt(String label) {
+        return getTable().getColumnAt(Address.calculateColumn(label));
+    }
+    
     public boolean hasColumnAt(int columnIndex) {
         return getTable().hasColumnAt(columnIndex);
+    }
+    
+    public boolean hasColumnAt(String label) {
+        return getTable().hasColumnAt(Address.calculateColumn(label));
     }
     
     public String getTagName() {

@@ -45,7 +45,7 @@ public class Address implements Comparable {
      */
     protected int c;
     
-    private static int COLUMN_RADIX = 26;
+    private static int ABC_RADIX = 26;
     
     /**
      * This constructor is protected.
@@ -70,8 +70,7 @@ public class Address implements Comparable {
      * <P>
      * This constructor treats the passed string case-insensitive,
      * row indicators (digits) and column indicators (letters) may be intermingled. 
-     * The next
-     * equations all evaluate as <code>true</code>.
+     * The next equations all evaluate as <code>true</code>.
      * <PRE>
      *   new Address("BQ65").equals(new Address("65bq"))
      *   new Address("BQ65").equals(new Address("6B5q"))
@@ -106,7 +105,7 @@ public class Address implements Comparable {
             char ch = su.charAt(i);
             if (Character.isLetter(ch)) {
                 colnr += (ch - 64) * factor;
-                factor *= COLUMN_RADIX;
+                factor *= ABC_RADIX;
             }
         }
         return colnr;
@@ -117,6 +116,14 @@ public class Address implements Comparable {
      * A column number of 0 or less returns as an empty string ("").
      * A column number equal to {@link java.lang.Integer#MAX_VALUE} returns
      * "FXSHRXW".
+     * <P>
+     * It may be interesting to know that a parameter of <code>1000</code>
+     * returns "ALL" and that multiplying this parameter with a factor
+     * of <code>676.149</code> yields the dutch translation: "ALLES".
+     * Unfortunately not all words can be translated using the same factor and
+     * a more practical use then of this method is to feed it column numbers
+     * of 1 to 256 inclusive and get the Excel label of the column, 
+     * "A" to "IV" inclusive, in return.
      * 
      * @param columnNumber the column number to be calculated
      * @return the column notation in A1-reference style
@@ -130,14 +137,14 @@ public class Address implements Comparable {
         while ((q = (columnNumber-af)/div) > 0) {
             sb.insert(0, getDigit(q));
             af += div;
-            div *= COLUMN_RADIX;            
+            div *= ABC_RADIX;            
         }
         return sb.toString();
     }
     
     private static char getDigit(int q) {
-        int r = q % COLUMN_RADIX;
-        if (r == 0) r = COLUMN_RADIX;
+        int r = q % ABC_RADIX;
+        if (r == 0) r = ABC_RADIX;
         return (char) (r + 64);
     }
     
@@ -389,6 +396,16 @@ public class Address implements Comparable {
             sb.append(ref2);
         }
         return sb.toString();
+    }
+    
+    /**
+     * Gets a relative reference from this address to an area.
+     * 
+     * @param area	the area to reference
+     * @return A string in R1C1-reference style.
+     */
+    public String getRefTo(Area area) {
+        return getRefTo(area.r1, area.c1, area.r2, area.c2);
     }
     
     /**

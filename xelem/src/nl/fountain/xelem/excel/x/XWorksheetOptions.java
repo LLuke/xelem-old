@@ -25,6 +25,7 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
+import nl.fountain.xelem.Area;
 import nl.fountain.xelem.GIO;
 import nl.fountain.xelem.XLUtil;
 import nl.fountain.xelem.excel.AbstractXLElement;
@@ -231,6 +232,10 @@ public class XWorksheetOptions extends AbstractXLElement implements WorksheetOpt
         }
     }
     
+    public void setRangeSelection(Area area) {
+        setRangeSelection(area.getAbsoluteRange());
+    }
+    
     /**
      * @throws java.lang.IllegalArgumentException if paneNumber < 0 or
      * 			paneNumber > 3.
@@ -250,6 +255,10 @@ public class XWorksheetOptions extends AbstractXLElement implements WorksheetOpt
         topRowBottomPane = topRow - 1;
     }
     
+    public boolean hasHorizontalSplit() {
+       return (splitHorizontal > 0 || topRowBottomPane > -1); 
+    }
+    
     /**
      * @throws java.lang.IllegalArgumentException if leftColumn < 1.
      */
@@ -259,6 +268,14 @@ public class XWorksheetOptions extends AbstractXLElement implements WorksheetOpt
         }
         splitVertical = points;
         leftColumnRightPane = leftColumn - 1;
+    }
+    
+    public boolean hasVerticalSplit() {
+        return (splitVertical > 0 || leftColumnRightPane > -1);
+    }
+    
+    public boolean hasSplit() {
+        return hasHorizontalSplit() || hasVerticalSplit();
     }
     
     // @see nl.fountain.xelem.excel.WorksheetOptions#freezePanes(int, int)
@@ -273,6 +290,10 @@ public class XWorksheetOptions extends AbstractXLElement implements WorksheetOpt
         } else if ( row > 0) {
             activePane = Pane.BOTTOM_LEFT;
         }       
+    }
+    
+    public boolean hasFrozenPanes() {
+        return freezePanes;
     }
     
     private void setFreezePanes(String s) {

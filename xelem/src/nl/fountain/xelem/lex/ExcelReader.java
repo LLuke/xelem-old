@@ -13,6 +13,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
+import nl.fountain.xelem.Area;
 import nl.fountain.xelem.excel.Workbook;
 import nl.fountain.xelem.excel.XLElement;
 import nl.fountain.xelem.excel.ss.XLWorkbook;
@@ -53,8 +54,24 @@ public class ExcelReader {
         return read(in);
     }
     
+    public Workbook partialRead(String filename, Area readArea) throws SAXException, IOException {
+        InputSource in = new InputSource(filename);
+        return partialRead(in, readArea);
+    }
     
     public Workbook read(InputSource in) throws IOException, SAXException {
+        getFactory().setReadArea(null);
+        readWB(in);
+        return currentWorkbook;
+    }
+    
+    public Workbook partialRead(InputSource in, Area readArea) throws SAXException, IOException {
+        getFactory().setReadArea(readArea);
+        readWB(in);
+        return currentWorkbook;
+    }
+    
+    private void readWB(InputSource in) throws SAXException, IOException {
         currentWorkbook = null;
         getUris().clear();
         reader = parser.getXMLReader();
@@ -63,9 +80,8 @@ public class ExcelReader {
         reader.setErrorHandler(getHandler());
         //reader.setDTDHandler(this);
         reader.parse(in);
-        return currentWorkbook;
     }
-    
+
     public Map getUris() {
         if (uris == null) {
             uris = new HashMap();
@@ -128,10 +144,6 @@ public class ExcelReader {
         
         public void startElement(String uri, String localName, String qName,
                 Attributes attributes) throws SAXException {
-//            System.out.println("startElement: "
-//                    + "\n\turi=" + uri
-//                    + "\n\tlcalName=" + localName
-//                    + "\n\tqName=" + qName);
             if (XLElement.XMLNS_SS.equals(uri) && "Workbook".equals(localName)) {
                 String systemId = getSystemId();
                 currentWorkbook = new XLWorkbook(getWorkbookName(systemId));

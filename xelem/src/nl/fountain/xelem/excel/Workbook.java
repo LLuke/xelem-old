@@ -247,6 +247,15 @@ public interface Workbook extends XLElement {
     Worksheet getWorksheet(String name);
     
     /**
+     * Gets the worksheet at the given index. The worksheet index is 0-based.
+     * 
+     * @param index the worksheet index number
+     * @return	the worksheet at the given index or <code>null</code> if
+     * 			no worksheet was at that index
+     */
+    Worksheet getWorksheetAt(int index);
+    
+    /**
      * Creates a {@link org.w3c.dom.Document}, the structure that holds this Workbook
      * and all of it's children. 
      * <P>

@@ -113,6 +113,10 @@ public class XLWorkbookTest extends XLElementTest {
         assertSame(ws1, wb.removeSheet("bla bla"));
     }
     
+    public void testGetSheetAtIndex() {
+        assertNull(wb.getWorksheetAt(20));
+    }
+    
     public void testFilename() {
         assertEquals("bestand.xls", wb.getFileName());
         wb.setFileName("bestand.xml");

@@ -160,6 +160,32 @@ public class SSWorksheetTest extends XLElementTest {
         }
         assertNull(column300);
     }
+    
+    public void testColumnExceptions() {
+        assertFalse(ws.hasColumnAt(""));
+        assertFalse(ws.hasColumnAt("ALL"));
+        assertNotNull(ws.getColumnAt("BQ"));
+        assertNull(ws.removeColumnAt("ALL"));
+        try {
+            ws.getColumnAt("");
+            fail("should be error");
+        } catch (IndexOutOfBoundsException e) {
+            assertEquals("columnIndex = 0", e.getMessage());
+        }
+    }
+    
+    public void testRowExceptions() {
+        assertFalse(ws.hasRowAt(0));
+        assertFalse(ws.hasRowAt(123456789));
+        assertNotNull(ws.getRowAt(10));
+        assertNull(ws.removeRowAt(-3));
+        try {
+            ws.getRowAt(66666666);
+            fail("should be error");
+        } catch (IndexOutOfBoundsException e) {
+            assertEquals("rowIndex = 66666666", e.getMessage());
+        }
+    }
 
     public void testAssemble() {
         ws.addRowAt(5);

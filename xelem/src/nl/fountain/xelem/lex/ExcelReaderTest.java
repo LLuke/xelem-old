@@ -10,6 +10,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 import junit.framework.TestCase;
+import nl.fountain.xelem.Area;
 import nl.fountain.xelem.XSerializer;
 import nl.fountain.xelem.excel.Cell;
 import nl.fountain.xelem.excel.Column;
@@ -107,8 +108,16 @@ public class ExcelReaderTest extends TestCase {
         ExcelReader xlr = new ExcelReader();
         Workbook wb = xlr.read("testsuitefiles/ReaderTest/reader.xml");
         File out = new File("testoutput/ReaderTest/rewrite.xls");
-        new XSerializer().serialize(wb, out);
+        XSerializer xs = new XSerializer();
+        xs.serialize(wb, out);
+        
+        // try read another
+        wb = xlr.read("testsuitefiles/ReaderTest/docprops.xml");
+        out = new File("testoutput/ReaderTest/docprops_r.xls");
+        xs.serialize(wb, out);
     }
+    
+    
 
     public void testDocumentProperties() throws Exception {
         ExcelReader xlr = new ExcelReader();
@@ -183,6 +192,19 @@ public class ExcelReaderTest extends TestCase {
         assertTrue(sheet.isRightToLeft());
     }
     
+    public void testGetWorksheetAt() throws Exception {
+        String[] sheetNames = { "Tom Poes", "Donald Duck", "Asterix",
+                "Sponge Bob", "window" };
+        Workbook wb = getReaderWorkbook();
+        Worksheet sheet;
+        int i = 0;
+        while ((sheet = wb.getWorksheetAt(i)) != null) {
+            assertEquals(sheetNames[i++], sheet.getName());
+        }
+        assertEquals(5, i);
+        assertNull(wb.getWorksheetAt(i));
+    }
+    
     public void testNamedRangeOnWorksheet() throws Exception {
         Workbook wb = getReaderWorkbook();
         Worksheet sheet = wb.getWorksheet("Tom Poes");
@@ -219,6 +241,8 @@ public class ExcelReaderTest extends TestCase {
         
         Column column9 = table.getColumnAt(9);
         assertEquals(1, column9.getSpan());
+        Column c9 = wb.getWorksheet("Tom Poes").getColumnAt("i");
+        assertSame(column9, c9);
         
         assertEquals(5, table.getColumns().size());
     }
@@ -380,6 +404,27 @@ public class ExcelReaderTest extends TestCase {
         char lf = 10;
         assertEquals("WF Hermans:" + lf + "this is comment", comment.getData());
         assertEquals("this is comment", comment.getDataClean());
+    }
+    
+    public void testPartialRead() throws Exception {
+        ExcelReader xlr = new ExcelReader();
+        Area area = new Area("E11:M16");
+        Workbook wb = xlr.partialRead("testsuitefiles/ReaderTest/reader.xml", area);
+        Worksheet sheet;
+        int i = 0;
+        while ((sheet = wb.getWorksheetAt(i++)) != null) {
+            // cannot set proper rangeselection on split sheets
+            if (!sheet.getWorksheetOptions().hasSplit()) {
+	            sheet.getWorksheetOptions().setRangeSelection(area);
+	            sheet.getWorksheetOptions().setActiveCell(14, 8);
+	            sheet.addCellAt(1, 1).setData("only the selected area has been read");
+            } else {
+                sheet.addCellAt(1, 1).setData(
+                        "only " + area.getA1Reference() + " has been read");
+            }
+        }
+        File out = new File("testoutput/ReaderTest/partial.xls");
+        new XSerializer().serialize(wb, out);
     }
 
 }

@@ -21,6 +21,8 @@
  */
 package nl.fountain.xelem.excel;
 
+import nl.fountain.xelem.Area;
+
 /**
  * Represents the Pane element. 
  * <P>
@@ -76,6 +78,7 @@ public interface Pane extends XLElement {
     void setActiveRow(int row);
     int getActiveRow();
     void setRangeSelection(String rc);
+    void setRangeSelection(Area area);
     String getRangeSelection();
 
 }

@@ -4,7 +4,6 @@
  */
 package nl.fountain.xelem.lex;
 
-import nl.fountain.xelem.excel.Cell;
 import nl.fountain.xelem.excel.Column;
 import nl.fountain.xelem.excel.NamedRange;
 import nl.fountain.xelem.excel.Row;
@@ -23,65 +22,65 @@ import org.xml.sax.XMLReader;
  */
 public class SSWorksheetBuilder extends AnonymousBuilder {
 
-    private SSWorksheet current;
-    private Table table;
-    private Row row;
+    private SSWorksheet currentSheet;
+    private Table currentTable;
+    private Row currentRow;
+    private int currentRowIndex;
+    private int currentColumnIndex;
 
     public void build(XMLReader reader, ContentHandler parent,
             BuilderFactory factory, XLElement xle) {
         setUpBuilder(reader, parent, factory);
-        current = (SSWorksheet) xle;
+        currentSheet = (SSWorksheet) xle;
+        currentRowIndex = 0;
+        currentColumnIndex = 0;
     }
     
     public void startElement(String uri, String localName, String qName,
             Attributes atts) throws SAXException {
         if (XLElement.XMLNS_SS.equals(uri)) {
-	        buildSSElement(localName, atts);
+	        startSSElement(localName, atts);
         } else if (XLElement.XMLNS_X.equals(uri)) {
             if ("WorksheetOptions".equals(localName)) {
-                WorksheetOptions wso = current.getWorksheetOptions();
+                WorksheetOptions wso = currentSheet.getWorksheetOptions();
                 Builder builder = factory.getAnonymousBuilder();
                 builder.build(reader, this, factory, wso);
             } else if ("AutoFilter".equals(localName)) {
-                current.setAutoFilter(atts.getValue(XLElement.XMLNS_X, "Range"));
+                currentSheet.setAutoFilter(atts.getValue(XLElement.XMLNS_X, "Range"));
             }
         }        
     }
 
-    private void buildSSElement(String localName, Attributes atts) {
-        if ("Cell".equals(localName)) {
-            Cell cell;
+    private void startSSElement(String localName, Attributes atts) {
+        if ("Row".equals(localName)) {
             String index = atts.getValue(XLElement.XMLNS_SS, "Index");
             if (index != null) {
-                cell = row.addCellAt(Integer.parseInt(index));
+                currentRowIndex = Integer.parseInt(index);
             } else {
-                cell = row.addCell();
+                currentRowIndex++;
             }
-            cell.setAttributes(atts);
-            Builder builder = factory.getSSCellBuilder();
-            builder.build(reader, this, factory, cell);
-        } else if ("Row".equals(localName)) {
-            String index = atts.getValue(XLElement.XMLNS_SS, "Index");
-            if (index != null) {
-                row = table.addRowAt(Integer.parseInt(index));
-            } else {
-                row = table.addRow();
+            if (factory.getReadArea().isRowPartOfArea(currentRowIndex)) {
+	            currentRow = currentTable.addRowAt(currentRowIndex);
+	            currentRow.setAttributes(atts);
+	            Builder builder = factory.getSSRowBuilder();
+	            builder.build(reader, this, factory, currentRow);
             }
-            row.setAttributes(atts);
         } else if ("Column".equals(localName)) {
-            Column column;
             String index = atts.getValue(XLElement.XMLNS_SS, "Index");
             if (index != null) {
-                column = table.addColumnAt(Integer.parseInt(index));
+                currentColumnIndex = Integer.parseInt(index);
             } else {
-                column = table.addColumn();
+                currentColumnIndex++;
             }
-            column.setAttributes(atts);
+            if (factory.getReadArea().isColumnPartOfArea(currentColumnIndex)) {
+	            Column column = currentTable.addColumnAt(currentColumnIndex);
+	            column.setAttributes(atts);
+            }
         } else if ("Table".equals(localName)) {
-            table = current.getTable();
-            table.setAttributes(atts);
+            currentTable = currentSheet.getTable();
+            currentTable.setAttributes(atts);
         } else if ("NamedRange". equals(localName)) {
-            NamedRange nr = current.addNamedRange(
+            NamedRange nr = currentSheet.addNamedRange(
                     atts.getValue(XLElement.XMLNS_SS, "Name"), 
                     null);
             nr.setAttributes(atts);
@@ -90,8 +89,8 @@ public class SSWorksheetBuilder extends AnonymousBuilder {
     
 
     public void endElement(String uri, String localName, String qName) throws SAXException {
-        if (current.getTagName().equals(localName)) {
-            if (current.getNameSpace().equals(uri)) {
+        if (currentSheet.getTagName().equals(localName)) {
+            if (currentSheet.getNameSpace().equals(uri)) {
                 reader.setContentHandler(parent);
                 return;
             }

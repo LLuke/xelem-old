@@ -163,6 +163,17 @@ public class AddressTest extends TestCase {
         assertEquals("R[-2]C[-3]:R[4]C[1]", adr.getRefTo(3, 4, 9, 8));
         assertEquals("R[4]C[-3]:R[-2]C[1]", adr.getRefTo(9, 4, 3, 8));
     }
+    
+    public void testGetRefToArea() {
+        Address adr = new Address(5, 7);
+        Area area = new Area(2, 3, 9, 8);
+        assertEquals("R[-3]C[-4]:R[4]C[1]", adr.getRefTo(area));
+        
+        area = new Area(4, 6, 4, 6);
+        assertEquals("R[-1]C[-1]", adr.getRefTo(area));
+        area = new Area(5, 7, 5, 7);
+        assertEquals("RC", adr.getRefTo(area));
+    }
 
     /*
      * Class under test for String getRefTo(Collection)

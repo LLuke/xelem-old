@@ -221,6 +221,16 @@ public class XLWorkbook extends AbstractXLElement implements Workbook {
         return (Worksheet) sheets.get(name);
     }
     
+    public Worksheet getWorksheetAt(int index) {
+        Worksheet ws = null;
+        try {
+            ws = (Worksheet) sheets.get(sheetList.get(index));
+        } catch (IndexOutOfBoundsException e) {
+            //
+        }
+        return ws;
+    }
+    
     public Worksheet removeSheet(String name) {
         int index = sheetList.indexOf(name);
         if (index < 0) return null;
