@@ -7,6 +7,7 @@ package nl.fountain.xelem.integration;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import junit.textui.TestRunner;
+import nl.fountain.xelem.AddressTest;
 import nl.fountain.xelem.CellPointerTest;
 import nl.fountain.xelem.XFactoryTest;
 import nl.fountain.xelem.XLUtilTest;
@@ -37,6 +38,7 @@ public class AllTests extends TestCase {
     public static TestSuite suite() {
         TestSuite suite = new TestSuite("AllTests");
         
+        suite.addTestSuite(AddressTest.class);
         suite.addTestSuite(CellPointerTest.class);       
         suite.addTestSuite(XLUtilTest.class);
         suite.addTestSuite(SSCellTest.class);

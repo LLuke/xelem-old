@@ -22,7 +22,7 @@ package nl.fountain.xelem;
  * how many cells depends on it's settings. The default setting is to step
  * 1 column to the right.
  */
-public class CellPointer {
+public class CellPointer extends Address {
     
     /**
      * A constant for the method {@link #setMovement(int)}.
@@ -44,28 +44,6 @@ public class CellPointer {
      */
     public static final int MOVE_UP = 3;
     
-    /**
-     * The left-most limit of the worksheets columns.
-     */
-    public int firstColumn = 1;
-    
-    /**
-     * The top row of the worksheet.
-     */
-    public int firstRow = 1;
-    
-    /**
-     * The right-most limit of the worksheets columns.
-     */
-    public int lastColumn = 256;
-    
-    /**
-     * The bottom row of the worksheet.
-     */
-    public int lastRow = 65536; 
-    
-    private int r;
-    private int c;
     private int hStep;
     private int vStep;
     private int hMove;
@@ -81,25 +59,20 @@ public class CellPointer {
      * @see nl.fountain.xelem.excel.Worksheet#getCellPointer()
      */
     public CellPointer() {
-        r = firstRow;
-        c = firstColumn;
+        super(firstRow, firstColumn);
         hStep = 1;
         vStep = 1;
         hMove = 1;
     }
     
     /**
-     * Gets the number of the row where this cellpointer is pointing at.
+     * Gets the address of the cell where this cellpointer is pointing at.
+     * 
+     * @return A new Address reflecting the momentary row- and column index
+     * 			of this CellPointer.
      */
-    public int getRowIndex() {
-        return r;
-    }
-    
-    /**
-     * Gets the number of the column where this cellpointer is pointing at.
-     */
-    public int getColumnIndex() {
-        return c;
+    public Address getAddress() {
+        return new Address(r, c);
     }
     
     /**
@@ -239,66 +212,6 @@ public class CellPointer {
     public void moveCRLF() {
         r += vStep;
         c = firstColumn;
-    }
-    
-    /**
-     * Specifies whether this cellpointer is within the bounds of the
-     * spreadsheet.
-     */
-    public boolean isWithinSheet() {
-        return c >= firstColumn && c <= lastColumn 
-        	&& r >= firstRow && r <= lastRow;
-    }
-    
-    /**
-     * Translates the position of this CellPointer into an 
-     * absolute R1C1-reference string.
-     * 
-     * @return The position of this CellPointer as an absolute R1C1-reference string.
-     */
-    public String getAbsoluteAddress() {
-        StringBuffer sb = new StringBuffer("R");
-        sb.append(r);
-        sb.append("C");
-        sb.append(c);
-        return sb.toString();
-    }
-    
-    /**
-     * Gets the relative location of this CellPointer seen from a cell
-     * at the intersection of the given <code>row</code> and <code>column</code>.
-     * Or, to say it in another way,
-     * calculates the offset of this CellPointers rowIndex and ColumnIndex
-     * from <code>row</code> and 
-     * <code>column</code> and returns this as a relative R1C1-reference string.
-     * <P>
-     * Given a Cell cf which is at row 15 and column 12. The cellPointer is at
-     * row 10, column 10.
-     * <PRE>
-     *          cf.setFormula("=" + cellPointer.getRelativeAddress(15, 12);
-     * </PRE>
-     * leads to the formula <code>=R[-5]C[-2]</code>
-     * and leaves the formula pointing to the cell at the position 
-     * of the CellPointer.
-     * 
-     * @return The offset of this CellPointer as a relative R1C1-reference string.
-     */
-    public String getRelativeAddress(int row, int column) {
-        StringBuffer sb = new StringBuffer("R");
-        int rD = r - row;
-        if (rD != 0) {
-            sb.append("[");
-            sb.append(rD);
-            sb.append("]");
-        }
-        sb.append("C");
-        int cD = c - column;
-        if (cD != 0) {
-            sb.append("[");
-            sb.append(cD);
-            sb.append("]");
-        }
-        return sb.toString();
     }
 
 }

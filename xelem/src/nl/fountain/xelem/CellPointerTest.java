@@ -114,6 +114,17 @@ public class CellPointerTest extends TestCase {
         assertEquals("R[8]C[6]", cp.getRelativeAddress(2, 4));
         assertEquals("R[-5]C[-2]", cp.getRelativeAddress(15, 12));
     }
-
+    
+    public void testGetRelativeAddressAddress() {
+        CellPointer cp = new CellPointer();
+        cp.moveTo(10, 10);
+        Address adr = new Address(3, 4);
+        assertEquals("R[7]C[6]", cp.getRelativeAddress(adr));
+    }
+    
+    public void testToString() {
+        CellPointer cp = new CellPointer();
+        assertEquals("nl.fountain.xelem.CellPointer[row=1,column=1]", cp.toString());
+    }
 
 }
