@@ -110,7 +110,6 @@ public class SSWorksheet extends AbstractXLElement implements Worksheet {
     }
     
     public Cell addCell(Cell cell) {       
-        boolean withinSheet = cellPointer.isWithinSheet();
         int prevRow = cellPointer.getRowIndex();
         int prevColumn = cellPointer.getColumnIndex();
         cellPointer.move();
