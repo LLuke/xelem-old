@@ -211,8 +211,9 @@ of a Servlet-method that responds to a request for download:
                     "attachment; filename=" + wb.getFileName());
             
             PrintWriter out = response.getWriter();
+            XSerializer xs = new XSerializer(XSerializer.US_ASCII);
             try {
-                new XSerializer().serialize(wb, out);
+                xs.serialize(wb, out);
                 out.flush();
             } catch (XelemException e) {
                 e.printStackTrace();
@@ -245,6 +246,15 @@ suggests to use Excel as the application to open the downloaded file.
 <P>
 The <code>setContentType</code>- and <code>addHeader</code>-lines
 serve equally to guarantee the correct transfer of the file.
+<P>
+The XSerializer uses a 
+{@link javax.xml.transform.Transformer javax.xml.transform.Transformer}
+to serialize the workbook. Standard this comes with an UTF-8 encoding. Things go wrong
+when you send this over the wire. Excel won't open the downloaded file.
+My knowledge of encoding is as profound as the pool in the backyard, but it does help
+if you switch to US-ASCII encoding. The XSerializer used in the example above is
+constructed with a constructor that takes an encoding-string as parameter.
+<P>
 The rest of the code is clear enough.
 
 </body>

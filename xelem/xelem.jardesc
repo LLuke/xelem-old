@@ -12,6 +12,7 @@
         <javaElement handleIdentifier="=xelem/src&lt;nl.fountain.xelem.excel.ss{SSColumn.java"/>
         <javaElement handleIdentifier="=xelem/src&lt;nl.fountain.xelem.excel.x{XExcelWorkbook.java"/>
         <javaElement handleIdentifier="=xelem/src&lt;nl.fountain.xelem.excel{WorksheetOptions.java"/>
+        <javaElement handleIdentifier="=xelem/src&lt;nl.fountain.xelem{CellPointer.java"/>
         <javaElement handleIdentifier="=xelem/src&lt;nl.fountain.xelem.excel.ss{SSNamedRange.java"/>
         <javaElement handleIdentifier="=xelem/src&lt;nl.fountain.xelem.excel{Workbook.java"/>
         <javaElement handleIdentifier="=xelem/src&lt;nl.fountain.xelem.excel.ss{SSWorksheet.java"/>
@@ -22,8 +23,8 @@
         <javaElement handleIdentifier="=xelem/src&lt;nl.fountain.xelem{GIO.java"/>
         <javaElement handleIdentifier="=xelem/src&lt;nl.fountain.xelem.excel.x{XPane.java"/>
         <javaElement handleIdentifier="=xelem/src&lt;nl.fountain.xelem.excel{Worksheet.java"/>
-        <javaElement handleIdentifier="=xelem/src&lt;nl.fountain.xelem.excel.ss{XLWorkbook.java"/>
         <javaElement handleIdentifier="=xelem/src&lt;nl.fountain.xelem.excel.ss{SSTable.java"/>
+        <javaElement handleIdentifier="=xelem/src&lt;nl.fountain.xelem.excel.ss{XLWorkbook.java"/>
         <javaElement handleIdentifier="=xelem/src&lt;nl.fountain.xelem.excel{XLElement.java"/>
         <javaElement handleIdentifier="=xelem/src&lt;nl.fountain.xelem{XSerializer.java"/>
         <javaElement handleIdentifier="=xelem/src&lt;nl.fountain.xelem.excel.ss{SSRow.java"/>
@@ -31,9 +32,10 @@
         <javaElement handleIdentifier="=xelem/src&lt;nl.fountain.xelem.excel.x{XWorksheetOptions.java"/>
         <javaElement handleIdentifier="=xelem/src&lt;nl.fountain.xelem.excel{AutoFilter.java"/>
         <javaElement handleIdentifier="=xelem/src&lt;nl.fountain.xelem.excel{NamedRange.java"/>
-        <javaElement handleIdentifier="=xelem/src&lt;nl.fountain.xelem.excel.ss{SSCell.java"/>
         <javaElement handleIdentifier="=xelem/src&lt;nl.fountain.xelem.excel{DuplicateNameException.java"/>
+        <javaElement handleIdentifier="=xelem/src&lt;nl.fountain.xelem.excel.ss{SSCell.java"/>
         <javaElement handleIdentifier="=xelem/src&lt;nl.fountain.xelem.excel{AbstractXLElement.java"/>
+        <javaElement handleIdentifier="=xelem/src&lt;nl.fountain.xelem{Address.java"/>
         <javaElement handleIdentifier="=xelem/src&lt;nl.fountain.xelem{XFactory.java"/>
         <javaElement handleIdentifier="=xelem/src&lt;nl.fountain.xelem.excel{Row.java"/>
         <javaElement handleIdentifier="=xelem/src&lt;nl.fountain.xelem.excel{Column.java"/>

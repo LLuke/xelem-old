@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jardesc>
+    <jar path="D:/eclipse_jar/xelem/xelem_src.1.0.jar"/>
+    <options overwrite="false" compress="true" exportErrors="true" exportWarnings="true" saveDescription="true" descriptionLocation="/xelem/xelem_src.jardesc" useSourceFolders="false" buildIfNeeded="true"/>
+    <selectedElements exportClassFiles="false" exportOutputFolder="false" exportJavaFiles="true">
+        <file path="/xelem/overview.html"/>
+        <folder path="/xelem/config"/>
+        <javaElement handleIdentifier="=xelem/src"/>
+    </selectedElements>
+</jardesc>
