@@ -25,6 +25,9 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.TreeMap;
 
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
 
 
 /**
@@ -312,5 +315,16 @@ public interface Row extends XLElement {
      * @return An iterator for the cells in this row.
      */
     Iterator cellIterator();
+    
+    /**
+     * Creates an {@link org.w3c.dom.Element} with the specified 
+     * <code>doc</code> as owner-document.
+     * The attribute <code>span</code> will not be reflected in this Element.
+     * 
+     * @param doc the {@link org.w3c.dom.Document} to which this row will be
+     * 		appended.
+     * @return this row as an {@link org.w3c.dom.Element}.
+     */
+    Element createElement(Document doc);
     
 }

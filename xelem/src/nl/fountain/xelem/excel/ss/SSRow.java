@@ -199,10 +199,7 @@ public class SSRow extends AbstractXLElement implements Row {
         }
         if (span > 0) re.setAttributeNodeNS(
                 createAttributeNS(doc, "Span", span));
-        if (height > 0.0) re.setAttributeNodeNS(
-                createAttributeNS(doc, "Height", "" + height));
-        if (hidden) re.setAttributeNodeNS(
-                createAttributeNS(doc, "Hidden", "1"));
+        setAdditionalAttributes(doc, re);
 //        if (autoFitHeight) re.setAttributeNodeNS(
 //                createAttributeNS(doc, "AutoFitHeight", "1"));
         
@@ -215,6 +212,28 @@ public class SSRow extends AbstractXLElement implements Row {
         }
         
         return re;
+    }
+    
+    private void setAdditionalAttributes(Document doc, Element rowElement) {
+        if (height > 0.0) rowElement.setAttributeNodeNS(
+                createAttributeNS(doc, "Height", "" + height));
+        if (hidden) rowElement.setAttributeNodeNS(
+                createAttributeNS(doc, "Hidden", "1"));
+    }
+
+    public Element createElement(Document doc) {
+        GIO gio = new GIO();
+        Element rowElement = doc.createElementNS(getNameSpace(), getTagName());
+        if (getStyleID() != null) {
+            rowElement.setAttributeNodeNS(createAttributeNS(doc, "StyleID", getStyleID()));
+        }
+        setAdditionalAttributes(doc, rowElement);
+        Iterator iter = cellIterator();
+        while (iter.hasNext()) {
+            Cell cell = (Cell) iter.next();
+            cell.assemble(rowElement, gio);
+        }
+        return rowElement;
     }
     
     /**

@@ -10,6 +10,7 @@ import junit.textui.TestRunner;
 import nl.fountain.xelem.AddressTest;
 import nl.fountain.xelem.CellPointerTest;
 import nl.fountain.xelem.XFactoryTest;
+import nl.fountain.xelem.XLDocumentTest;
 import nl.fountain.xelem.XLUtilTest;
 import nl.fountain.xelem.excel.ss.CreateDocumentTest;
 import nl.fountain.xelem.excel.ss.SSCellTest;
@@ -52,6 +53,8 @@ public class AllTests extends TestCase {
         suite.addTestSuite(XFactoryTest.class);
         suite.addTestSuite(XLWorkbookTest.class);
         suite.addTestSuite(CreateDocumentTest.class);
+        
+        suite.addTestSuite(XLDocumentTest.class);
         
         return suite;
     }

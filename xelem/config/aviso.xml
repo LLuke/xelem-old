@@ -1,0 +1,445 @@
+<?xml version="1.0"?>
+<?mso-application progid="Excel.Sheet"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+ xmlns:o="urn:schemas-microsoft-com:office:office"
+ xmlns:x="urn:schemas-microsoft-com:office:excel"
+ xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+ xmlns:html="http://www.w3.org/TR/REC-html40">
+ <DocumentProperties xmlns="urn:schemas-microsoft-com:office:office">
+  <Author>henk van den berg</Author>
+  <LastAuthor>henk van den berg</LastAuthor>
+  <Created>2004-12-24T12:44:49Z</Created>
+  <Company>NIWI-KNAW</Company>
+  <Version>11.5703</Version>
+ </DocumentProperties>
+ <ExcelWorkbook xmlns="urn:schemas-microsoft-com:office:excel">
+  <WindowHeight>8835</WindowHeight>
+  <WindowWidth>15180</WindowWidth>
+  <WindowTopX>120</WindowTopX>
+  <WindowTopY>90</WindowTopY>
+  <ProtectStructure>False</ProtectStructure>
+  <ProtectWindows>False</ProtectWindows>
+ </ExcelWorkbook>
+ <Styles>
+  <Style ss:ID="Default" ss:Name="Normal">
+   <Alignment ss:Vertical="Bottom"/>
+   <Borders/>
+   <Font/>
+   <Interior/>
+   <NumberFormat/>
+   <Protection/>
+  </Style>
+  <Style ss:ID="s21">
+   <Interior ss:Color="#FFFFFF" ss:Pattern="Solid"/>
+  </Style>
+  <Style ss:ID="s23">
+   <Interior ss:Color="#FFFFFF" ss:Pattern="Solid"/>
+   <NumberFormat ss:Format="@"/>
+  </Style>
+  <Style ss:ID="s25">
+   <NumberFormat ss:Format="@"/>
+  </Style>
+  <Style ss:ID="s26">
+   <Interior ss:Color="#FFFFFF" ss:Pattern="Solid"/>
+   <NumberFormat ss:Format="#,##0.00_-;[Red]#,##0.00\-"/>
+  </Style>
+  <Style ss:ID="s28">
+   <NumberFormat ss:Format="#,##0.00_-;[Red]#,##0.00\-"/>
+  </Style>
+  <Style ss:ID="s29">
+   <Font ss:Color="#008000"/>
+   <Interior ss:Color="#FFFFFF" ss:Pattern="Solid"/>
+  </Style>
+  <Style ss:ID="s34">
+   <Borders>
+    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1"/>
+    <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1"/>
+   </Borders>
+   <Interior/>
+   <NumberFormat ss:Format="@"/>
+  </Style>
+  <Style ss:ID="s35">
+   <Borders>
+    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1"/>
+    <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1"/>
+   </Borders>
+   <Interior/>
+   <NumberFormat ss:Format="#,##0.00_-;[Red]#,##0.00\-"/>
+  </Style>
+  <Style ss:ID="s45">
+   <Borders>
+    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1"/>
+    <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1"/>
+   </Borders>
+   <Font x:Family="Swiss" ss:Color="#0000FF" ss:Bold="1"/>
+   <Interior/>
+   <NumberFormat ss:Format="@"/>
+  </Style>
+  <Style ss:ID="s46">
+   <Borders>
+    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1"/>
+    <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1"/>
+   </Borders>
+   <Font x:Family="Swiss" ss:Color="#0000FF" ss:Bold="1"/>
+   <Interior/>
+   <NumberFormat ss:Format="#,##0.00_-;[Red]#,##0.00\-"/>
+  </Style>
+  <Style ss:ID="s47">
+   <Borders>
+    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1"/>
+    <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1"/>
+   </Borders>
+   <Font x:Family="Swiss" ss:Color="#008000" ss:Bold="1"/>
+   <Interior/>
+  </Style>
+  <Style ss:ID="s53">
+   <Alignment ss:Horizontal="Right" ss:Vertical="Bottom"/>
+   <Borders>
+    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1"
+     ss:Color="#C0C0C0"/>
+    <Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1"
+     ss:Color="#C0C0C0"/>
+    <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1"
+     ss:Color="#C0C0C0"/>
+   </Borders>
+   <Font ss:Color="#333333" ss:Bold="1"/>
+   <Interior ss:Color="#FFFF99" ss:Pattern="Solid"/>
+  </Style>
+  <Style ss:ID="s54">
+   <Borders>
+    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1"
+     ss:Color="#C0C0C0"/>
+    <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1"
+     ss:Color="#C0C0C0"/>
+   </Borders>
+   <Font ss:Color="#333333"/>
+   <Interior ss:Color="#FFFFFF" ss:Pattern="Solid"/>
+  </Style>
+  <Style ss:ID="s55">
+   <Borders>
+    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1"
+     ss:Color="#C0C0C0"/>
+    <Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1"
+     ss:Color="#C0C0C0"/>
+    <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1"
+     ss:Color="#C0C0C0"/>
+   </Borders>
+   <Font ss:Color="#333333"/>
+   <Interior ss:Color="#FFFFFF" ss:Pattern="Solid"/>
+  </Style>
+  <Style ss:ID="s56">
+   <Font ss:Color="#333333"/>
+   <Interior ss:Color="#FFFFFF" ss:Pattern="Solid"/>
+  </Style>
+  <Style ss:ID="s57">
+   <Alignment ss:Horizontal="Right" ss:Vertical="Bottom"/>
+   <Font x:Family="Swiss" ss:Color="#008000" ss:Bold="1"/>
+   <Interior ss:Color="#FFFFFF" ss:Pattern="Solid"/>
+  </Style>
+  <Style ss:ID="s58">
+   <Font ss:Color="#333333"/>
+   <Interior ss:Color="#FFFFFF" ss:Pattern="Solid"/>
+   <NumberFormat ss:Format="@"/>
+  </Style>
+  <Style ss:ID="s59">
+   <Font ss:Color="#333333"/>
+   <Interior ss:Color="#FFFFFF" ss:Pattern="Solid"/>
+   <NumberFormat ss:Format="_-* #,##0.00_-;_-* #,##0.00\-;_-* &quot;-&quot;??_-;_-@_-"/>
+  </Style>
+  <Style ss:ID="s60">
+   <Font x:Family="Swiss" ss:Color="#008000"/>
+   <Interior ss:Color="#FFFFFF" ss:Pattern="Solid"/>
+  </Style>
+  <Style ss:ID="s61">
+   <Borders>
+    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1"
+     ss:Color="#C0C0C0"/>
+    <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1"
+     ss:Color="#C0C0C0"/>
+   </Borders>
+   <Font ss:Color="#333333"/>
+   <Interior ss:Color="#FFFFFF" ss:Pattern="Solid"/>
+   <NumberFormat ss:Format="00"/>
+  </Style>
+  <Style ss:ID="s62">
+   <Alignment ss:Horizontal="Right" ss:Vertical="Bottom"/>
+   <Borders>
+    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1"
+     ss:Color="#C0C0C0"/>
+    <Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1"
+     ss:Color="#C0C0C0"/>
+    <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1"
+     ss:Color="#C0C0C0"/>
+   </Borders>
+   <Font x:Family="Swiss" ss:Color="#333333"/>
+   <Interior ss:Color="#FFFF99" ss:Pattern="Solid"/>
+  </Style>
+  <Style ss:ID="s63">
+   <Borders>
+    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1"
+     ss:Color="#C0C0C0"/>
+    <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1"
+     ss:Color="#C0C0C0"/>
+   </Borders>
+   <Font ss:Color="#333333"/>
+   <Interior ss:Color="#FFFFFF" ss:Pattern="Solid"/>
+   <NumberFormat ss:Format="@"/>
+  </Style>
+  <Style ss:ID="s64">
+   <Borders>
+    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1"
+     ss:Color="#C0C0C0"/>
+    <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1"
+     ss:Color="#C0C0C0"/>
+   </Borders>
+   <Font ss:Color="#333333"/>
+   <Interior ss:Color="#FFFFFF" ss:Pattern="Solid"/>
+   <NumberFormat ss:Format="dd/mm/yyyy"/>
+  </Style>
+  <Style ss:ID="s65">
+   <Alignment ss:Horizontal="Left" ss:Vertical="Bottom"/>
+   <Interior ss:Color="#FFFFFF" ss:Pattern="Solid"/>
+  </Style>
+  <Style ss:ID="s67">
+   <Borders>
+    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1"
+     ss:Color="#C0C0C0"/>
+    <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1"
+     ss:Color="#C0C0C0"/>
+   </Borders>
+   <Font ss:Color="#333333"/>
+   <Interior ss:Color="#FFFFFF" ss:Pattern="Solid"/>
+   <NumberFormat ss:Format="#,##0_ ;\-#,##0\ "/>
+  </Style>
+  <Style ss:ID="s68">
+   <Borders>
+    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1"
+     ss:Color="#C0C0C0"/>
+    <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1"
+     ss:Color="#C0C0C0"/>
+   </Borders>
+   <Font ss:Color="#333333"/>
+   <Interior ss:Color="#FFFFFF" ss:Pattern="Solid"/>
+   <NumberFormat
+    ss:Format="_-&quot;€&quot;\ * #,##0.00_-;_-&quot;€&quot;\ * #,##0.00\-;_-&quot;€&quot;\ * &quot;-&quot;??_-;_-@_-"/>
+  </Style>
+  <Style ss:ID="s69">
+   <Font x:Family="Swiss" ss:Size="12" ss:Color="#FFFFFF" ss:Bold="1"/>
+   <Interior ss:Color="#008080" ss:Pattern="Solid"/>
+  </Style>
+  <Style ss:ID="s70">
+   <Font x:Family="Swiss" ss:Color="#FFFFFF"/>
+   <Interior ss:Color="#008080" ss:Pattern="Solid"/>
+  </Style>
+  <Style ss:ID="s71">
+   <Interior ss:Color="#008080" ss:Pattern="Solid"/>
+  </Style>
+  <Style ss:ID="s72">
+   <Font ss:Color="#FFFFFF"/>
+   <Interior ss:Color="#008080" ss:Pattern="Solid"/>
+  </Style>
+  <Style ss:ID="s73">
+   <Font ss:Color="#FFFFFF"/>
+   <Interior ss:Color="#008080" ss:Pattern="Solid"/>
+   <NumberFormat
+    ss:Format="_-&quot;€&quot;\ * #,##0.00_-;_-&quot;€&quot;\ * #,##0.00\-;_-&quot;€&quot;\ * &quot;-&quot;??_-;_-@_-"/>
+  </Style>
+  <Style ss:ID="s74">
+   <Alignment ss:Horizontal="Right" ss:Vertical="Bottom"/>
+   <Borders/>
+   <Font x:Family="Swiss" ss:Color="#008000" ss:Bold="1"/>
+   <Interior ss:Color="#FFFFFF" ss:Pattern="Solid"/>
+  </Style>
+  <Style ss:ID="s75">
+   <Borders/>
+   <Font ss:Color="#333333"/>
+   <Interior ss:Color="#FFFFFF" ss:Pattern="Solid"/>
+   <NumberFormat ss:Format="_-* #,##0.00_-;_-* #,##0.00\-;_-* &quot;-&quot;??_-;_-@_-"/>
+  </Style>
+  <Style ss:ID="s76">
+   <Borders/>
+   <Interior ss:Color="#FFFFFF" ss:Pattern="Solid"/>
+  </Style>
+ </Styles>
+ <Worksheet ss:Name="Sheet1">
+  <Names>
+   <NamedRange ss:Name="_FilterDatabase" ss:RefersTo="=Sheet1!R13C1:R13C6"
+    ss:Hidden="1"/>
+  </Names>
+  <Table ss:ExpandedColumnCount="9" ss:ExpandedRowCount="13" x:FullColumns="1"
+   x:FullRows="1">
+   <Column ss:StyleID="s25" ss:AutoFitWidth="0" ss:Width="77.25" ss:Span="2"/>
+   <Column ss:Index="4" ss:StyleID="s28" ss:AutoFitWidth="0" ss:Width="77.25"/>
+   <Column ss:AutoFitWidth="0" ss:Width="77.25" ss:Span="4"/>
+   <Row ss:Height="15.75" ss:StyleID="s21">
+    <Cell ss:StyleID="s69"><Data ss:Type="Number">4</Data></Cell>
+    <Cell ss:StyleID="s69"><Data ss:Type="String">Memoriaal</Data></Cell>
+    <Cell ss:StyleID="s70"/>
+    <Cell ss:StyleID="s69"><Data ss:Type="String">*</Data></Cell>
+    <Cell ss:StyleID="s70"/>
+    <Cell ss:StyleID="s70"/>
+    <Cell ss:StyleID="s71"/>
+    <Cell ss:StyleID="s72"/>
+    <Cell ss:StyleID="s73"/>
+   </Row>
+   <Row ss:StyleID="s56">
+    <Cell ss:StyleID="s53"><Data ss:Type="String">administratie:</Data></Cell>
+    <Cell ss:StyleID="s54"/>
+    <Cell ss:StyleID="s55"/>
+    <Cell ss:Index="5" ss:StyleID="s57"/>
+    <Cell ss:StyleID="s58"/>
+    <Cell ss:Index="8" ss:StyleID="s57"/>
+    <Cell ss:StyleID="s59"/>
+   </Row>
+   <Row ss:StyleID="s56">
+    <Cell ss:StyleID="s53"><Data ss:Type="String">dagboek:</Data></Cell>
+    <Cell ss:StyleID="s54"/>
+    <Cell ss:StyleID="s55"/>
+    <Cell ss:Index="5" ss:StyleID="s57"/>
+    <Cell ss:StyleID="s58"/>
+    <Cell ss:Index="8" ss:StyleID="s60"/>
+   </Row>
+   <Row ss:StyleID="s56">
+    <Cell ss:StyleID="s53"><Data ss:Type="String">periode:</Data></Cell>
+    <Cell ss:StyleID="s61"/>
+    <Cell ss:StyleID="s55"/>
+    <Cell ss:Index="5" ss:StyleID="s57"/>
+    <Cell ss:StyleID="s58"/>
+    <Cell ss:Index="8" ss:StyleID="s60"/>
+   </Row>
+   <Row ss:StyleID="s56">
+    <Cell ss:StyleID="s53"><Data ss:Type="String">omschr. blz.:</Data></Cell>
+    <Cell ss:StyleID="s54"/>
+    <Cell ss:StyleID="s55"/>
+    <Cell ss:Index="5" ss:StyleID="s57"/>
+    <Cell ss:Index="8" ss:StyleID="s60"/>
+   </Row>
+   <Row ss:StyleID="s56">
+    <Cell ss:StyleID="s62"><Data ss:Type="String">doc/fac:</Data></Cell>
+    <Cell ss:StyleID="s63"/>
+    <Cell ss:StyleID="s55"/>
+    <Cell ss:Index="5" ss:StyleID="s57"><Data ss:Type="String">*subtotaal posten:</Data></Cell>
+    <Cell ss:StyleID="s59" ss:Formula="=SUBTOTAL(9,R14C[-2]:R65536C[-2])"><Data
+      ss:Type="Number">0</Data></Cell>
+    <Cell ss:Index="8" ss:StyleID="s74"/>
+    <Cell ss:StyleID="s75"/>
+   </Row>
+   <Row ss:StyleID="s56">
+    <Cell ss:StyleID="s62"><Data ss:Type="String">mutatiedatum:</Data></Cell>
+    <Cell ss:StyleID="s64"/>
+    <Cell ss:StyleID="s55"/>
+    <Cell ss:Index="5" ss:StyleID="s57"><Data ss:Type="String">*aantal posten:</Data></Cell>
+    <Cell ss:StyleID="s65" ss:Formula="=SUBTOTAL(2,R14C[-2]:R65536C[-2])"><Data
+      ss:Type="Number">0</Data></Cell>
+    <Cell ss:Index="8" ss:StyleID="s74"><Data ss:Type="String">*bladsaldo:</Data></Cell>
+    <Cell ss:StyleID="s75" ss:Formula="=SUM(R14C[-5]:R65536C[-5])"><Data
+      ss:Type="Number">0</Data></Cell>
+   </Row>
+   <Row ss:StyleID="s21">
+    <Cell ss:StyleID="s62"/>
+    <Cell ss:StyleID="s67"/>
+    <Cell ss:StyleID="s55"/>
+    <Cell ss:Index="5" ss:StyleID="s57"><Data ss:Type="String">*aantal posten geboekt:</Data></Cell>
+    <Cell ss:StyleID="s65" ss:Formula="=SUBTOTAL(2,R14C[-1]:R65536C[-1])"><Data
+      ss:Type="Number">0</Data></Cell>
+    <Cell ss:Index="8" ss:StyleID="s74"/>
+    <Cell ss:StyleID="s75"/>
+   </Row>
+   <Row ss:StyleID="s21">
+    <Cell ss:StyleID="s62"/>
+    <Cell ss:StyleID="s68"/>
+    <Cell ss:StyleID="s55"/>
+    <Cell ss:Index="8" ss:StyleID="s76"/>
+    <Cell ss:StyleID="s76"/>
+   </Row>
+   <Row ss:StyleID="s21">
+    <Cell ss:StyleID="s23"/>
+    <Cell ss:StyleID="s23"/>
+    <Cell ss:StyleID="s23"/>
+    <Cell ss:StyleID="s26"/>
+   </Row>
+   <Row ss:StyleID="s21">
+    <Cell ss:StyleID="s34"><Data ss:Type="String">Rekening</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">Omschr. regel</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">Kpl/Proj</Data></Cell>
+    <Cell ss:StyleID="s35"><Data ss:Type="String">Bedrag</Data></Cell>
+    <Cell ss:StyleID="s29"><Data ss:Type="String">met * gemerkte velden worden ingevuld door AccountView of Excel.</Data></Cell>
+   </Row>
+   <Row ss:StyleID="s21">
+    <Cell ss:StyleID="s23"/>
+    <Cell ss:StyleID="s23"/>
+    <Cell ss:StyleID="s23"/>
+    <Cell ss:StyleID="s26"/>
+   </Row>
+   <Row ss:StyleID="s21">
+    <Cell ss:StyleID="s45"><Data ss:Type="String">ACCT_NR</Data><NamedCell
+      ss:Name="_FilterDatabase"/></Cell>
+    <Cell ss:StyleID="s45"><Data ss:Type="String">TRN_DESC</Data><NamedCell
+      ss:Name="_FilterDatabase"/></Cell>
+    <Cell ss:StyleID="s45"><Data ss:Type="String">COST_CODE</Data><NamedCell
+      ss:Name="_FilterDatabase"/></Cell>
+    <Cell ss:StyleID="s46"><Data ss:Type="String">AMOUNT</Data><NamedCell
+      ss:Name="_FilterDatabase"/></Cell>
+    <Cell ss:StyleID="s47"><Data ss:Type="String">*geboekt</Data><NamedCell
+      ss:Name="_FilterDatabase"/></Cell>
+    <Cell ss:StyleID="s47"><Data ss:Type="String">*bericht</Data><NamedCell
+      ss:Name="_FilterDatabase"/></Cell>
+   </Row>
+  </Table>
+  <WorksheetOptions xmlns="urn:schemas-microsoft-com:office:excel">
+   <Print>
+    <ValidPrinterInfo/>
+    <PaperSizeIndex>9</PaperSizeIndex>
+    <HorizontalResolution>600</HorizontalResolution>
+    <VerticalResolution>600</VerticalResolution>
+   </Print>
+   <Selected/>
+   <FreezePanes/>
+   <FrozenNoSplit/>
+   <SplitHorizontal>13</SplitHorizontal>
+   <TopRowBottomPane>13</TopRowBottomPane>
+   <ActivePane>2</ActivePane>
+   <Panes>
+    <Pane>
+     <Number>3</Number>
+    </Pane>
+    <Pane>
+     <Number>2</Number>
+    </Pane>
+   </Panes>
+   <ProtectObjects>False</ProtectObjects>
+   <ProtectScenarios>False</ProtectScenarios>
+  </WorksheetOptions>
+  <AutoFilter x:Range="R13C1:R13C6"
+   xmlns="urn:schemas-microsoft-com:office:excel">
+  </AutoFilter>
+  <ConditionalFormatting xmlns="urn:schemas-microsoft-com:office:excel">
+   <Range>R8C9,R9C2</Range>
+   <Condition>
+    <Qualifier>NotEqual</Qualifier>
+    <Value1>0</Value1>
+    <Format Style='background:aqua'/>
+   </Condition>
+  </ConditionalFormatting>
+  <ConditionalFormatting xmlns="urn:schemas-microsoft-com:office:excel">
+   <Range>R6C6</Range>
+   <Condition>
+    <Qualifier>NotEqual</Qualifier>
+    <Value1>0</Value1>
+    <Format Style='background:#CCFFCC'/>
+   </Condition>
+  </ConditionalFormatting>
+ </Worksheet>
+ <Worksheet ss:Name="Sheet2">
+  <WorksheetOptions xmlns="urn:schemas-microsoft-com:office:excel">
+   <ProtectObjects>False</ProtectObjects>
+   <ProtectScenarios>False</ProtectScenarios>
+  </WorksheetOptions>
+ </Worksheet>
+ <Worksheet ss:Name="Sheet3">
+  <WorksheetOptions xmlns="urn:schemas-microsoft-com:office:excel">
+   <ProtectObjects>False</ProtectObjects>
+   <ProtectScenarios>False</ProtectScenarios>
+  </WorksheetOptions>
+ </Worksheet>
+</Workbook>
