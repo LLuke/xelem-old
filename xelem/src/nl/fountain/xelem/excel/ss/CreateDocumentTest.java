@@ -721,7 +721,6 @@ public class CreateDocumentTest extends TestCase {
         assertTrue(xml.indexOf("<Data ss:Type=\"String\">2020 BV Financiën</Data>") > 0);
         
         //System.out.println(xml);
-        
         if (toFile) xmlToFile(wb);
     }
     
@@ -729,11 +728,36 @@ public class CreateDocumentTest extends TestCase {
         Workbook wb = new XLWorkbook("test29");
         wb.addSheet();
         wb.addSheet();
-        wb.getExcelWorkbook().setActiveSheet(1);
+        wb.addSheet();
+        wb.addSheet();
+        wb.addSheet();
+        wb.getExcelWorkbook().setActiveSheet(2);
+        
+        String xml = xmlToString(wb);
+        assertTrue(xml.indexOf("<x:ActiveSheet>2</x:ActiveSheet>") > 0);
+        
+        //System.out.println(xml);
+        if (toFile) xmlToFile(wb);
+    }
+    
+    
+    public void testCellPointer() throws Exception {
+        Workbook wb = new XLWorkbook("test30");
+        Worksheet sheet = wb.addSheet();
+        for (int i = 0; i < 10; i++) {
+            sheet.addCell(sheet.getCellPointer().getAbsoluteAddress());
+        }
+        sheet.getCellPointer().moveCRLF();
+        sheet.addCell(sheet.getCellPointer().getAbsoluteAddress());
+        
+        sheet.getCellPointer().moveTo(15, 12);
+        Cell cf = sheet.addCell();
+        sheet.getCellPointer().moveTo(10, 10);
+        cf.setFormula("=" + sheet.getCellPointer().getRelativeAddress(15, 12));
+        sheet.addCell("bla bla");
         
         xmlToFile(wb);
     }
-    
     
     private String xmlToString(Workbook wb) throws Exception {
         StringWriter sw = new StringWriter();

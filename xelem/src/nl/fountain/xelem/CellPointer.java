@@ -230,6 +230,18 @@ public class CellPointer {
     }
     
     /**
+     * Moves this cellpointer to the first column of the next row.
+     * The first column is determined by the value of {@link #firstColumn},
+     * how many rows the new position will be from the present position
+     * is determined by the value of verticalStepDistance.
+     *
+     */
+    public void moveCRLF() {
+        r += vStep;
+        c = firstColumn;
+    }
+    
+    /**
      * Specifies whether this cellpointer is within the bounds of the
      * spreadsheet.
      */
