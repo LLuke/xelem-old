@@ -30,12 +30,14 @@ import org.w3c.dom.Document;
 public class XSerializer {
     
     private Transformer xformer;
-    private static String encoding;
+    private String encoding;
     
     public static final String US_ASCII = "US-ASCII";
     
-    public static void setEncoding(String enc) {
-        encoding = enc;
+    public XSerializer() {}
+    
+    public XSerializer(String encoding) {
+        this.encoding = encoding;
     }
     
     /**

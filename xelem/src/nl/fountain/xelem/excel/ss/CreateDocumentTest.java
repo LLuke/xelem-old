@@ -44,7 +44,7 @@ public class CreateDocumentTest extends TestCase {
     
     // when set to true, test files will be created.
     // the path mentioned after 'testFileDir' should exist.
-    private boolean toFile = true;
+    private boolean toFile = false;
     
     private int warnings;
     private boolean printWarnings;
@@ -720,7 +720,18 @@ public class CreateDocumentTest extends TestCase {
         wb.addSheet().addCell("2020 BV Financiën");
         
         String xml = xmlToString(wb);
-        System.out.println(xml);
+        assertTrue(xml.indexOf("<Data ss:Type=\"String\">2020 BV Financiën</Data>") > 0);
+        
+        //System.out.println(xml);
+        
+        if (toFile) xmlToFile(wb);
+    }
+    
+    public void testActiveSheet() throws Exception {
+        Workbook wb = new XLWorkbook("test29");
+        wb.addSheet();
+        wb.addSheet();
+        wb.getExcelWorkbook().setActiveSheet(1);
         
         xmlToFile(wb);
     }

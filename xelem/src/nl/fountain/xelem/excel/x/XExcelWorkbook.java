@@ -20,6 +20,7 @@ public class XExcelWorkbook extends AbstractXLElement implements ExcelWorkbook {
     private int windowWidth;
     private int windowTopX;
     private int windowTopY;
+    private int activeSheet = -1;
     
     /**
      * Creates a new XExcelWorkbook.
@@ -59,6 +60,10 @@ public class XExcelWorkbook extends AbstractXLElement implements ExcelWorkbook {
     public int getWindowTopY() {
         return windowTopY;
     }
+    
+    public void setActiveSheet(int nr) {
+        activeSheet = nr;
+    }
 
     public String getTagName() {
         return "ExcelWorkbook";
@@ -84,6 +89,8 @@ public class XExcelWorkbook extends AbstractXLElement implements ExcelWorkbook {
             ewbe.appendChild(createElementNS(doc, "WindowTopX", windowTopX));
         if (windowTopY != 0)
             ewbe.appendChild(createElementNS(doc, "WindowTopY", windowTopY));
+        if (activeSheet > -1)
+            ewbe.appendChild(createElementNS(doc, "ActiveSheet", activeSheet));
         
         parent.appendChild(ewbe);
         return ewbe;

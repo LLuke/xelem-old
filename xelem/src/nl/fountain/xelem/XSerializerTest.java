@@ -40,5 +40,12 @@ public class XSerializerTest extends TestCase {
         wb.addSheet().addCell("BV Financiën");
         xs.serialize(wb);
     }
+    
+    public void testFile2() throws XelemException {
+        XSerializer xs = new XSerializer(XSerializer.US_ASCII);
+        wb.setFileName("test_xls/xs_US_ASCII.xml");
+        wb.addSheet().addCell("BV Financiën");
+        xs.serialize(wb);
+    }
 
 }

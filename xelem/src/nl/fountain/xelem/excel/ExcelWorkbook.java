@@ -22,4 +22,6 @@ public interface ExcelWorkbook extends XLElement {
     void setWindowTopY(int y);
     int getWindowTopY();
     
+    void setActiveSheet(int nr);
+    
 }

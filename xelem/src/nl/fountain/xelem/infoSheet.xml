@@ -28,13 +28,18 @@
    <Alignment ss:Horizontal="Left" ss:Vertical="Bottom" ss:Indent="2" ss:WrapText="1"/>
    <Font ss:FontName="Verdana" x:Family="Swiss"/>
    <Interior ss:Color="#FFFF99" ss:Pattern="Solid"/>
-  </Style>  
+  </Style> 
+  <Style ss:ID="iss_DD_bold">
+   <Alignment ss:Horizontal="Left" ss:Vertical="Bottom" ss:Indent="2" ss:WrapText="1"/>
+   <Font ss:FontName="Verdana" x:Family="Swiss" ss:Bold="1"/>
+   <Interior ss:Color="#FFFF99" ss:Pattern="Solid"/>
+  </Style>   
  </Styles>
- <ss:Worksheet ss:Name="xelem-info">
+ <ss:Worksheet ss:Name="x-info">
   <ss:Table>
    <ss:Column ss:AutoFitWidth="0" ss:Width="116.25"/>
    <ss:Column ss:AutoFitWidth="0" ss:Width="377.25"/>
-   <ss:Row ss:Index="3">
+   <ss:Row ss:Index="2">
     <ss:Cell ss:StyleID="iss_DT"/>
     <ss:Cell ss:StyleID="iss_DD"/>
    </ss:Row>
@@ -66,8 +71,12 @@
     <ss:Cell ss:StyleID="iss_DT"/>
     <ss:Cell ss:StyleID="iss_DD"/>
    </ss:Row>
-   <ss:Row ss:AutoFitHeight="0" ss:Height="25.5">
+   <ss:Row>
     <ss:Cell ss:StyleID="iss_DT"><Data ss:Type="String">xelem: </Data></ss:Cell>
+    <ss:Cell ss:StyleID="iss_DD_bold"><Data ss:Type="String">This XML spreadsheet was created with xelem.</Data></ss:Cell>
+   </ss:Row>
+   <ss:Row ss:AutoFitHeight="0" ss:Height="25.5">
+    <ss:Cell ss:StyleID="iss_DT"/>
     <ss:Cell ss:StyleID="iss_DD"><Data ss:Type="String">xelem is a java-library that enables the creation of XML spreadsheets from within any java (web)application. xelem can be downloaded at:</Data></ss:Cell>
    </ss:Row>
    <ss:Row>
@@ -85,6 +94,7 @@
   </ss:Table>
   <x:WorksheetOptions>
    <x:DoNotDisplayGridlines/>
+   <x:DoNotDisplayHeadings/>
   </x:WorksheetOptions>
  </ss:Worksheet>
 </Workbook>
