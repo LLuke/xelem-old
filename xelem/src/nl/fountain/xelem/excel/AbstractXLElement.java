@@ -112,7 +112,7 @@ public abstract class AbstractXLElement implements XLElement {
     /**
      * Creates an {@link org.w3c.dom.Element} with the given <code>qName</code>
      * as it's qualified name and the given <code>value</code> appended to
-     * it as a {@link org.w3c.dom.TextNode}. 
+     * it as a {@link org.w3c.dom.Text}. 
      * Namespace and
      * prefix of the returned element are the same as those of the 
      * calling AbstractXLElement-subclass.
@@ -133,7 +133,7 @@ public abstract class AbstractXLElement implements XLElement {
     /**
      * Creates an {@link org.w3c.dom.Element} with the given <code>qName</code>
      * as it's qualified name and the given value of <code>i</code> appended to
-     * it as a {@link org.w3c.dom.TextNode}. 
+     * it as a {@link org.w3c.dom.Text}. 
      * Namespace and
      * prefix of the returned element are the same as those of the 
      * calling AbstractXLElement-subclass.

@@ -23,7 +23,7 @@ package nl.fountain.xelem;
 
 /**
  * A wrapper class for several exceptions that may occur while working with the
- * {@link XFactory} or {@link XSerializer}.
+ * {@link XFactory}, {@link XSerializer} or {@link XLDocument}.
  */
 public class XelemException extends Exception {
     

@@ -2,7 +2,7 @@
  * Created on Dec 23, 2004
  *
  */
-package nl.fountain.xelem;
+package nl.fountain.xelem.ztest;
 
 import java.io.IOException;
 

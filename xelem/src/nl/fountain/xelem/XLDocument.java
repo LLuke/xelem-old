@@ -32,18 +32,59 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 /**
- *
+ * A class that will take an existing xml-spreadsheet as a template.
+ * <P>
+ * <i>Sometimes you just want to dump a lot of data produced within your java-
+ * application into a preformatted template. Building an 
+ * {@link nl.fountain.xelem.excel.ss.XLWorkbook XLWorkbook} from scratch may be
+ * time consuming and is a waste of effort.</i>
+ * <P>
+ * Create your template in Excel. Select columns to set formatting (i.e. StyleID's)
+ * on entire columns. If you wish, you may put table headings, formula's, titles
+ * and what have you, in the first rows of the sheets. Save your template and
+ * instantiate an instance of XLDocument with the parameter 
+ * <code>fileName</code> set to the path where your template resides. The methods
+ * {@link #appendRow(String, Row) appendRow(String sheetName, Row row)} and 
+ * {@link #appendRows(String, Collection) appendRows(String sheetName, Collection rows)}
+ * will append rows directly under the last row-element of the sheet. Your data
+ * will be formatted according to the StyleID's which where set on your columns
+ * during the creation of the template. 
+ * <P>
+ * The method {@link #setCellData(Cell, String, int, int)} will set or replace
+ * (only) the value of the data-element of the mentioned cell.
+ * 
+ * @since xelem.1.0.1
+ * 
  */
 public class XLDocument {
     
     private Document doc;
     private Map tableMap;
     
+    /**
+     * Creates a new XLDocument by parsing the specified file into a
+     * {@link org.w3c.dom.Document}.
+     * @param fileName	the filename of the xml-spreadsheet template
+     * @throws XelemException	if loading or parsing of the document fails.
+     * <br>Could be any of:
+     * <UL>
+     * <LI>{@link java.io.FileNotFoundException}
+     * <LI>{@link javax.xml.parsers.FactoryConfigurationError}
+     * <LI>{@link javax.xml.parsers.ParserConfigurationException}
+     * <LI>{@link org.xml.sax.SAXException}
+     * <LI>{@link java.io.IOException}
+     * </UL>
+     */
     public XLDocument(String fileName) throws XelemException {
         doc = loadDocument(fileName);
         tableMap = new HashMap();
     }
     
+    /**
+     * 
+     * @return the {@link org.w3c.dom.Document} for which this XLDocument
+     * 	acts as a wrapper
+     */
     public Document getDocument() {
         return doc;
     }

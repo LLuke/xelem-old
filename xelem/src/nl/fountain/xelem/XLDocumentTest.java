@@ -29,7 +29,7 @@ public class XLDocumentTest extends TestCase {
     
     // when set to true, test files will be created.
     // the path mentioned after 'testFileDir' should exist.
-    private boolean toFile = false;
+    private boolean toFile = true;
 
     public static void main(String[] args) {
         junit.textui.TestRunner.run(XLDocumentTest.class);
