@@ -40,8 +40,11 @@ import org.xml.sax.SAXException;
  * {@link nl.fountain.xelem.excel.ss.XLWorkbook XLWorkbook} from scratch may be
  * time consuming and is a waste of effort.</i>
  * <P>
- * This class (allmost) completely ignores the architecture of xelem, parses an
- * existing template-file and tinkers with xml-elements in a more direct approach.
+ * This class (allmost) completely ignores the architecture of xelem. It uses
+ * a different approach. It parses an
+ * existing template-file and tinkers with xml-elements in the derived document.
+ * XLDocument acts as a wrapper around these surgical opperations.
+ * <P>
  * Create your template in Excel. Select columns to set formatting (i.e. StyleID's)
  * on entire columns. If you wish, you may put table headings, formula's, titles
  * and what have you, in the first rows of the sheets. Save your template and
@@ -49,13 +52,16 @@ import org.xml.sax.SAXException;
  * <code>fileName</code> set to the path where your template resides. The methods
  * {@link #appendRow(String, Row) appendRow(String sheetName, Row row)} and 
  * {@link #appendRows(String, Collection) appendRows(String sheetName, Collection rows)}
- * will append {@link nl.fountain.xelem.excel.Row rows} 
- * directly under the last row-element of the sheet. Your data
+ * will append the {@link nl.fountain.xelem.excel.Row rows} as row-elements
+ * directly under the last row-element of the sheet. As long as the cells in
+ * the appended rows do not have a StyleID set, your data
  * will be formatted according to the StyleID's which where set on your columns
- * during the creation of the template. 
+ * during the creation of the template. But offcourse, 
+ * you could apply StyleID's as well (but take care to only use id's that have
+ * a definition in the section <code>&lt;Styles&gt;</code> in your template).
  * <P>
  * The method {@link #setCellData(Cell, String, int, int)} will set or replace
- * (only) the value of the data-element of the mentioned cell.
+ * (only) the data-element of the mentioned cell.
  * 
  * @since xelem.1.0.1
  * 
@@ -130,12 +136,24 @@ public class XLDocument {
     }
     
     /**
-     * Will set or replace (only) the value of the data-element of the mentioned cell.
+     * Will set or replace (only) the data-element of the cell-element at 
+     * the intersection of the mentioned row- and columnIndex. 
+     * This is a time-consuming opperation. A test with a thousand 
+     * iterations of adding a cell with the Worksheet-method
+     * {@link nl.fountain.xelem.excel.Worksheet#addCell(int)} took 31 milliseconds,
+     * while this method took as long as 1219 ms to do the same.
+     * As long as you don't use it for bulk-opperations no significant
+     * time-lack will be manifest. Typically this method is used
+     * to add header information to a bunch of data which you added with
+     * appendRow/appendRows.
      * 
-     * @param cell
-     * @param sheetName
-     * @param rowIndex
-     * @param columnIndex
+     * @param cell	the Cell holding the data
+     * @param sheetName the name of the template-sheet
+     * @param rowIndex	the vertical cell-index
+     * @param columnIndex	the horizontal cell-index
+     * 
+     * @throws java.util.NoSuchElementException	if the mentioned sheet 
+     * 	was not found in the template.
      */
     public void setCellData(Cell cell, String sheetName, int rowIndex, int columnIndex) {
         Element data = cell.getDataElement(doc);
@@ -154,6 +172,17 @@ public class XLDocument {
         }
     }
     
+    /**
+     * Replaces the old text in the element <code>&lt;FileName&gt;</code> with a
+     * new one.
+     * <P>
+     * The FileName element contains the name of the file that contains 
+     * the source range of a PivotTable report.
+     * 
+     * @param fileName the new text for the element <code>&lt;FileName&gt;</code>
+     * @return <code>true</code> if the tag <code>&lt;FileName&gt;</code> was found
+     * 	and the text was replaced, <code>false</code> otherwise.
+     */
     public boolean setConsilidationReferenceFileName(String fileName) {
         boolean found = false;
         NodeList nodelist = doc.getElementsByTagName("FileName");

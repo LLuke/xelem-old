@@ -89,7 +89,7 @@ Most instances of XLElements can be obtained through one of the addXxx- or
 getXxx-methods; some of them are dealt with behind the scenes by xelem.
 A concatenation of such add's and get's can be legal code:
 <PRE>
-        sheet.getTable().addColumn(3).setStyleID("blue");
+        sheet.getTable().addColumnAt(3).setStyleID("blue");
 </PRE>
 XLElements are unaware of their parent until the time of creation of the
 Document. This makes it possible to apply the same instance at different

@@ -126,6 +126,11 @@ public class XLDocumentTest extends TestCase {
        
        XLDocument xldoc = new XLDocument(templateFile);
        xldoc.appendRows("Sheet1", rows);
+       
+       Cell cell = new SSCell();
+       cell.setData(new Date());
+       xldoc.setCellData(cell, "Sheet1", 7, 2);
+       
        Document doc = xldoc.getDocument();
        String xml = serialize(doc);
        //System.out.println(xml);
@@ -148,6 +153,29 @@ public class XLDocumentTest extends TestCase {
         assertTrue(xml.indexOf(expected) > 0);
         //System.out.println(xml);
     }
+    
+//    public void testSetCellDataSpeed() throws Exception {
+//        XLDocument xldoc = new XLDocument(templateFile);
+//        Cell cell = new SSCell();
+//        int itters = 1000;
+//        long start = System.currentTimeMillis();
+//        for (int i = 1; i <= itters; i++) {
+//            cell.setData(i);
+//            xldoc.setCellData(cell, "Sheet2", i, 1);
+//        }
+//        long timeXLDoc = System.currentTimeMillis() - start;
+//        Workbook wb = new XLWorkbook("timetest");
+//        Worksheet sheet = wb.addSheet();
+//        start = System.currentTimeMillis();
+//        for (int i = 1; i <= itters; i++) {
+//            sheet.addCell(i);
+//            sheet.getCellPointer().moveCRLF();
+//        }
+//        long timeXelem = System.currentTimeMillis() - start;
+//        System.out.println();
+//        System.out.println("setCellData: " + timeXLDoc + " ms.");
+//        System.out.println("addCell    : " + timeXelem + " ms.");
+//    }
     
     
     public void testPivot() throws Exception {
