@@ -14,7 +14,9 @@ import nl.fountain.xelem.XLUtil;
 import nl.fountain.xelem.excel.AbstractXLElement;
 import nl.fountain.xelem.excel.DocumentProperties;
 
-
+/**
+ * An implementation of the XLElement DocumentProperties.
+ */
 public class ODocumentProperties extends AbstractXLElement implements DocumentProperties {
     
     private String title;
@@ -29,6 +31,13 @@ public class ODocumentProperties extends AbstractXLElement implements DocumentPr
     private String company;
     private String hyperlinkbase;
     private String appname;
+    
+    /**
+     * Creates a new ODocumentProperties.
+     * 
+     * @see nl.fountain.xelem.excel.Workbook#getDocumentProperties()
+     */
+    public ODocumentProperties() {}
 
     public void setTitle(String title) {
         this.title = title;
@@ -38,17 +47,14 @@ public class ODocumentProperties extends AbstractXLElement implements DocumentPr
         this.subject = subject;
     }
     
-    // @see nl.fountain.xelem.excel.DocumentProperties#setKeywords(java.lang.String)
     public void setKeywords(String keywords) {
         this.keywords = keywords;
     }
     
-    // @see nl.fountain.xelem.excel.DocumentProperties#setDescription(java.lang.String)
     public void setDescription(String description) {
         this.description = description;
     }
     
-    // @see nl.fountain.xelem.excel.DocumentProperties#setCategory(java.lang.String)
     public void setCategory(String category) {
         this.category = category;
     }
@@ -61,7 +67,6 @@ public class ODocumentProperties extends AbstractXLElement implements DocumentPr
         this.lastAuthor = lastAuthor;
     }
     
-    // @see nl.fountain.xelem.excel.DocumentProperties#setManager(java.lang.String)
     public void setManager(String manager) {
         this.manager = manager;
     }
@@ -70,12 +75,10 @@ public class ODocumentProperties extends AbstractXLElement implements DocumentPr
         this.company = company;
     }
     
-    // @see nl.fountain.xelem.excel.DocumentProperties#setHyperlinkBase(java.lang.String)
     public void setHyperlinkBase(String hyperlinkbase) {
         this.hyperlinkbase = hyperlinkbase;
     }
     
-    // @see nl.fountain.xelem.excel.DocumentProperties#setAppName(java.lang.String)
     public void setAppName(String appname) {
         this.appname = appname;
     }

@@ -14,7 +14,7 @@ public class HelloExcel {
 
     public static void main(String[] args) throws XelemException {
         Workbook wb = new XLWorkbook("HelloExcel");
-        wb.addSheet().addCell("Hello Excel");
+        wb.addSheet().addCell("Hello Excel!");
         new XSerializer().serialize(wb);
     }
 }

@@ -79,8 +79,8 @@ public class SSCellTest extends XLElementTest {
        Number n = null;
        cell.setData(n);
        assertEquals("Error", cell.getXlDataType());
-       assertEquals("#NULL!", cell.getData$());
-       assertEquals("=#NULL!", cell.getFormula());
+       assertEquals("#N/A", cell.getData$());
+       assertEquals("=#N/A", cell.getFormula());
     }
     
     public void testDataTypeDate() {
@@ -99,8 +99,8 @@ public class SSCellTest extends XLElementTest {
        Date d = null;
        cell.setData(d);
        assertEquals("Error", cell.getXlDataType());
-       assertEquals("#NULL!", cell.getData$());
-       assertEquals("=#NULL!", cell.getFormula());
+       assertEquals("#N/A", cell.getData$());
+       assertEquals("=#N/A", cell.getFormula());
     }
     
     public void testDataTypeBoolean() {
@@ -126,8 +126,8 @@ public class SSCellTest extends XLElementTest {
        Boolean b = null;
        cell.setData(b);
        assertEquals("Error", cell.getXlDataType());
-       assertEquals("#NULL!", cell.getData$());
-       assertEquals("=#NULL!", cell.getFormula());
+       assertEquals("#N/A", cell.getData$());
+       assertEquals("=#N/A", cell.getFormula());
     }
     
     public void testDataTypeString() {
@@ -155,12 +155,12 @@ public class SSCellTest extends XLElementTest {
        String s = null;
        cell.setData(s);
        assertEquals("Error", cell.getXlDataType());
-       assertEquals("#NULL!", cell.getData$());
-       assertEquals("=#NULL!", cell.getFormula());
+       assertEquals("#N/A", cell.getData$());
+       assertEquals("=#N/A", cell.getFormula());
     }
     
     public void testDataTypeError() {
-       cell.setError(Cell.errortype_NA);
+       cell.setError(Cell.ERRORVALUE_NA);
        assertEquals("Error", cell.getXlDataType());
        assertEquals("#N/A", cell.getData$());
        assertEquals("=#N/A", cell.getFormula());
@@ -207,7 +207,7 @@ public class SSCellTest extends XLElementTest {
         Object o = "123456789";
         SSCell sCell = new SSCell() {
             public void setData(String data) {
-                setXLDataType(datatype_Number);
+                setXLDataType(DATATYPE_NUMBER);
                 setData(data.length());
              }
         };

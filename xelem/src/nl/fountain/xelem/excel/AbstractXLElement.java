@@ -26,7 +26,14 @@ public abstract class AbstractXLElement implements XLElement {
     
     protected AbstractXLElement() {}
     
-    // @see nl.fountain.xelem.excel.XLElement#addComment(java.lang.String)
+    /**
+     * Add a comment to this XLElement. Whether the comment will be printed
+     * in the xml produced during assembly, depends on the setting of the
+     * Workbook's 
+     * {@link nl.fountain.xelem.excel.Workbook#setPrintComments(boolean)}-method.
+     * 
+     * @param 	comment the comment to be added.
+     */
     public void addComment(String comment) {
         if (comments == null) {
             comments = new ArrayList();
@@ -34,7 +41,11 @@ public abstract class AbstractXLElement implements XLElement {
         comments.add(comment);
     }
     
-    // @see nl.fountain.xelem.excel.XLElement#getComments()
+    /**
+     * Gets the list of added comments.
+     * 
+     * @return 	a list of Strings.
+     */
     public List getComments() {
         return comments;
     }

@@ -6,7 +6,6 @@ package nl.fountain.xelem.excel.ss;
 
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.Map;
 import java.util.TreeMap;
 
 import nl.fountain.xelem.GIO;
@@ -18,7 +17,9 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 /**
- *
+ * An implementation of the XLElement Row.
+ * 
+ * 
  */
 public class SSRow extends AbstractXLElement implements Row {
 
@@ -30,6 +31,12 @@ public class SSRow extends AbstractXLElement implements Row {
     private boolean hidden;
     //private boolean autoFitHeight;
     
+    /**
+     * Constructs a new SSRow.
+     * 
+     * @see nl.fountain.xelem.excel.Worksheet#addRow()
+     * @see nl.fountain.xelem.excel.Table#addRow()
+     */
     public SSRow() {
         cells = new TreeMap();
     }
@@ -42,27 +49,22 @@ public class SSRow extends AbstractXLElement implements Row {
         return styleID;
     }
     
-    // @see nl.fountain.xelem.excel.ss.Row#setHeight(double)
     public void setHeight(double h) {
         height = h;
     }
     
-    // @see nl.fountain.xelem.excel.ss.Row#setSpan(int)
     public void setSpan(int s) {
         span = s;
     }
     
-    // @see nl.fountain.xelem.excel.ss.Row#setHidden(boolean)
     public void setHidden(boolean hide) {
         hidden = hide;
     }
     
-//    // @see nl.fountain.xelem.excel.Row#setAutoFitHeight(boolean)
 //    public void setAutoFitHeight(boolean autoFit) {
 //        autoFitHeight = autoFit;
 //    }
 
-    // @see nl.fountain.xelem.std.ss.Row#addCell()
     public Cell addCell() {
         return addCellAt(0, new SSCell());
     }
@@ -93,14 +95,12 @@ public class SSRow extends AbstractXLElement implements Row {
         return addCellAt(0, cell);
     }
     
-    // @see nl.fountain.xelem.excel.ss.Row#addCell(int)
     public Cell addCell(int data) {
         Cell cell = new SSCell();
         cell.setData(data);
         return addCellAt(0, cell);
     }
     
-    // @see nl.fountain.xelem.excel.ss.Row#addCell(int, java.lang.String)
     public Cell addCell(int data, String styleID) {
         Cell cell = new SSCell();
         cell.setData(data);
@@ -108,17 +108,14 @@ public class SSRow extends AbstractXLElement implements Row {
         return addCellAt(0, cell);
     }
 
-    // @see nl.fountain.xelem.std.ss.Row#addCell(int)
     public Cell addCellAt(int index) {
         return addCellAt(index, new SSCell());
     }
     
-    // @see nl.fountain.xelem.std.ss.Row#addCell(nl.fountain.xelem.std.ss.Cell)
     public Cell addCell(Cell cell) {
         return addCellAt(0, cell);
     }
     
-    // @see nl.fountain.xelem.std.ss.Row#addCell(nl.fountain.xelem.std.ss.Cell)
     public Cell addCellAt(int index, Cell cell) {
         if (index < 1) index = maxCellIndex() + 1;
         cells.put(new Integer(index), cell);
@@ -129,12 +126,10 @@ public class SSRow extends AbstractXLElement implements Row {
        return (Cell) cells.remove(new Integer(index)); 
     }
 
-    // @see nl.fountain.xelem.std.ss.Row#getCells()
     public Collection getCells() {
         return cells.values();
     }
 
-    // @see nl.fountain.xelem.std.ss.Row#getCell(int)
     public Cell getCellAt(int index) {
         return (Cell) cells.get(new Integer(index));
     }
@@ -143,7 +138,7 @@ public class SSRow extends AbstractXLElement implements Row {
        return cells.size(); 
     }
     
-    public Map getCellMap() {
+    public TreeMap getCellMap() {
         return cells;
     }
       
@@ -157,21 +152,14 @@ public class SSRow extends AbstractXLElement implements Row {
         return lastKey;
     }
     
-    protected void setIndex(int index) {
-        idx = index;
-    }
-    
-    // @see nl.fountain.xelem.excel.XLElement#getTagName()
     public String getTagName() {
         return "Row";
     }
 
-    // @see nl.fountain.xelem.excel.XLElement#getNameSpace()
     public String getNameSpace() {
         return XMLNS_SS;
     }
 
-    // @see nl.fountain.xelem.excel.XLElement#getPrefix()
     public String getPrefix() {
         return PREFIX_SS;
     }
@@ -208,6 +196,15 @@ public class SSRow extends AbstractXLElement implements Row {
         }
         
         return re;
+    }
+    
+    /**
+     * Sets the value of the ss:Index-attribute of this Row-element. This method is 
+     * called by {@link nl.fountain.xelem.excel.Table#rowIterator()} to set the
+     * index of this row during assembly.
+     */
+    protected void setIndex(int index) {
+        idx = index;
     }
     
     /////////////////////////////////////////////

@@ -5,14 +5,52 @@
 package nl.fountain.xelem.excel;
 
 /**
- * Represents the Pane element.
+ * Represents the Pane element. 
+ * <P>
+ * Excel can split a window into a maximum of 4 panes. Panes come into vision
+ * when you apply the 
+ * {@link nl.fountain.xelem.excel.WorksheetOptions#splitHorizontal(int, int) splitHorizontal}-,
+ * {@link nl.fountain.xelem.excel.WorksheetOptions#splitVertical(int, int) splitVertical}- or
+ * {@link nl.fountain.xelem.excel.WorksheetOptions#freezePanesAt(int, int) freezePanesAt}-methods
+ * of the {@link nl.fountain.xelem.excel.WorksheetOptions}.
+ * 
+ * 
+ * @see nl.fountain.xelem.excel.WorksheetOptions#setActiveCell(int, int, int)
+ * @see nl.fountain.xelem.excel.WorksheetOptions#setActiveCell(int, int)
+ * @see nl.fountain.xelem.excel.WorksheetOptions#freezePanesAt(int, int)
+ * @see nl.fountain.xelem.excel.WorksheetOptions#splitHorizontal(int, int)
+ * @see nl.fountain.xelem.excel.WorksheetOptions#splitVertical(int, int)
+ * @see nl.fountain.xelem.excel.WorksheetOptions#setRangeSelection(int, String)
+ * @see nl.fountain.xelem.excel.WorksheetOptions#setRangeSelection(String)
  */
 public interface Pane extends XLElement {
     
-    public static int TOP_LEFT = 3;
-    public static int BOTTOM_LEFT = 2;
-    public static int TOP_RIGHT = 1;
-    public static int BOTTOM_RIGHT = 0;
+    /**
+     * Variable indicating the top left pane. The top left pane is the standard
+     * pane which is allways visible.
+     */
+    public static final int TOP_LEFT = 3;
+    
+    /**
+     * Variable indicating the bottom left pane. The bottom left pane can
+     * only be addressed if a window is split horizontally, either by splitting
+     * or freezing panes.
+     */
+    public static final int BOTTOM_LEFT = 2;
+    
+    /**
+     * Variable indicating the top right pane. The top right pane can 
+     * only be addressed if a window is split vertically, either by splitting 
+     * or freezing panes.
+     */
+    public static final int TOP_RIGHT = 1;
+    
+    /**
+     * Variable indicating the bottom right pane. The bottom right pane can
+     * only be addressed if a window is split vertically <em>and</em> horizontally,
+     * either by spltting or freezing panes.
+     */
+    public static final int BOTTOM_RIGHT = 0;
     
     int getNumber();
     void setActiveCell(int row, int col);

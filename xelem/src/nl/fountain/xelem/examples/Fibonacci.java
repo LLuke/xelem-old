@@ -36,7 +36,7 @@ public class Fibonacci {
         }
         
         // 
-        sheet.addWorksheetOptions().freezePanesAt(11, 0);
+        sheet.getWorksheetOptions().freezePanesAt(11, 0);
         sheet.setAutoFilter("R10C1:R10C4");
         
         try {

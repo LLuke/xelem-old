@@ -1,0 +1,250 @@
+<body>With classes and interfaces in this library an Excel XML spreadsheet
+can easily be created. 
+<UL>
+<LI><a href="#spreadsheetml"><b>SpreadsheetML</b></a>
+<LI><a href="#xelem"><b>xelem</b></a>
+<UL>
+<LI><a href="#creatingaworkbook">creating a workbook</a>
+<LI><a href="#xlelements">XLElements</a>
+<LI><a href="#xfactory">configuration: the XFactory</a>
+<LI><a href="#styles">formatting the workbook: Styles</a>
+<LI><a href="#webapplications">xelem and webApplications</a>
+
+</UL>
+</UL>
+<H2 id="spreadsheetml">SpreadsheetML</H2>
+Understanding the global structure of SpreadsheetML is critical in
+using some of the methods of xelem's classes. These methods are often
+not documented in this javadoc; a notion of their working should be obtained
+by looking up the corresponding documentation on the xml-element.
+<br>
+An overview of SpreadsheetML, the xml-dialect for Excel, can be obtained
+at:
+<a href="http://www.microsoft.com/downloads/details.aspx?familyid=fe118952-3547-420a-a412-00a2662442d9&amp;displaylang=en">
+Office 2003 XML Schemas</a>
+
+<H2 id="xelem">xelem</H2>
+The architecture of xelem stays close to the architecture of SpreadsheetML. 
+Each element in the xml can have it's equivalent in a Java class that implements the 
+{@link nl.fountain.xelem.excel.XLElement XLElement-interface}.
+Though for you, the user of this software, these details are often obscured: 
+you simply add a 'Cell' to a 'Worksheet' and bypass the underlying structures of 
+'Table' and 'Row'. You'd call on a method like freezePanesAt(int row, int column) 
+and don't have to bother about the settings of 'Pane'-elements that go with the show. 
+Xelem takes care of that.
+The root of the XML spreadsheet is the Workbook-element, the hub and starting point
+of xelem is the {@link nl.fountain.xelem.excel.ss.XLWorkbook XLWorkbook.class}.
+
+<HR>
+<H3 id="creatingaworkbook">creating a workbook</H3>
+Typically, the {@link nl.fountain.xelem.excel.ss.XLWorkbook} 
+is at the start of creating an Excel workbook in 
+SpreadsheetML. Mostly all of the other objects in xelem can be obtained
+from it or through it by one of the addXxx- or getXxx-methods. 
+After setting up the workbook, you can obtain the 
+{@link org.w3c.dom.Document org.w3c.dom.Document} from it or serialize 
+the workbook by means of one of the
+serialize-methods in the {@link nl.fountain.xelem.XSerializer XSerializer.class}.
+<P>
+Here's a small example:
+<PRE>
+        import nl.fountain.xelem.XSerializer;
+        import nl.fountain.xelem.XelemException;
+        import nl.fountain.xelem.excel.Workbook;
+        import nl.fountain.xelem.excel.ss.XLWorkbook;
+               
+        public class HelloExcel {
+        
+            public static void main(String[] args) throws XelemException {
+                Workbook wb = new XLWorkbook("HelloExcel");
+                wb.addSheet().addCell("Hello Excel!");
+                new XSerializer().serialize(wb);
+            }
+        }
+</PRE>
+The first line constructs a
+new workbook with the name "HelloExcel". The last line 
+serializes the workbook, in this
+case to a file called "HelloExcel.xls", since we didn't set a filename on the
+workbook explicitly. The setting up of the workbook's contents took place
+between these lines: here we added a sheet and a cell who's contents read
+"Hello Excel!". In a real-world example the setting up of the workbook's contents
+and formatting would probably take more lines of code, but would typically be
+between the construction and the serialization of the workbook.
+
+<HR>
+<H3 id="xlelements">XLElements</H3>
+The {@link nl.fountain.xelem.excel.XLElement XLElement-interface} is at the heart 
+of xelem. Each SpreadsheetML-element can have it's equivalent in a 
+Java class that implements this interface. Besides methods for setting attributes
+and adding children, instances of these classes are capable of assembling their state 
+into an {@link org.w3c.dom.Element} and attach this Element to a parent-element in a
+{@link org.w3c.dom.Document}. Assembly of the complete workbook takes place
+after a call to the Workbook's 
+{@link nl.fountain.xelem.excel.Workbook#createDocument() createDocument}-method, wich
+is called by the {@link nl.fountain.xelem.XSerializer XSerializer.class}, before
+serializaton.
+<P>
+Most instances of XLElements can be obtained through one of the addXxx- or
+getXxx-methods; some of them are dealt with behind the scenes by xelem.
+A concatenation of such add's and get's can be legal code:
+<PRE>
+        sheet.getTable().addColumn(3).setStyleID("blue");
+</PRE>
+XLElements are unaware of their parent until the time of creation of the
+Document. This makes it possible to apply the same instance at different
+places:
+<PRE>
+        Worksheet sheet = workbook.addSheet();
+        Cell cell = sheet.addCellAt(11, 2); // adds a cell at row 11, column 2
+        cell.setStyleID("currency");
+        cell.setFormula("=SUBTOTAL(9;R[-10]C:R[-1]C)");
+        for (int i = 3; i &lt; 9; i++) {
+            sheet.addCell(cell);
+        }
+</PRE>
+The preceding code-stub configures a cell at row 11, column 2, sets a style
+and a relative formula, and this cell is distributed in row 11, over columns
+3 through 8 inclusive.
+
+<HR>
+<H3 id="xfactory">the XFactory</H3>
+The {@link nl.fountain.xelem.XFactory} is an intermediary to the configuration file, 
+it's main productline being SpreadsheetML Style elements. Normally this class expects 
+a configuration file at the location <code>config/xelem.xml</code>, relative to 
+the classloader of the main application. If desired a different location may be 
+set by calling the static
+{@link nl.fountain.xelem.XFactory#setConfigurationFileName(String)}.
+<P>
+<B>What's in the configuration file?</B> 
+<br>Comments and styles up to this far.
+<P>
+<B>When is the XFactory employed?</B> 
+<BR>The workbook uses an instance of
+XFactory during the creation of the document and delegates the merging of styles
+to it when you call mergeStyles on the workbook.
+<P>
+<B>What happens if the configuration file is not found or is corrupt?</B>
+<BR>Nothing serious. The XFactory will throw Exceptions under these circumstances,
+but -since they're not fatal errors- the workbook will catch them and register these
+exceptions as warnings. You should allways check if there are any warnings
+after creating a document or passing the workbook to the XSerializer.
+See {@link nl.fountain.xelem.excel.Workbook#getWarnings()}.
+<P>
+<B>What's an <code>&lt;f:comment&gt;</code>?</B>
+<BR>
+An <code>&lt;f:comment&gt;</code> is an element in the configuration file and
+is most confusingly known in these java-interfaces as a docComment.
+DocComments are the comments that will be passed in at the start of 
+the Workbook document, just after the processing instruction.
+<P>
+<B>What about Styles?</B>
+<BR>
+Read all about Styles in the <a href="#styles">next chapter</a>.
+<P>
+<B>Where can I find an example of a configuration file?</B>
+<BR>
+An example of the configuration file is included in the distribution of this
+library and can be found at <code>../lib/config/xelem.xml</code>. Here's an 
+another example:
+<PRE>
+    &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+    &lt;Xelem 	xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+    		xmlns:o="urn:schemas-microsoft-com:office:office"
+    		xmlns:x="urn:schemas-microsoft-com:office:excel"
+    		xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+    		xmlns:f="urn:schemas-fountain-nl:xelem:config"
+    		xmlns:html="http://www.w3.org/TR/REC-html40"&gt;
+    		
+      &lt;f:comment&gt;      THIS IS AN EXCEL-FILE OF TYPE SpreadsheetML.        &lt;/f:comment&gt;
+      &lt;f:comment&gt;                   IF YOU READ THIS                       &lt;/f:comment&gt;
+      &lt;f:comment&gt;    YOU PROBABLY NEED A MORE RECENT VERSION OF EXCEL.     &lt;/f:comment&gt;
+      
+      &lt;Styles&gt;
+      
+        &lt;Style ss:ID="Default" ss:Name="Normal"&gt;
+          &lt;Alignment ss:Vertical="Bottom"/&gt;
+          &lt;Borders/&gt;
+          &lt;Font/&gt;
+          &lt;Interior/&gt;
+          &lt;NumberFormat/&gt;
+          &lt;Protection/&gt;
+        &lt;/Style&gt;
+        
+        &lt;Style ss:ID="blue"&gt;
+          &lt;Interior ss:Color="#0000FF" ss:Pattern="Solid"/&gt;
+        &lt;/Style&gt;
+        
+      &lt;/Styles&gt;
+    
+    &lt;/Xelem&gt;
+</PRE>
+
+<HR>
+<H3 id="styles">Styles</H3>
+A 'Style' is a SpreadsheetML-element, but it does not have an equivalent in a
+java-class in xelem (yet). It's more practical to have the definition of
+used styles in a file: the configuration file (see above). This way you can
+use your Excel-application to create styles wysiwyg-like and copy them to 
+the mentioned file. You should not include a prefix on the Style-element nor it's
+children, though the attributes should have prefixes. Styles should not have
+an attribute 'ss:ParentID', xelem cannot handle these correctly.
+<P>
+Cells, Rows, Columns and Tables all have a method setStyleID(String id). When you
+use these methods, you should either have a definition with the same
+ss:ID-attribute as the passed id in the configuration
+file or you should have merged a style with such an id before calling the
+createDocument-method on the workbook. 
+
+<HR>
+<H3 id="webapplications">xelem and webApplications</H3>
+Using xelem in a webApplication can offer your clients the oppertunity to
+download Excel-files that are dynamically created upon request. Here's an example
+of a Servlet-method that responds to a request for download:
+<PRE>
+        protected void sendWorkbook(HttpServletResponse response, Workbook wb) 
+        	throws IOException {
+        	
+            wb.setFileName(wb.getName() + "_" + ++excelCounter + ".xls");
+            response.setContentType("application/vnd.ms-excel");
+            response.addHeader("Content-Disposition", 
+                    "attachment; filename=" + wb.getFileName());
+            
+            PrintWriter out = response.getWriter();
+            try {
+                new XSerializer().serialize(wb, out);
+                out.flush();
+            } catch (XelemException e) {
+                e.printStackTrace();
+            } finally {
+                out.close();
+            }
+        }
+</PRE>
+Now the first line of code may be puzzling. The <code>excelCounter</code> is
+a static int that is increased by 1, each time an xml workbook-file is send
+over the line. But why is it there? Ever seen the message "A file with the
+name 'foo.xls' is allready open"? That's why. 
+<br>Immagine your webApplication
+serves Excel-files for download entitled "Volume of Business.xls".
+Your CEO sets some parameters on a form and downloads the
+"Volume of Business.xls" for Europe for the passed month. She wants to
+know more, returns to your site, changes some parameters and expects
+to download the "Volume of Business.xls", this time for the US and for the past year.
+Now she's in trouble: Excel won't open a second file with the same name.
+<br>Here's where the 
+<code>excelCounter</code> comes in. With the line of code the 
+first downloaded file would have been named
+"Volume of Business_303.xls" or something and the second one 
+"Volume of Business_305.xls". Never a double name and never a problem.
+<P>
+Allthough the produced xml contains a processing-instruction, some browsers
+only look at the extension when deciding what to do with a downloaded file.
+My Mozilla browser is effectively (mis)lead by the extension '.xls' and
+suggests to use Excel as the application to open the downloaded file.
+<P>
+The <code>setContentType</code>- and <code>addHeader</code>-lines
+serve equally to guarantee the correct transfer of the file.
+The rest of the code is clear enough.
+
+</body>

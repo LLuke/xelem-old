@@ -4,9 +4,7 @@
  */
 package nl.fountain.xelem.excel.ss;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 
 import nl.fountain.xelem.GIO;
 import nl.fountain.xelem.excel.AbstractXLElement;
@@ -23,7 +21,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 /**
- *
+ * An implementation of the XLElement Worksheet.
  */
 public class SSWorksheet extends AbstractXLElement implements Worksheet {
     
@@ -34,67 +32,49 @@ public class SSWorksheet extends AbstractXLElement implements Worksheet {
     private WorksheetOptions options;
     private AutoFilter autoFilter;
     
+    /**
+     * Constructs a new SSWorksheet with the given name.
+     * 
+     * @see nl.fountain.xelem.excel.Workbook#addSheet()
+     */
     public SSWorksheet(String name) {
         this.name = name;
     }
 
-    // @see nl.fountain.xelem.std.ss.Worksheet#getName()
     public String getName() {
         return name;
     }
     
-    // @see nl.fountain.xelem.excel.ss.Worksheet#setProtected(boolean)
     public void setProtected(boolean p) {
         protect = p;
     }
     
-    // @see nl.fountain.xelem.excel.ss.Worksheet#setRightToLeft(boolean)
     public void setRightToLeft(boolean r) {
         righttoleft = r;
     }
     
-    // @see nl.fountain.xelem.excel.ss.Worksheet#addWorksheetOptions()
-    public WorksheetOptions addWorksheetOptions() {
-        options = new XWorksheetOptions();
-        return options;
-    }
-
-    // @see nl.fountain.xelem.excel.ss.Worksheet#addWorksheetOptions(nl.fountain.xelem.excel.x.WorksheetOptions)
-    public WorksheetOptions addWorksheetOptions(WorksheetOptions wso) {
-        options = wso;
-        return options;
-    }
-
-    // @see nl.fountain.xelem.excel.ss.Worksheet#hasWorksheetOptions()
     public boolean hasWorksheetOptions() {
         return options != null;
     }
 
-    // @see nl.fountain.xelem.excel.ss.Worksheet#getWorksheetOptions()
     public WorksheetOptions getWorksheetOptions() {
+        if (options == null) {
+            options = new XWorksheetOptions();
+        }
         return options;
     }
 
-    // @see nl.fountain.xelem.std.ss.Worksheet#addTable()
-    public Table addTable() {
-        table = new SSTable();
-        return table;
-    }
-
-    // @see nl.fountain.xelem.std.ss.Worksheet#getTable()
     public Table getTable() {
         if (table == null) {
-            table = addTable();
+            table = new SSTable();
         }
         return table;
     }
     
-    // @see nl.fountain.xelem.excel.ss.Worksheet#hasTable()
     public boolean hasTable() {
         return table != null;
     }
 
-    // @see nl.fountain.xelem.std.ss.Worksheet#addCell()
     public Cell addCell() {
         return getTable().currentRow().addCell();
     }
@@ -115,92 +95,66 @@ public class SSWorksheet extends AbstractXLElement implements Worksheet {
         return getTable().currentRow().addCell(data, styleID);
     }
     
-    // @see nl.fountain.xelem.excel.ss.Worksheet#addCell(int)
     public Cell addCell(int data) {
         return getTable().currentRow().addCell(data);
     }
     
-    // @see nl.fountain.xelem.excel.ss.Worksheet#addCell(int, java.lang.String)
     public Cell addCell(int data, String styleID) {
         return getTable().currentRow().addCell(data, styleID);
     }
     
-    // @see nl.fountain.xelem.std.ss.Worksheet#addCell(nl.fountain.xelem.std.ss.Cell)
     public Cell addCell(Cell cell) {
         return getTable().currentRow().addCell(cell);
     }
 
-    // @see nl.fountain.xelem.std.ss.Worksheet#addCell(int, int)
     public Cell addCellAt(int rowIndex, int columnIndex) {
         Row row = getTable().getRow(rowIndex);
         if (row == null) row = getTable().addRow(rowIndex);
         return row.addCellAt(columnIndex);
     }
     
-    // @see nl.fountain.xelem.std.ss.Worksheet#addCell(int, int, nl.fountain.xelem.std.ss.Cell)
     public Cell addCellAt(int rowIndex, int columnIndex, Cell cell) {
         Row row = getTable().getRow(rowIndex);
         if (row == null) row = getTable().addRow(rowIndex);
         return row.addCellAt(columnIndex, cell);
     }
     
-    // @see nl.fountain.xelem.std.ss.Worksheet#getCell(int, int)
     public Cell getCellAt(int rowIndex, int columnIndex) {
         Row row = getTable().getRow(rowIndex);
         if (row == null) return null;
         return row.getCellAt(columnIndex);
     }
 
-    // @see nl.fountain.xelem.std.ss.Worksheet#removeCell(int, int)
     public Cell removeCellAt(int rowIndex, int columnIndex) {
         Row row = getTable().getRow(rowIndex);
         if (row == null) return null;
         return row.removeCellAt(columnIndex);
     }
 
-    // @see nl.fountain.xelem.std.ss.Worksheet#getCells()
-    public Collection getCells() {
-        Collection cells = new ArrayList();
-        for (Iterator iter = getRows().iterator(); iter.hasNext();) {
-            Row row = (Row) iter.next();
-            for (Iterator iterator = row.getCells().iterator(); iterator.hasNext();) {
-                cells.add(iterator.next());               
-            }
-        }
-        return cells;
-    }
-
-    // @see nl.fountain.xelem.std.ss.Worksheet#addRow()
     public Row addRow() {
         return getTable().addRow();
     }
 
-    // @see nl.fountain.xelem.std.ss.Worksheet#addRow(int)
     public Row addRow(int rowIndex) {
         return getTable().addRow(rowIndex);
     }
 
-    // @see nl.fountain.xelem.std.ss.Worksheet#addRow(nl.fountain.xelem.std.ss.Row)
     public Row addRow(Row row) {
         return getTable().addRow(row);
     }
     
-    // @see nl.fountain.xelem.std.ss.Worksheet#addRow(int, nl.fountain.xelem.std.ss.Row)
     public Row addRow(int index, Row row) {
         return getTable().addRow(index, row);
     }
 
-    // @see nl.fountain.xelem.std.ss.Worksheet#removeRow(int)
     public Row removeRow(int rowIndex) {
         return getTable().removeRow(rowIndex);
     }
 
-    // @see nl.fountain.xelem.std.ss.Worksheet#getRows()
     public Collection getRows() {
         return getTable().getRows();
     }
 
-    // @see nl.fountain.xelem.std.ss.Worksheet#getRow(int)
     public Row getRow(int rowIndex) {
         return getTable().getRow(rowIndex);
     }
@@ -209,28 +163,23 @@ public class SSWorksheet extends AbstractXLElement implements Worksheet {
         return getTable().currentRow();
     }
     
-    // @see nl.fountain.xelem.excel.XLElement#getTagName()
     public String getTagName() {
         return "Worksheet";
     }
     
-    // @see nl.fountain.xelem.excel.XLElement#getNameSpace()
     public String getNameSpace() {
         return XMLNS_SS;
     }
     
-    // @see nl.fountain.xelem.excel.XLElement#getPrefix()
     public String getPrefix() {
         return PREFIX_SS;
     }
     
-    // @see nl.fountain.xelem.excel.Worksheet#setAutoFilter(java.lang.String)
     public void setAutoFilter(String rcString) {
         autoFilter = new XAutoFilter();
         autoFilter.setRange(rcString);
     }
     
-    // @see nl.fountain.xelem.excel.Worksheet#hasAutoFilter()
     public boolean hasAutoFilter() {
         return autoFilter != null;
     }

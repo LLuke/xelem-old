@@ -12,20 +12,25 @@ import nl.fountain.xelem.excel.AbstractXLElement;
 import nl.fountain.xelem.excel.NamedRange;
 
 /**
- *
+ * An implementation of the XLElement NamedRange.
  */
 public class SSNamedRange extends AbstractXLElement implements NamedRange {
     
     private String name;
     private String refersTo;
     private boolean hidden;
+
     
+    /**
+     * Creates a new SSNamedRange.
+     * 
+     * @see nl.fountain.xelem.excel.Workbook#addNamedRange(String, String)
+     */
     public SSNamedRange(String name, String refersTo) {
         this.name = name;
         this.refersTo = refersTo;
     }
 
-    // @see nl.fountain.xelem.excel.NamedRange#setHidden(boolean)
     public void setHidden(boolean hide) {
         hidden = hide;
     }

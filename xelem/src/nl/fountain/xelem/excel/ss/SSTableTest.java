@@ -33,12 +33,12 @@ public class SSTableTest extends XLElementTest {
      * Een nieuwe tabel moet de eerste rij op index 1 plaatsen enz.
      */
     public void testAddRow() {
-        assertEquals(0, table.size());
+        assertEquals(0, table.rowCount());
         Row row = table.addRow();
-        assertEquals(1, table.size());
+        assertEquals(1, table.rowCount());
         assertSame(row, table.getRowMap().get(new Integer(1)));
         Row row2 = table.addRow();
-        assertEquals(2, table.size());
+        assertEquals(2, table.rowCount());
         assertSame(row2, table.getRowMap().get(new Integer(2)));
         assertNotSame(row, row2);
         
@@ -56,17 +56,17 @@ public class SSTableTest extends XLElementTest {
      * De methode addRow(index) plaatst rijen op de gegeven index.
      */
     public void testAddRow_index() {
-        assertEquals(0, table.size());
+        assertEquals(0, table.rowCount());
         Row row = table.addRow(5);
-        assertEquals(1, table.size());
+        assertEquals(1, table.rowCount());
         assertSame(row, table.getRowMap().get(new Integer(5)));
         
         Row row6 = table.addRow();
-        assertEquals(2, table.size());
+        assertEquals(2, table.rowCount());
         assertSame(row6, table.getRowMap().get(new Integer(6)));
         
         Row row3 = table.addRow(3);
-        assertEquals(3, table.size());
+        assertEquals(3, table.rowCount());
         assertSame(row3, table.getRowMap().get(new Integer(3)));
         
         Iterator iter = table.getRows().iterator();
@@ -80,11 +80,11 @@ public class SSTableTest extends XLElementTest {
         }
         
         Row row5 = table.addRow(5);
-        assertEquals(3, table.size());
+        assertEquals(3, table.rowCount());
         assertSame(row5, table.getRowMap().get(new Integer(5)));
         
         Row row7 = table.addRow();
-        assertEquals(4, table.size());
+        assertEquals(4, table.rowCount());
         assertSame(row7, table.getRowMap().get(new Integer(7)));
         
         iter = table.getRows().iterator();
@@ -100,24 +100,24 @@ public class SSTableTest extends XLElementTest {
     }
     
     public void testAddRow_Row() {
-        assertEquals(0, table.size());
+        assertEquals(0, table.rowCount());
         Row row = new SSRow();
         Row returnRow = table.addRow(row);
-        assertEquals(1, table.size());
+        assertEquals(1, table.rowCount());
         assertSame(row, returnRow);
         assertSame(row, table.getRowMap().get(new Integer(1)));
     }
     
     public void testAddRow_index_Row() {
-        assertEquals(0, table.size());
+        assertEquals(0, table.rowCount());
         Row row = new SSRow();
         Row returnRow = table.addRow(-1, row);
-        assertEquals(1, table.size());
+        assertEquals(1, table.rowCount());
         assertSame(row, returnRow);
         assertSame(row, table.getRowMap().get(new Integer(1)));
         
         Row returnRow2 = table.addRow(5, row);
-        assertEquals(2, table.size());
+        assertEquals(2, table.rowCount());
         assertSame(row, returnRow2);
         assertSame(row, table.getRowMap().get(new Integer(5)));
     }
@@ -126,9 +126,9 @@ public class SSTableTest extends XLElementTest {
        table.addRow();
        Row row = table.addRow();
        table.addRow();
-       assertEquals(3, table.size());
+       assertEquals(3, table.rowCount());
        assertSame(row, table.removeRow(2));
-       assertEquals(2, table.size());
+       assertEquals(2, table.rowCount());
        
        table.addRow();
        Iterator iter = table.getRowMap().keySet().iterator();
@@ -145,15 +145,15 @@ public class SSTableTest extends XLElementTest {
     public void testCurrentRow() {
        Row row = table.currentRow();
        assertNotNull(row);
-       assertEquals(1, table.size());
+       assertEquals(1, table.rowCount());
        assertSame(row, table.getRowMap().get(new Integer(1)));
        
        table.removeRow(1);
-       assertEquals(0, table.size());
+       assertEquals(0, table.rowCount());
        
        row = table.currentRow();
        assertNotNull(row);
-       assertEquals(1, table.size());
+       assertEquals(1, table.rowCount());
        assertSame(row, table.getRowMap().get(new Integer(1)));  
     }
     
@@ -161,17 +161,17 @@ public class SSTableTest extends XLElementTest {
        Row row1 = table.addRow();
        Row returnRow1 = table.currentRow();
        
-       assertEquals(1, table.size());
+       assertEquals(1, table.rowCount());
        assertSame(row1, returnRow1);
        
        Row row2 = table.addRow();
        Row returnRow2 = table.currentRow();
        
-       assertEquals(2, table.size());
+       assertEquals(2, table.rowCount());
        assertSame(row2, returnRow2);
        
        table.removeRow(1);
-       assertEquals(1, table.size());
+       assertEquals(1, table.rowCount());
        Row newReturnRow2 = table.currentRow();
        assertSame(row2, newReturnRow2);
     }

@@ -16,7 +16,40 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 /**
- *
+ * An implementation of the XLElement Cell.
+ * 
+ * <P>
+ * <h3>The setData-methods</h3>
+ * The overloaded setData-methods will set the data displayed in the cell
+ * when the xml spreadsheet is opened. These methods will set the Excel
+ * datatype according to the java-type of the passed parameter. 
+ * <P>
+ * The {@link #setData(Object)}-method reflects
+ * upon the class of the given object and will delegate to a corresponding
+ * setData-method if such a method is available. If no corresponding
+ * method is found this method sets the data of this cell to the
+ * <code>toString</code>-value of the given object and the datatype to
+ * "String".
+ * This class may be extended to accommodate setData-methods for java-objects 
+ * that might otherwise
+ * be displayed as the <code>toString</code>-value of that object.
+ * 
+ * <P id="nullvalues">
+ * <b>Null values</b><br>
+ * If the passed parameter has a value of <code>null</code> the resulting
+ * xml will have a datatype set to "Error",
+ * the formula of the cell will be set to "<code>=#N/A</code>" and the cell will 
+ * display "<code>#N/A</code>" when the spreadsheet is opened.
+ * 
+ * <P id="infinitevalues">
+ * <b>Infinite values</b><br>
+ * If the passed parameter is of type Double, Float or the primitive representation 
+ * of these objects and the method {@link java.lang.Double#isInfinite() isInfinite}
+ * results to <code>true</code> the resulting xml will have a datatype set to
+ * "String" and the cell will display "Infinite" when the spreadsheet is opened.
+ * 
+ * @see nl.fountain.xelem.excel.Worksheet#addCell()
+ * @see nl.fountain.xelem.excel.Row#addCell()
  */
 public class SSCell extends AbstractXLElement implements Cell {
     
@@ -29,12 +62,32 @@ public class SSCell extends AbstractXLElement implements Cell {
     private int mergeacross;
     private int mergedown;
     
-    
+    /**
+     * Creates a new SSCell with an initial datatype of "String" and an
+     * empty ("") value.
+     * 
+     * @see nl.fountain.xelem.excel.Worksheet#addCell()
+     */
     public SSCell() {
-        datatype = datatype_String;
+        datatype = DATATYPE_STRING;
         data$ = "";
     }
     
+    /**
+     * Sets the ss:StyleID on this cell. If no styleID is set on a cell,
+     * the ss:StyleID-attribute is not deployed in the resulting xml and
+     * the Default-style will be employed on the cell.
+     * <P>
+     * The refered style-definition must be available from the 
+     * {@link nl.fountain.xelem.XFactory}.
+     * If the definition was not found,
+     * the {@link XLWorkbook}-implementation will create an empty ss:Style-definition
+     * and adds a UnsupportedStyleException-warning.
+     * 
+     * @param 	id	the id of the style to employ on this cell.
+     * 
+     * @see XLWorkbook#getWarnings()
+     */
     public void setStyleID(String id) {
         styleID = id;
     }
@@ -43,20 +96,16 @@ public class SSCell extends AbstractXLElement implements Cell {
         return styleID;
     }
     
-
-    // @see nl.fountain.xelem.std.ss.Cell#setFormaula(java.lang.String)
     public void setFormula(String formula) {
         //this.formula = XLUtil.escapeHTML(formula);
         this.formula = formula;
     }
 
-    // @see nl.fountain.xelem.std.ss.Cell#getFormula()
     public String getFormula() {
         return formula;
     }
     
     public void setHRef(String href) {
-        //this.href = XLUtil.escapeHTML(href);
         this.href = href;
     }
 
@@ -64,108 +113,100 @@ public class SSCell extends AbstractXLElement implements Cell {
         return href;
     }
     
-    // @see nl.fountain.xelem.excel.ss.Cell#setMergeAcross(int)
     public void setMergeAcross(int m) {
         mergeacross = m;
     }
     
-    // @see nl.fountain.xelem.excel.ss.Cell#setMergeDown(int)
     public void setMergeDown(int m) {
         mergedown = m;
     }
 
-    // @see nl.fountain.xelem.std.ss.Cell#getXlDataType()
     public String getXlDataType() { 
         return datatype;
     }
 
-    // @see nl.fountain.xelem.std.ss.Cell#setData(java.lang.Number)
     public void setData(Number data) {
         if (data == null) {
-            setError(errortype_NULL);
+            setError(ERRORVALUE_NA);
             return;
         }
-        datatype = datatype_Number;
+        datatype = DATATYPE_NUMBER;
         data$ = data.toString();
     }
     
     public void setData(Integer data) {
         if (data == null) {
-            setError(errortype_NULL);
+            setError(ERRORVALUE_NA);
             return;
         }
-        datatype = datatype_Number;
+        datatype = DATATYPE_NUMBER;
         data$ = data.toString();
     }
     
     public void setData(Double data) {
         if (data == null) {
-            setError(errortype_NULL);
+            setError(ERRORVALUE_NA);
             return;
         }
         if (data.isInfinite()) {
-            datatype = datatype_String;
+            datatype = DATATYPE_STRING;
         } else {
-            datatype = datatype_Number;
+            datatype = DATATYPE_NUMBER;
         }
         data$ = data.toString();
     }
     
     public void setData(Long data) {
         if (data == null) {
-            setError(errortype_NULL);
+            setError(ERRORVALUE_NA);
             return;
         }
-        datatype = datatype_Number;
+        datatype = DATATYPE_NUMBER;
         data$ = data.toString();
     }
     
     public void setData(Float data) {
         if (data == null) {
-            setError(errortype_NULL);
+            setError(ERRORVALUE_NA);
             return;
         }
         if (data.isInfinite()) {
-            datatype = datatype_String;
+            datatype = DATATYPE_STRING;
         } else {
-            datatype = datatype_Number;
+            datatype = DATATYPE_NUMBER;
         }
         data$ = data.toString();
     }
 
-    // @see nl.fountain.xelem.std.ss.Cell#setData(java.util.Date)
     public void setData(Date data) {
         if (data == null) {
-            setError(errortype_NULL);
+            setError(ERRORVALUE_NA);
             return;
         }
-        datatype = datatype_DateTime;
+        datatype = DATATYPE_DATE_TIME;
         data$ = XLUtil.format(data);
     }
 
-    // @see nl.fountain.xelem.std.ss.Cell#setData(java.lang.Boolean)
     public void setData(Boolean data) {
         if (data == null) {
-            setError(errortype_NULL);
+            setError(ERRORVALUE_NA);
             return;
         }
         setData(data.booleanValue());
     }
 
-    // @see nl.fountain.xelem.std.ss.Cell#setData(java.lang.String)
     public void setData(String data) {
         if (data == null) {
-            setError(errortype_NULL);
+            setError(ERRORVALUE_NA);
             return;
         }
-        datatype = datatype_String;
+        datatype = DATATYPE_STRING;
         data$ = data;
     }
     
-    // @see nl.fountain.xelem.std.ss.Cell#setData(java.lang.Object)
     public void setData(Object data) {
         if (data == null) {
-            setError(errortype_NULL);
+            setError(ERRORVALUE_NA);
             return;
         }
         Class[] types = new Class[] {data.getClass()};
@@ -180,66 +221,57 @@ public class SSCell extends AbstractXLElement implements Cell {
         }
     }
 
-    // @see nl.fountain.xelem.std.ss.Cell#setError(java.lang.String)
-    public void setError(String error) {
-        datatype = datatype_Error;
-        data$ = error;
-        setFormula("=" + error);
+    public void setError(String error_value) {
+        datatype = DATATYPE_ERROR;
+        data$ = error_value;
+        setFormula("=" + error_value);
     }
     
-    // @see nl.fountain.xelem.std.ss.Cell#setData(byte)
     public void setData(byte data) {
-        datatype = datatype_Number;
+        datatype = DATATYPE_NUMBER;
         data$ = String.valueOf(data);
     }
     
-    // @see nl.fountain.xelem.std.ss.Cell#setData(short)
     public void setData(short data) {
-        datatype = datatype_Number;
+        datatype = DATATYPE_NUMBER;
         data$ = String.valueOf(data);
     }
 
-    // @see nl.fountain.xelem.std.ss.Cell#setData(int)
     public void setData(int data) {
-        datatype = datatype_Number;
+        datatype = DATATYPE_NUMBER;
         data$ = String.valueOf(data);
     }
 
-    // @see nl.fountain.xelem.std.ss.Cell#setData(long)
     public void setData(long data) {
-        datatype = datatype_Number;
+        datatype = DATATYPE_NUMBER;
         data$ = String.valueOf(data);
     }
     
-    // @see nl.fountain.xelem.std.ss.Cell#setData(float)
     public void setData(float data) {
         if (Float.isInfinite(data)) {
-            datatype = datatype_String;
+            datatype = DATATYPE_STRING;
         } else {
-            datatype = datatype_Number;
+            datatype = DATATYPE_NUMBER;
         }
         data$ = String.valueOf(data);
     }
 
-    // @see nl.fountain.xelem.std.ss.Cell#setData(double)
     public void setData(double data) {
         if (Double.isInfinite(data)) {
-            datatype = datatype_String;
+            datatype = DATATYPE_STRING;
         } else {
-            datatype = datatype_Number;
+            datatype = DATATYPE_NUMBER;
         }
         data$ = String.valueOf(data);
         
     }
     
-    // @see nl.fountain.xelem.std.ss.Cell#setData(char)
     public void setData(char data) {
         setData(String.valueOf(data));
     }
     
-    // @see nl.fountain.xelem.std.ss.Cell#setData(boolean)
     public void setData(boolean data) {
-        datatype = datatype_Boolean;
+        datatype = DATATYPE_BOOLEAN;
         if (data) {
             data$ = "1";
         } else {
@@ -247,13 +279,8 @@ public class SSCell extends AbstractXLElement implements Cell {
         }
     }
 
-    // @see nl.fountain.xelem.std.ss.Cell#getData$()
     public String getData$() {
         return data$;
-    }
-
-    protected void setIndex(int index) {
-        idx = index;
     }
 
     public String getTagName() {
@@ -299,16 +326,30 @@ public class SSCell extends AbstractXLElement implements Cell {
         return ce;
     }
     
+    /**
+     * Sets the value of the ss:Type-attribute of the Data-element.
+     * 
+     * @param type	Must be one of Cell's DATATYPE_XXX values.
+     */
     protected void setXLDataType(String type) {
-        if (datatype_Boolean.equals(type)
-                || datatype_DateTime.equals(type)
-                || datatype_Error.equals(type)
-                || datatype_Number.equals(type)
-                || datatype_String.equals(type)) {
+        if (DATATYPE_BOOLEAN.equals(type)
+                || DATATYPE_DATE_TIME.equals(type)
+                || DATATYPE_ERROR.equals(type)
+                || DATATYPE_NUMBER.equals(type)
+                || DATATYPE_STRING.equals(type)) {
             datatype = type;
         } else {
             throw new IllegalArgumentException(type + " is not a valid datatype.");
         }
+    }
+    
+    /**
+     * Sets the value of the ss:Index-attribute of this Cell-element. This method is 
+     * called by {@link nl.fountain.xelem.excel.Row#cellIterator()} to set the
+     * index of this cell during assembly.
+     */
+    protected void setIndex(int index) {
+        idx = index;
     }
 
 }

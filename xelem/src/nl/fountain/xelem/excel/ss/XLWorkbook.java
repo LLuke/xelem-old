@@ -37,7 +37,27 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 /**
- *
+ * An implementation of the XLElement Workbook, the root of a SpreadsheetML document.
+ * <P>
+ * Typically, the XLWorkbook is at the start of creating an Excel workbook in 
+ * SpreadsheetML. Mostly all of the other objects in xelem can be obtained
+ * from it or through it by one of the addXxx- methods.
+ * <P>
+ * After setting up the workbook, you can obtain the 
+ * {@link org.w3c.dom.Document org.w3c.dom.Document} from it (see
+ * {@link #createDocument()}) or serialize the workbook by means of one of the
+ * serialize-methods of the 
+ * {@link nl.fountain.xelem.XSerializer XSerializer.class},
+ * which was included in xelem for convenience.
+ * <P>
+ * Worksheets are displayed in Excel in the order that they were added to the 
+ * workbook. The methods {@link #removeSheet(String)} and 
+ * {@link #addSheet(Worksheet)} may savely be applied to change this order.
+ * A more convenient way is to obtain the 
+ * list of sheet names with {@link #getSheetNames()} and manupulating this list.
+ * 
+ * @see <a href="../../../../../overview-summary.html#overview_description">overview</a>
+ * 
  */
 public class XLWorkbook extends AbstractXLElement implements Workbook {
     
@@ -55,7 +75,10 @@ public class XLWorkbook extends AbstractXLElement implements Workbook {
     private XFactory xFactory;
     private List warnings;
     private SimpleDateFormat sdf;
-
+    
+    /**
+     * Creates a new XLWorkbook with the given name.
+     */
     public XLWorkbook(String name) {
         sheets = new HashMap();
         sheetList = new ArrayList();
@@ -66,7 +89,6 @@ public class XLWorkbook extends AbstractXLElement implements Workbook {
         this.name = name;
     }
     
-    // @see nl.fountain.xelem.excel.Workbook#getName()
     public String getName() {
         return name;
     }
@@ -83,22 +105,13 @@ public class XLWorkbook extends AbstractXLElement implements Workbook {
         }
     }
     
-    // @see nl.fountain.xelem.excel.Workbook#mergeStyle(java.lang.String, java.lang.String, java.lang.String)
-    public void mergeStyles(String newID, String id1, String id2) {
-        try {
-            getFactory().mergeStyles(newID, id1, id2);
-        } catch (UnsupportedStyleException e) {
-            addWarning(e);
-        }
+    public void mergeStyles(String newID, String id1, String id2) 
+    										throws UnsupportedStyleException {
+        getFactory().mergeStyles(newID, id1, id2);
     }
     
     public void appendInfoSheet() {
         appendInfoSheet = true;
-    }
-    
-    public DocumentProperties addDocumentProperties() {
-        documentProperties = new ODocumentProperties();
-        return documentProperties;
     }
 
     public DocumentProperties getDocumentProperties() {
@@ -112,24 +125,17 @@ public class XLWorkbook extends AbstractXLElement implements Workbook {
         return documentProperties != null;
     }
     
-    public ExcelWorkbook addExcelWorkbook() {
-        excelWorkbook = new XExcelWorkbook();
-        return excelWorkbook;
-    }
-    
     public ExcelWorkbook getExcelWorkbook() {
         if (excelWorkbook == null) {
-            addExcelWorkbook();
+            excelWorkbook = new XExcelWorkbook();
         }
         return excelWorkbook;
     }
     
-    // @see nl.fountain.xelem.excel.Workbook#hasExcelWorkbook()
     public boolean hasExcelWorkbook() {
         return excelWorkbook != null;
     }
     
-    // @see nl.fountain.xelem.excel.Workbook#addNamedRange(java.lang.String, java.lang.String)
     public NamedRange addNamedRange(String name, String refersTo) {
         NamedRange nr = new SSNamedRange(name, refersTo);
         if (namedRanges == null) {
@@ -139,7 +145,14 @@ public class XLWorkbook extends AbstractXLElement implements Workbook {
         return nr;
     }
     
-    // @see nl.fountain.xelem.std.Workbook#addSheet()
+    public Map getNamedRanges() {
+        if (namedRanges == null) {
+            return Collections.EMPTY_MAP;
+        } else {
+            return namedRanges;
+        }
+    }
+    
     public Worksheet addSheet() {
         int nr = sheets.size();
         String name;
@@ -155,7 +168,6 @@ public class XLWorkbook extends AbstractXLElement implements Workbook {
         return ws;
     }
     
-    // @see nl.fountain.xelem.std.Workbook#addSheet(java.lang.String)
     public Worksheet addSheet(String name) throws DuplicateNameException {
         if (name == null || "".equals(name)) {
             return addSheet();
@@ -174,19 +186,22 @@ public class XLWorkbook extends AbstractXLElement implements Workbook {
         return sheet;
     }
 
-    public Collection getWorksheets() {
-        Collection worksheets = new ArrayList();
+    public List getWorksheets() {
+        List worksheets = new ArrayList();
         for (Iterator iter = sheetList.iterator(); iter.hasNext();) {
             worksheets.add(sheets.get(iter.next()));           
         }
         return worksheets;
+    }
+    
+    public List getSheetNames() {
+        return sheetList;
     }
 
     public Worksheet getWorksheet(String name) {
         return (Worksheet) sheets.get(name);
     }
     
-    // @see nl.fountain.xelem.std.Workbook#removeSheet(java.lang.String)
     public Worksheet removeSheet(String name) {
         int index = sheetList.indexOf(name);
         if (index < 0) return null;
@@ -214,17 +229,14 @@ public class XLWorkbook extends AbstractXLElement implements Workbook {
         return "Workbook";
     }
     
-    // @see nl.fountain.xelem.excel.XLElement#getNameSpace()
     public String getNameSpace() {
         return XMLNS;
     }
     
-    // @see nl.fountain.xelem.excel.XLElement#getPrefix()
     public String getPrefix() {
         return PREFIX_SS;
     }
     
-    // @see nl.fountain.xelem.excel.Workbook#createDocument()
     public Document createDocument() throws ParserConfigurationException {
         GIO gio = new GIO();
         Document doc = getDoc();
@@ -287,8 +299,8 @@ public class XLWorkbook extends AbstractXLElement implements Workbook {
         if (sheets.size() < 1) {
             addSheet();
         }
-        for (Iterator iter = getWorksheets().iterator(); iter.hasNext();) {
-            Worksheet ws = (Worksheet) iter.next();
+        for (Iterator iter = sheetList.iterator(); iter.hasNext();) {
+            Worksheet ws = (Worksheet) sheets.get(iter.next());
             ws.assemble(root, gio);
         }
         

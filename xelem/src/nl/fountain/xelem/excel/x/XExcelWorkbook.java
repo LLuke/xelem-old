@@ -11,7 +11,9 @@ import nl.fountain.xelem.excel.ExcelWorkbook;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-
+/**
+ * An implementation of the XLElement ExcelWorkbook.
+ */
 public class XExcelWorkbook extends AbstractXLElement implements ExcelWorkbook {
     
     private int windowHeight;
@@ -19,7 +21,13 @@ public class XExcelWorkbook extends AbstractXLElement implements ExcelWorkbook {
     private int windowTopX;
     private int windowTopY;
     
-
+    /**
+     * Creates a new XExcelWorkbook.
+     * 
+     * @see nl.fountain.xelem.excel.Workbook#getExcelWorkbook()
+     */
+    public XExcelWorkbook() {}
+    
     public void setWindowHeight(int height) {
         windowHeight = height;
     }

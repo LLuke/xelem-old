@@ -34,7 +34,7 @@ import org.xml.sax.SAXException;
  * SpreadsheetML Style elements. An instance of this class may be obtained by calling
  * the {@link #newInstance()}-method. 
  * <P>
- * Normaly this class expects a configuration file at the location
+ * Normally this class expects a configuration file at the location
  * <code>config/xelem.xml</code>, relative to the classloader of the 
  * main application. If desired a different location may be set by calling
  * {@link #setConfigurationFileName(String)} prior to obtaining a new instance.
@@ -43,6 +43,7 @@ import org.xml.sax.SAXException;
  * configuration file and loads comments and styles from it. The XFactory
  * can be used to merge styles.
  * 
+ * @see <a href="../../../overview-summary.html#xfactory">overview - the XFactory</a>
  */
 public class XFactory {
     

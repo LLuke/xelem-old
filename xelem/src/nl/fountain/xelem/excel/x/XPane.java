@@ -12,7 +12,16 @@ import nl.fountain.xelem.excel.AbstractXLElement;
 import nl.fountain.xelem.excel.Pane;
 
 /**
- *
+ * An implementation of the XLElement Pane. Methods of this class are mainly used
+ * by {@link nl.fountain.xelem.excel.WorksheetOptions}-methods.
+ * 
+ * @see nl.fountain.xelem.excel.WorksheetOptions#setActiveCell(int, int, int)
+ * @see nl.fountain.xelem.excel.WorksheetOptions#setActiveCell(int, int)
+ * @see nl.fountain.xelem.excel.WorksheetOptions#freezePanesAt(int, int)
+ * @see nl.fountain.xelem.excel.WorksheetOptions#splitHorizontal(int, int)
+ * @see nl.fountain.xelem.excel.WorksheetOptions#splitVertical(int, int)
+ * @see nl.fountain.xelem.excel.WorksheetOptions#setRangeSelection(int, String)
+ * @see nl.fountain.xelem.excel.WorksheetOptions#setRangeSelection(String)
  */
 public class XPane extends AbstractXLElement implements Pane {
     
@@ -21,6 +30,12 @@ public class XPane extends AbstractXLElement implements Pane {
     private int activeRow;
     private String rangeSelection;
     
+    /**
+     * Constructs a new XPane with the given pane number.
+     * 
+     * @throws java.lang.IllegalArgumentException if paneNumber < 0 or
+     * 			paneNumber > 3.
+     */
     public XPane(int paneNumber) {
         if (paneNumber < 0 || paneNumber > 3) {
             throw new IllegalArgumentException(paneNumber 
@@ -29,58 +44,47 @@ public class XPane extends AbstractXLElement implements Pane {
         number = paneNumber;
     }
 
-    // @see nl.fountain.xelem.excel.Pane#getNumber()
     public int getNumber() {
         return number;
     }
 
-    // @see nl.fountain.xelem.excel.Pane#setActiveCol(int)
     public void setActiveCol(int col) {
         activeCol = col - 1;
     }
 
-    // @see nl.fountain.xelem.excel.Pane#getActiveCol()
     public int getActiveCol() {
         return activeCol;
     }
 
-    // @see nl.fountain.xelem.excel.Pane#setActiveRow()
     public void setActiveRow(int row) {
         activeRow = row - 1;
     }
 
-    // @see nl.fountain.xelem.excel.Pane#getActiveRow()
     public int getActiveRow() {
         return activeRow;
     }
     
-    // @see nl.fountain.xelem.excel.Pane#setActiveCell(int, int)
     public void setActiveCell(int row, int col) {
         setActiveRow(row);
         setActiveCol(col);
     }
 
-    // @see nl.fountain.xelem.excel.Pane#setRangeSelection(java.lang.String)
     public void setRangeSelection(String rc) {
         rangeSelection = rc;
     }
 
-    // @see nl.fountain.xelem.excel.Pane#getRangeSelection()
     public String getRangeSelection() {
         return rangeSelection;
     }
 
-    // @see nl.fountain.xelem.excel.XLElement#getTagName()
     public String getTagName() {
         return "Pane";
     }
 
-    // @see nl.fountain.xelem.excel.XLElement#getNameSpace()
     public String getNameSpace() {
         return XMLNS_X;
     }
 
-    // @see nl.fountain.xelem.excel.XLElement#getPrefix()
     public String getPrefix() {
         return PREFIX_X;
     }

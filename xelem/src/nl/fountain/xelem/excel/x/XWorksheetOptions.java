@@ -17,7 +17,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 /**
- *
+ * An implementation of the XLElement WorksheetOptions.
  */
 public class XWorksheetOptions extends AbstractXLElement implements WorksheetOptions {
     
@@ -39,8 +39,13 @@ public class XWorksheetOptions extends AbstractXLElement implements WorksheetOpt
     private int splitVertical;
     private boolean freezePanes;
     
-
-    // @see nl.fountain.xelem.excel.x.WorksheetOptions#setTopRowVisible(int)
+    /**
+     * Constructs a new XWorksheetOptions.
+     * 
+     * @see nl.fountain.xelem.excel.Worksheet#getWorksheetOptions()
+     */
+    public XWorksheetOptions() {}
+    
     public void setTopRowVisible(int tr) {
         topRowVisible = tr;
     }
@@ -154,6 +159,21 @@ public class XWorksheetOptions extends AbstractXLElement implements WorksheetOpt
     public void setActiveCell(int paneNumber, int r, int c) {
         getPane(paneNumber).setActiveCell(r, c);
         activePane = paneNumber;
+    }
+    
+    /**
+     * 
+     */
+    public void setRangeSelection(String rcRange) {
+        getPane(3).setRangeSelection(rcRange);
+    }
+    
+    /**
+     * @throws java.lang.IllegalArgumentException if paneNumber < 0 or
+     * 			paneNumber > 3.
+     */
+    public void setRangeSelection(int paneNumber, String rcRange) {
+        getPane(paneNumber).setRangeSelection(rcRange);
     }
     
     /**

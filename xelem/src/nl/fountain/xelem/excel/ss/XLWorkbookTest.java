@@ -8,6 +8,7 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 import nl.fountain.xelem.GIO;
+import nl.fountain.xelem.UnsupportedStyleException;
 import nl.fountain.xelem.XFactory;
 import nl.fountain.xelem.excel.DocumentProperties;
 import nl.fountain.xelem.excel.DuplicateNameException;
@@ -42,7 +43,7 @@ public class XLWorkbookTest extends XLElementTest {
         String xml = xmlToString(wb, new GIO());
         assertEquals(-1, xml.indexOf("<o:DocumentProperties"));
         
-        DocumentProperties dp = wb.addDocumentProperties();
+        DocumentProperties dp = wb.getDocumentProperties();
         dp.setAuthor(this.getName());
         xml = xmlToString(wb, new GIO());
         assertTrue(xml.indexOf("<o:Author>testDocumentProperties</o:Author>") > 0);
@@ -123,7 +124,7 @@ public class XLWorkbookTest extends XLElementTest {
         assertTrue(!wb.isPrintingDocComments());
     }
     
-    public void testMergeStyles() {
+    public void testMergeStyles() throws UnsupportedStyleException {
         wb.mergeStyles("wbNieuw", "b_yellow", "bold");
         wb.mergeStyles("wbNieuwer", "wbNieuw", "decimal2");
         wb.addSheet().addCell().setStyleID("wbNieuwer");

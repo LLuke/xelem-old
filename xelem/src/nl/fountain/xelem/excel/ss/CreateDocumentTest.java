@@ -123,7 +123,7 @@ public class CreateDocumentTest extends TestCase {
     
     public void testExcelWorkbook() throws Exception {
         Workbook wb = new XLWorkbook("test01");
-        ExcelWorkbook ewb = wb.addExcelWorkbook();
+        ExcelWorkbook ewb = wb.getExcelWorkbook();
         ewb.setWindowHeight(7000);
         ewb.setWindowWidth(10000);
         ewb.setWindowTopX(1000);
@@ -227,6 +227,7 @@ public class CreateDocumentTest extends TestCase {
         column.setWidth(25.2);
         table.addColumn().setStyleID("b_lblue");
         
+        // TODO setSpan how many columns?
         //illegal: first free index = 5 + (5+1) + 1 = 12
         //Column column2 = table.addColumn(8);
         
@@ -258,6 +259,7 @@ public class CreateDocumentTest extends TestCase {
         row.setHeight(25.2);
         sheet.addRow().setStyleID("b_lblue");
         
+        // TODO setSpan how many rows?
         //illegal: first free index = 5 + (5+1) + 1 = 12
         //Row row2 = sheet.addRow(8);
         
@@ -404,7 +406,7 @@ public class CreateDocumentTest extends TestCase {
         c2.setFormula("=R[-2]C&\": testing WorksheetOptions\"");
         sheet.addCellAt(6, 3, c2);
         
-        WorksheetOptions wso = sheet.addWorksheetOptions();
+        WorksheetOptions wso = sheet.getWorksheetOptions();
         wso.doDisplayFormulas(true);
         wso.doNotDisplayGridlines(true);
         wso.doNotDisplayHeadings(true);
@@ -417,11 +419,11 @@ public class CreateDocumentTest extends TestCase {
         
         
         Worksheet sheet2 = wb.addSheet("selected as well");
-        WorksheetOptions wso2 = sheet2.addWorksheetOptions();
+        WorksheetOptions wso2 = sheet2.getWorksheetOptions();
         wso2.setSelected(true);
         wso2.setGridlineColor(255, 255, 0);
         
-        wb.addSheet("not visible").addWorksheetOptions()
+        wb.addSheet("not visible").getWorksheetOptions()
         	.setVisible(WorksheetOptions.SHEET_HIDDEN);
         
         String xml = xmlToString(wb);
@@ -433,9 +435,9 @@ public class CreateDocumentTest extends TestCase {
     
     public void testSelectedSheets() throws Exception {
         Workbook wb = new XLWorkbook("test13");       
-        wb.addSheet().addWorksheetOptions().setSelected(true);
-        wb.addSheet().addWorksheetOptions().setSelected(true);
-        wb.addSheet().addWorksheetOptions().setSelected(false);
+        wb.addSheet().getWorksheetOptions().setSelected(true);
+        wb.addSheet().getWorksheetOptions().setSelected(true);
+        wb.addSheet().getWorksheetOptions().setSelected(false);
         
         String xml = xmlToString(wb);
         assertTrue(xml.indexOf("<x:SelectedSheets>2</x:SelectedSheets>") > 0);
@@ -447,7 +449,7 @@ public class CreateDocumentTest extends TestCase {
     public void testActiveCell() throws Exception {
         Workbook wb = new XLWorkbook("test14");
         Worksheet sheet = wb.addSheet();
-        WorksheetOptions wso = sheet.addWorksheetOptions();
+        WorksheetOptions wso = sheet.getWorksheetOptions();
         wso.setActiveCell(5, 3);
         
         String xml = xmlToString(wb);
@@ -462,7 +464,7 @@ public class CreateDocumentTest extends TestCase {
     public void testSplitHorizontal() throws Exception {
         Workbook wb = new XLWorkbook("test15");
         Worksheet sheet = wb.addSheet();
-        WorksheetOptions wso = sheet.addWorksheetOptions();
+        WorksheetOptions wso = sheet.getWorksheetOptions();
         wso.setActiveCell(Pane.BOTTOM_LEFT, 11, 3);
         wso.splitHorizontal(5000, 5);
         
@@ -481,7 +483,7 @@ public class CreateDocumentTest extends TestCase {
     public void testSplitVertical() throws Exception {
         Workbook wb = new XLWorkbook("test16");
         Worksheet sheet = wb.addSheet();
-        WorksheetOptions wso = sheet.addWorksheetOptions();
+        WorksheetOptions wso = sheet.getWorksheetOptions();
         wso.setActiveCell(Pane.TOP_RIGHT, 11, 3);
         wso.splitVertical(8000, 1);
         
@@ -500,7 +502,7 @@ public class CreateDocumentTest extends TestCase {
     public void testSplitHorizontalAndVertical() throws Exception {
         Workbook wb = new XLWorkbook("test17");
         Worksheet sheet = wb.addSheet();
-        WorksheetOptions wso = sheet.addWorksheetOptions();
+        WorksheetOptions wso = sheet.getWorksheetOptions();
         wso.setActiveCell(Pane.TOP_RIGHT, 11, 3);
         wso.splitVertical(8000, 2);
         wso.splitHorizontal(5000, 5);
@@ -522,7 +524,7 @@ public class CreateDocumentTest extends TestCase {
     public void testFreezePanes() throws Exception {
         Workbook wb = new XLWorkbook("test18");
         Worksheet sheet = wb.addSheet();
-        WorksheetOptions wso = sheet.addWorksheetOptions();
+        WorksheetOptions wso = sheet.getWorksheetOptions();
         wso.freezePanesAt(5, 2);
         
         String xml = xmlToString(wb);
@@ -639,7 +641,7 @@ public class CreateDocumentTest extends TestCase {
     public void testDocumentProperties() throws Exception {
         Workbook wb = new XLWorkbook("test24");
         wb.addSheet().addCell().setHRef("href");
-        DocumentProperties dp = wb.addDocumentProperties();
+        DocumentProperties dp = wb.getDocumentProperties();
         dp.setAppName("appname");
         dp.setAuthor("author");
         dp.setCategory("category");
@@ -660,6 +662,31 @@ public class CreateDocumentTest extends TestCase {
         if (toFile) xmlToFile(wb);
     }
     
+    public void testManipulatingTheOrderOfSheets() throws Exception {
+        Workbook wb = new XLWorkbook("test25");
+        wb.addSheet("blad1").addCell("cell 1");
+        wb.addSheet("blad2").addCell("cell 2");
+        wb.addSheet("blad3").addCell("cell 3");
+        
+        Worksheet s1 = wb.removeSheet("blad1");
+        Worksheet s2 = wb.removeSheet("blad2");
+        
+        wb.addSheet(s2);
+        wb.addSheet(s1);
+        
+        String xml = xmlToString(wb);
+        int i1 = xml.indexOf("<ss:Worksheet ss:Name=\"blad1\">");
+        int i2 = xml.indexOf("<ss:Worksheet ss:Name=\"blad2\">");
+        int i3 = xml.indexOf("<ss:Worksheet ss:Name=\"blad3\">");
+        assertTrue(i1 > i2);
+        assertTrue(i2 > i3);
+        
+//        Collections.swap(wb.getSheetNames(), 0, 2);
+//        xml = xmlToString(wb);
+        
+        //System.out.println(xml);
+        if (toFile) xmlToFile(wb);
+    }
     
     private String xmlToString(Workbook wb) throws Exception {
         StringWriter sw = new StringWriter();

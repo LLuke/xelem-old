@@ -4,8 +4,6 @@
  */
 package nl.fountain.xelem.excel.ss;
 
-import java.util.Collection;
-
 import nl.fountain.xelem.GIO;
 import nl.fountain.xelem.excel.Cell;
 import nl.fountain.xelem.excel.Table;
@@ -37,14 +35,16 @@ public class SSWorksheetTest extends XLElementTest {
         assertEquals("Blad1", ws2.getName());
         Worksheet ws3 = new SSWorksheet("this & that");
         assertEquals("this & that", ws3.getName());
+        Worksheet ws4 = new SSWorksheet(null);
+        assertEquals(null, ws4.getName());
     }
 
-    public void testAddTable() {
+    public void testGetTable() {
         assertNotNull(ws.getTable());
-        Table table = ws.addTable();
+        Table table = ws.getTable();
         assertSame(table, ws.getTable());
-        Table table3 = ws.addTable();
-        assertNotSame(table, ws.getTable());
+        Table table3 = ws.getTable();
+        assertSame(table, ws.getTable());
         assertSame(table3, ws.getTable());
     }
 
@@ -71,7 +71,7 @@ public class SSWorksheetTest extends XLElementTest {
     public void testAddCellCell() {
         Cell cell = new SSCell();
         ws.addCell(cell);
-        assertEquals(1, ws.getTable().size());
+        assertEquals(1, ws.getTable().rowCount());
         assertEquals(1, ws.currentRow().size());
         Cell rCell = ws.getCellAt(1, 1);
         assertSame(cell, rCell);
@@ -86,19 +86,11 @@ public class SSWorksheetTest extends XLElementTest {
         assertSame(cell, cell2);
     }
 
-    public void testGetCells() {
-        assertNotNull(ws.getCells());
-        ws.addCellAt(4, 3);
-        ws.addCellAt(10, 31);
-        Collection cells = ws.getCells();
-        assertEquals(2, cells.size());
-    }
-
     public void testAssemble() {
         ws.addRow(5);
         ws.setProtected(true);
         ws.setRightToLeft(true);
-        WorksheetOptions wso = ws.addWorksheetOptions();
+        WorksheetOptions wso = ws.getWorksheetOptions();
         wso.setGridlineColor(0, 0, 255);
         wso.setSelected(true);
         

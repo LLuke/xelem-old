@@ -43,7 +43,8 @@ public interface WorksheetOptions extends XLElement {
     
     void setActiveCell(int r, int c);
     void setActiveCell(int paneNumber, int r, int c);
-    
+    void setRangeSelection(String rcRange);
+    void setRangeSelection(int paneNumber, String rcRange);
     
     void splitHorizontal(int points, int topRow);
     void splitVertical(int points, int leftColumn);

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project default="javadoc">
+    <target name="javadoc">
+        <javadoc header="&lt;a href=&quot;https://sourceforge.net/projects/xelem&quot;&gt;&lt;font class=&quot;NavBarFont1&quot;&gt;&lt;b&gt;xelem &lt;/b&gt;&lt;/font&gt;&lt;/a&gt; &#160;&#160;" 
+        	overview="G:\eclipse_ws\xelem\overview.html"
+        	destdir="javadoc" 
+        	access="protected" 
+        	use="true" 
+        	notree="false" 
+        	nonavbar="false" 
+        	noindex="false" 
+        	splitindex="true" 
+        	author="true" 
+        	version="true" 
+        	nodeprecatedlist="false" 
+        	nodeprecated="false" 
+        	packagenames="nl.fountain.xelem.excel.o" 
+        	sourcefiles="src/nl/fountain/xelem/excel/ss/SSColumn.java,src/nl/fountain/xelem/excel/x/XExcelWorkbook.java,src/nl/fountain/xelem/excel/WorksheetOptions.java,src/nl/fountain/xelem/excel/ss/SSNamedRange.java,src/nl/fountain/xelem/excel/Workbook.java,src/nl/fountain/xelem/excel/ss/SSWorksheet.java,src/nl/fountain/xelem/XLUtil.java,src/nl/fountain/xelem/UnsupportedStyleException.java,src/nl/fountain/xelem/excel/DocumentProperties.java,src/nl/fountain/xelem/GIO.java,src/nl/fountain/xelem/excel/x/XPane.java,src/nl/fountain/xelem/excel/Worksheet.java,src/nl/fountain/xelem/excel/ss/SSTable.java,src/nl/fountain/xelem/excel/ss/XLWorkbook.java,src/nl/fountain/xelem/XSerializer.java,src/nl/fountain/xelem/excel/XLElement.java,src/nl/fountain/xelem/excel/ss/SSRow.java,src/nl/fountain/xelem/excel/ExcelWorkbook.java,src/nl/fountain/xelem/excel/x/XWorksheetOptions.java,src/nl/fountain/xelem/excel/AutoFilter.java,src/nl/fountain/xelem/excel/NamedRange.java,src/nl/fountain/xelem/excel/DuplicateNameException.java,src/nl/fountain/xelem/excel/ss/SSCell.java,src/nl/fountain/xelem/excel/AbstractXLElement.java,src/nl/fountain/xelem/XFactory.java,src/nl/fountain/xelem/excel/Row.java,src/nl/fountain/xelem/excel/Column.java,src/nl/fountain/xelem/excel/Table.java,src/nl/fountain/xelem/XelemException.java,src/nl/fountain/xelem/excel/Pane.java,src/nl/fountain/xelem/excel/x/XAutoFilter.java,src/nl/fountain/xelem/excel/Cell.java" 
+        	sourcepath="src" 
+        	classpath="G:\eclipse_3_0RC2\eclipse\plugins\org.junit_3.8.1\junit.jar;bin" 
+        	doctitle="xelem - Java to SpreadsheetML">
+            <link href="file:/G:/SDKjava/javadoc/docs/api/"/>
+            
+        </javadoc>
+    </target>
+</project>

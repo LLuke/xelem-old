@@ -6,7 +6,6 @@ package nl.fountain.xelem.excel.ss;
 
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.Map;
 import java.util.TreeMap;
 
 import nl.fountain.xelem.GIO;
@@ -19,7 +18,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 /**
- *
+ * An implementation of the XLElement Table.
  */
 public class SSTable extends AbstractXLElement implements Table {
     
@@ -30,7 +29,11 @@ public class SSTable extends AbstractXLElement implements Table {
     private double rowheight;
     private double columnwidth;
 
-    
+    /**
+     * Constructs a new SSTable.
+     * 
+     * @see nl.fountain.xelem.excel.Worksheet#getTable()
+     */
     public SSTable() {
         rows = new TreeMap();
         columns = new TreeMap();
@@ -44,69 +47,56 @@ public class SSTable extends AbstractXLElement implements Table {
         return styleID;
     }
     
-    // @see nl.fountain.xelem.excel.ss.Table#setRowHeight(int)
     public void setDefaultRowHeight(double points) {
         rowheight = points;
     }
     
-    // @see nl.fountain.xelem.excel.ss.Table#setDefaultColumnWidth(double)
     public void setDefaultColumnWidth(double points) {
         columnwidth = points;
     }
     
-    // @see nl.fountain.xelem.excel.ss.Table#addColumn()
     public Column addColumn() {
         return addColumn(0, new SSColumn());
     }
     
-    // @see nl.fountain.xelem.excel.ss.Table#addColumn(int)
     public Column addColumn(int index) {
         return addColumn(index, new SSColumn());
     }
     
-    // @see nl.fountain.xelem.excel.ss.Table#addColumn(nl.fountain.xelem.excel.ss.Column)
     public Column addColumn(Column column) {
         return addColumn(0, column);
     }
     
-    // @see nl.fountain.xelem.excel.ss.Table#addColumn(int, nl.fountain.xelem.excel.ss.Column)
     public Column addColumn(int index, Column column) {
         if (index < 1) index = maxColumnIndex() + 1;
         columns.put(new Integer(index), column);
         return column;
     }
     
-    // @see nl.fountain.xelem.excel.ss.Table#removeColumn(int)
     public Column removeColumn(int columnIndex) {
         return (Column) columns.remove(new Integer(columnIndex));
     }
     
-    // @see nl.fountain.xelem.excel.ss.Table#getColumn(int)
     public Column getColumn(int columnIndex) {
         return (Column) columns.get(new Integer(columnIndex));
     }
     
-    // @see nl.fountain.xelem.excel.ss.Table#getColumns()
     public Collection getColumns() {
         return columns.values();
     }
 
-    // @see nl.fountain.xelem.std.ss.Table#addRow()
     public Row addRow() {
         return addRow(0, new SSRow());
     }
 
-    // @see nl.fountain.xelem.std.ss.Table#addRow(int)
     public Row addRow(int index) {
         return addRow(index, new SSRow());
     }
 
-    // @see nl.fountain.xelem.std.ss.Table#addRow(nl.fountain.xelem.std.ss.Row)
     public Row addRow(Row row) {
         return addRow(0, row);
     }
     
-    // @see nl.fountain.xelem.std.ss.Table#addRow(int, nl.fountain.xelem.std.ss.Row)
     public Row addRow(int index, Row row) {
         if (index < 1) index = maxRowIndex() + 1;
         rows.put(new Integer(index), row);
@@ -114,7 +104,6 @@ public class SSTable extends AbstractXLElement implements Table {
         return row;
     }
 
-    // @see nl.fountain.xelem.std.ss.Table#removeRow(int)
     public Row removeRow(int rowIndex) {
         Row row = (Row) rows.remove(new Integer(rowIndex));
         if (currentRow().equals(row)) {
@@ -123,16 +112,14 @@ public class SSTable extends AbstractXLElement implements Table {
         return row;
     }
 
-    // @see nl.fountain.xelem.std.ss.Table#getRows()
     public Collection getRows() {
         return rows.values();
     }
     
-    public Map getRowMap() {
+    public TreeMap getRowMap() {
         return rows;
     }
 
-    // @see nl.fountain.xelem.std.ss.Table#getRow(int)
     public Row getRow(int rowIndex) {
         return (Row) rows.get(new Integer(rowIndex));
     }
@@ -144,17 +131,18 @@ public class SSTable extends AbstractXLElement implements Table {
         return currentRow;
     }
 
-    // @see nl.fountain.xelem.std.ss.Table#size()
-    public int size() {
+    public int rowCount() {
         return rows.size();
     }
     
-    // @see nl.fountain.xelem.excel.ss.Table#hasChildren()
+    public int columnCount() {
+        return columns.size();
+    }
+    
     public boolean hasChildren() {
         return (columns.size() + rows.size()) > 0;
     }
     
-    // @see nl.fountain.xelem.std.ss.Table#maxCellIndex()
     public int maxCellIndex() {
         int max = 0;
         for (Iterator iter = rows.values().iterator(); iter.hasNext();) {
@@ -174,7 +162,6 @@ public class SSTable extends AbstractXLElement implements Table {
         return lastKey;
     }
     
-    // @see nl.fountain.xelem.excel.ss.Table#maxColumnIndex()
     public int maxColumnIndex() {
         int lastKey;
         if (columns.size() == 0) {
@@ -189,27 +176,22 @@ public class SSTable extends AbstractXLElement implements Table {
         return new RowIterator();
     }
     
-    // @see nl.fountain.xelem.excel.ss.Table#columnIterator()
     public Iterator columnIterator() {
         return new ColumnIterator();
     }
     
-    // @see nl.fountain.xelem.excel.XLElement#getTagName()
     public String getTagName() {
         return "Table";
     }
     
-    // @see nl.fountain.xelem.excel.XLElement#getNameSpace()
     public String getNameSpace() {
         return XMLNS_SS;
     }
     
-    // @see nl.fountain.xelem.excel.XLElement#getPrefix()
     public String getPrefix() {
         return PREFIX_SS;
     } 
     
-    // @see nl.fountain.xelem.excel.ss.Table#assemble(org.w3c.dom.Document, org.w3c.dom.Node, nl.fountain.xelem.excel.GIO)
     public Element assemble(Element parent, GIO gio) {
         Document doc = parent.getOwnerDocument();
         Element te = assemble(doc, gio);

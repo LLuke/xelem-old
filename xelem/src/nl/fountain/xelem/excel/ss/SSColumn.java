@@ -12,7 +12,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 /**
- *
+ * An implementation of the XLElement Column.
  */
 public class SSColumn extends AbstractXLElement implements Column {
     
@@ -22,33 +22,34 @@ public class SSColumn extends AbstractXLElement implements Column {
     private double width;
     private boolean hidden;
     private boolean autoFitWidth = true;
+    
+    /**
+     * Creates a new SSColumn.
+     * 
+     * @see nl.fountain.xelem.excel.Table#addColumn()
+     */
+    public SSColumn() {}
 
-    // @see nl.fountain.xelem.excel.ss.Column#setStyleID(java.lang.String)
     public void setStyleID(String id) {
         styleID = id;
     }
 
-    // @see nl.fountain.xelem.excel.ss.Column#getStyleID()
     public String getStyleID() {
         return styleID;
     }
     
-    // @see nl.fountain.xelem.excel.Column#setAutoFitWidth(boolean)
     public void setAutoFitWidth(boolean autoFit) {
         autoFitWidth = autoFit;
     }
     
-    // @see nl.fountain.xelem.excel.ss.Column#setSpan(int)
     public void setSpan(int s) {
         span = s;
     }
     
-    // @see nl.fountain.xelem.excel.ss.Column#setWidth(double)
     public void setWidth(double w) {
         width = w;
     }
     
-    // @see nl.fountain.xelem.excel.ss.Column#setHidden(boolean)
     public void setHidden(boolean hide) {
         hidden = hide;
     }
@@ -63,10 +64,6 @@ public class SSColumn extends AbstractXLElement implements Column {
     
     public String getPrefix() {
         return PREFIX_SS;
-    }
-    
-    protected void setIndex(int index) {
-        idx = index;
     }
     
     public Element assemble(Element parent, GIO gio) {
@@ -93,6 +90,13 @@ public class SSColumn extends AbstractXLElement implements Column {
         return ce;
     }
 
-
+    /**
+     * Sets the value of the ss:Index-attribute of this Column-element. This method is 
+     * called by {@link nl.fountain.xelem.excel.Table#columnIterator()} to set the
+     * index of this column during assembly.
+     */
+    protected void setIndex(int index) {
+        idx = index;
+    }
 
 }
