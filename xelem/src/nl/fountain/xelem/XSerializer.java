@@ -66,6 +66,12 @@ public class XSerializer {
         return out.toString();
     }
     
+    public String serializeToString(Document doc) throws XelemException {
+        StringWriter out = new StringWriter();
+        serialize(doc, out);
+        return out.toString();
+    }
+    
     /**
      * Serializes the Workbook to the file specified with the Workbook's
      * {@link nl.fountain.xelem.excel.Workbook#getFileName() getFileName}-method.
@@ -81,9 +87,19 @@ public class XSerializer {
         transform(wb, result); 
     }
     
+    public void serialize(Document doc, File out) throws XelemException {
+        Result result = new StreamResult(out);
+        transform(doc, result); 
+    }
+    
     public void serialize(Workbook wb, OutputStream out) throws XelemException {
         Result result = new StreamResult(out);
         transform(wb, result);
+    }
+    
+    public void serialize(Document doc, OutputStream out) throws XelemException {
+        Result result = new StreamResult(out);
+        transform(doc, result);
     }
     
     public void serialize(Workbook wb, Writer out) throws XelemException {
@@ -91,14 +107,25 @@ public class XSerializer {
         transform(wb, result);
     }
     
+    public void serialize(Document doc, Writer out) throws XelemException {
+        Result result = new StreamResult(out);
+        transform(doc, result);
+    }
+    
     private void transform(Workbook wb, Result result) throws XelemException {
         try {
             Document doc = wb.createDocument();
+            transform(doc, result);
+        } catch (ParserConfigurationException e) {
+            throw new XelemException(e.fillInStackTrace());
+        }
+    }
+    
+    private void transform(Document doc, Result result) throws XelemException {
+        try {
             Transformer xformer = getTransformer();          
             Source source = new DOMSource(doc);
             xformer.transform(source, result);
-        } catch (ParserConfigurationException e) {
-            throw new XelemException(e.fillInStackTrace());
         } catch (TransformerException e) {
             throw new XelemException(e.fillInStackTrace());
         }

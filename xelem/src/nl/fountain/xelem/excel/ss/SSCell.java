@@ -334,15 +334,20 @@ public class SSCell extends AbstractXLElement implements Cell {
         parent.appendChild(ce);
         
         if (!"".equals(getData$())) {
-            Element data = doc.createElement("Data");
-            data.setAttributeNodeNS(
-                    createAttributeNS(doc, "Type", getXlDataType()));
-            data.appendChild(doc.createTextNode(getData$()));
+            Element data = getDataElement(doc);
             ce.appendChild(data);
         }
         return ce;
     }
     
+    public Element getDataElement(Document doc) {
+        Element data = doc.createElement("Data");
+        data.setAttributeNodeNS(
+                createAttributeNS(doc, "Type", getXlDataType()));
+        data.appendChild(doc.createTextNode(getData$()));
+        return data;
+    }
+
     /**
      * Sets the value of the ss:Type-attribute of the Data-element.
      * 

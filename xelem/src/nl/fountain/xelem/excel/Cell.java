@@ -23,6 +23,9 @@ package nl.fountain.xelem.excel;
 
 import java.util.Date;
 
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
 
 /**
  * Represents the Cell element. The XLElement Cell is not aware of it's parent,
@@ -400,5 +403,5 @@ public interface Cell extends XLElement {
      */
     String getXlDataType();
     
-    
+    Element getDataElement(Document doc);
 }
