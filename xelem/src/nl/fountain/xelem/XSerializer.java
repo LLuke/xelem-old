@@ -30,6 +30,13 @@ import org.w3c.dom.Document;
 public class XSerializer {
     
     private Transformer xformer;
+    private static String encoding;
+    
+    public static final String US_ASCII = "US-ASCII";
+    
+    public static void setEncoding(String enc) {
+        encoding = enc;
+    }
     
     /**
      * 
@@ -88,6 +95,9 @@ public class XSerializer {
 	        }
 	        xformer.setOutputProperty(OutputKeys.METHOD, "xml");
 	        xformer.setOutputProperty(OutputKeys.INDENT, "yes");
+	        if (encoding != null) {
+	            xformer.setOutputProperty(OutputKeys.ENCODING, encoding);
+	        }
         }
         return xformer;
     }

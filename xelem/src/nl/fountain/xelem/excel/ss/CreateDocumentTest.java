@@ -44,7 +44,7 @@ public class CreateDocumentTest extends TestCase {
     
     // when set to true, test files will be created.
     // the path mentioned after 'testFileDir' should exist.
-    private boolean toFile = false;
+    private boolean toFile = true;
     
     private int warnings;
     private boolean printWarnings;
@@ -713,6 +713,16 @@ public class CreateDocumentTest extends TestCase {
         //System.out.println(xml);
         
         if (toFile) xmlToFile(wb);
+    }
+    
+    public void testSpecialCharacters() throws Exception {
+        Workbook wb = new XLWorkbook("test28");
+        wb.addSheet().addCell("2020 BV Financiën");
+        
+        String xml = xmlToString(wb);
+        System.out.println(xml);
+        
+        xmlToFile(wb);
     }
     
     
