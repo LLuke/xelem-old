@@ -57,6 +57,7 @@ public interface WorksheetOptions extends XLElement {
     boolean displaysFormulas();
     
     void setVisible(String wsoValue);
+    String getVisible();
     
     void setActiveCell(int r, int c);
     void setActiveCell(int paneNumber, int r, int c);

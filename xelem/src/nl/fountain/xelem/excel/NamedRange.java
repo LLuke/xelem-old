@@ -26,11 +26,17 @@ package nl.fountain.xelem.excel;
  */
 public interface NamedRange extends XLElement {
     
+    String getName();
+    
+    String getRefersTo();
+    
     /**
      * Sets whether this named range will be displayed in the
      * drop-down box of the Excel application. The default is false:
      * do not hide the name.
      */
     void setHidden(boolean hide);
+    
+    boolean isHidden();
 
 }

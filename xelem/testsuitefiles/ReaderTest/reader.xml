@@ -57,6 +57,9 @@
    <Alignment ss:Horizontal="Center" ss:Vertical="Bottom"/>
   </Style>
  </Styles>
+ <Names>
+  <NamedRange ss:Name="foo" ss:RefersTo="='Tom Poes'!R9C4:R11C4"/>
+ </Names>
  <Worksheet ss:Name="Tom Poes">
   <Names>
    <NamedRange ss:Name="_FilterDatabase" ss:RefersTo="='Tom Poes'!R8C4:R11C5"
@@ -81,18 +84,18 @@
       ss:Name="_FilterDatabase"/></Cell>
    </Row>
    <Row>
-    <Cell ss:Index="4"><Data ss:Type="Number">1</Data><NamedCell
+    <Cell ss:Index="4"><Data ss:Type="Number">1</Data><NamedCell ss:Name="foo"/><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
     <Cell><Data ss:Type="String">a</Data><NamedCell ss:Name="_FilterDatabase"/></Cell>
    </Row>
    <Row>
     <Cell ss:Index="2" ss:Formula="=5/R[-4]C"><Data ss:Type="Error">#DIV/0!</Data></Cell>
-    <Cell ss:Index="4"><Data ss:Type="Number">2</Data><NamedCell
+    <Cell ss:Index="4"><Data ss:Type="Number">2</Data><NamedCell ss:Name="foo"/><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
     <Cell><Data ss:Type="String">b</Data><NamedCell ss:Name="_FilterDatabase"/></Cell>
    </Row>
    <Row>
-    <Cell ss:Index="4"><Data ss:Type="Number">3</Data><NamedCell
+    <Cell ss:Index="4"><Data ss:Type="Number">3</Data><NamedCell ss:Name="foo"/><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
     <Cell><Data ss:Type="String">c</Data><NamedCell ss:Name="_FilterDatabase"/></Cell>
    </Row>
@@ -111,12 +114,16 @@
     <HorizontalResolution>600</HorizontalResolution>
     <VerticalResolution>600</VerticalResolution>
    </Print>
+   <Zoom>75</Zoom>
    <Selected/>
+   <TopRowVisible>6</TopRowVisible>
+   <LeftColumnVisible>1</LeftColumnVisible>
    <Panes>
     <Pane>
      <Number>3</Number>
-     <ActiveRow>9</ActiveRow>
-     <ActiveCol>1</ActiveCol>
+     <ActiveRow>8</ActiveRow>
+     <ActiveCol>3</ActiveCol>
+     <RangeSelection>R9C4:R11C4</RangeSelection>
     </Pane>
    </Panes>
    <ProtectObjects>False</ProtectObjects>
@@ -144,11 +151,13 @@
    </Row>
   </Table>
   <WorksheetOptions xmlns="urn:schemas-microsoft-com:office:excel">
+   <DoNotDisplayGridlines/>
+   <DoNotDisplayHeadings/>
    <Panes>
     <Pane>
      <Number>3</Number>
-     <ActiveRow>12</ActiveRow>
-     <ActiveCol>1</ActiveCol>
+     <ActiveRow>11</ActiveRow>
+     <ActiveCol>3</ActiveCol>
     </Pane>
    </Panes>
    <ProtectObjects>True</ProtectObjects>
@@ -156,19 +165,38 @@
   </WorksheetOptions>
  </Worksheet>
  <Worksheet ss:Name="Asterix" ss:RightToLeft="1">
-  <Table ss:ExpandedColumnCount="3" ss:ExpandedRowCount="6" x:FullColumns="1"
+  <Table ss:ExpandedColumnCount="6" ss:ExpandedRowCount="11" x:FullColumns="1"
    x:FullRows="1">
    <Row ss:Index="6">
     <Cell ss:Index="3"><Data ss:Type="String">blaadje 3</Data></Cell>
    </Row>
+   <Row ss:Index="11">
+    <Cell ss:Index="6" ss:Formula="=1+2"><Data ss:Type="Number">3</Data></Cell>
+   </Row>
   </Table>
   <WorksheetOptions xmlns="urn:schemas-microsoft-com:office:excel">
+   <TabColorIndex>12</TabColorIndex>
    <DisplayRightToLeft/>
+   <DisplayFormulas/>
    <Panes>
     <Pane>
      <Number>3</Number>
-     <ActiveRow>21</ActiveRow>
-     <ActiveCol>10</ActiveCol>
+     <ActiveRow>10</ActiveRow>
+     <ActiveCol>5</ActiveCol>
+    </Pane>
+   </Panes>
+   <ProtectObjects>False</ProtectObjects>
+   <ProtectScenarios>False</ProtectScenarios>
+  </WorksheetOptions>
+ </Worksheet>
+ <Worksheet ss:Name="Sponge Bob">
+  <WorksheetOptions xmlns="urn:schemas-microsoft-com:office:excel">
+   <Visible>SheetHidden</Visible>
+   <Panes>
+    <Pane>
+     <Number>3</Number>
+     <ActiveRow>16</ActiveRow>
+     <ActiveCol>7</ActiveCol>
     </Pane>
    </Panes>
    <ProtectObjects>False</ProtectObjects>

@@ -6,8 +6,10 @@ package nl.fountain.xelem.lex;
 
 import nl.fountain.xelem.excel.Cell;
 import nl.fountain.xelem.excel.Column;
+import nl.fountain.xelem.excel.NamedRange;
 import nl.fountain.xelem.excel.Row;
 import nl.fountain.xelem.excel.Table;
+import nl.fountain.xelem.excel.WorksheetOptions;
 import nl.fountain.xelem.excel.XLElement;
 import nl.fountain.xelem.excel.ss.SSWorksheet;
 
@@ -33,27 +35,19 @@ public class SSWorksheetBuilder extends AnonymousBuilder {
     
     public void startElement(String uri, String localName, String qName,
             Attributes atts) throws SAXException {
-        if (XLElement.XMLNS_SS.equals(uri) && "Table".equals(localName)) {
-            table = current.getTable();
-            table.setAttributes(atts);
-        } else if (XLElement.XMLNS_SS.equals(uri) && "Column".equals(localName)) {
-            Column column;
-            String index = atts.getValue(XLElement.XMLNS_SS, "Index");
-            if (index != null) {
-                column = table.addColumnAt(Integer.parseInt(index));
-            } else {
-                column = table.addColumn();
+        if (XLElement.XMLNS_SS.equals(uri)) {
+	        buildSSElement(localName, atts);
+        } else if (XLElement.XMLNS_X.equals(uri)) {
+            if ("WorksheetOptions".equals(localName)) {
+                WorksheetOptions wso = current.getWorksheetOptions();
+                Builder builder = factory.getAnonymousBuilder();
+                builder.build(reader, this, factory, wso);
             }
-            column.setAttributes(atts);
-        } else if (XLElement.XMLNS_SS.equals(uri) && "Row".equals(localName)) {
-            String index = atts.getValue(XLElement.XMLNS_SS, "Index");
-            if (index != null) {
-                row = table.addRowAt(Integer.parseInt(index));
-            } else {
-                row = table.addRow();
-            }
-            row.setAttributes(atts);
-        } else if (XLElement.XMLNS_SS.equals(uri) && "Cell".equals(localName)) {
+        }        
+    }
+
+    private void buildSSElement(String localName, Attributes atts) {
+        if ("Cell".equals(localName)) {
             Cell cell;
             String index = atts.getValue(XLElement.XMLNS_SS, "Index");
             if (index != null) {
@@ -64,9 +58,34 @@ public class SSWorksheetBuilder extends AnonymousBuilder {
             cell.setAttributes(atts);
             Builder builder = factory.getSSCellBuilder();
             builder.build(reader, this, factory, cell);
-        }
-        
+        } else if ("Row".equals(localName)) {
+            String index = atts.getValue(XLElement.XMLNS_SS, "Index");
+            if (index != null) {
+                row = table.addRowAt(Integer.parseInt(index));
+            } else {
+                row = table.addRow();
+            }
+            row.setAttributes(atts);
+        } else if ("Column".equals(localName)) {
+            Column column;
+            String index = atts.getValue(XLElement.XMLNS_SS, "Index");
+            if (index != null) {
+                column = table.addColumnAt(Integer.parseInt(index));
+            } else {
+                column = table.addColumn();
+            }
+            column.setAttributes(atts);
+        } else if ("Table".equals(localName)) {
+            table = current.getTable();
+            table.setAttributes(atts);
+        } else if ("NamedRange". equals(localName)) {
+            NamedRange nr = current.addNamedRange(
+                    atts.getValue(XLElement.XMLNS_SS, "Name"), 
+                    null);
+            nr.setAttributes(atts);
+        } 
     }
+    
 
     public void endElement(String uri, String localName, String qName) throws SAXException {
         if (current.getNameSpace().equals(uri)) {

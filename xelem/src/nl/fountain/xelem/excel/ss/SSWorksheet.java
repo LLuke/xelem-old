@@ -23,6 +23,10 @@ package nl.fountain.xelem.excel.ss;
 
 import java.lang.reflect.Method;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 import nl.fountain.xelem.Address;
 import nl.fountain.xelem.CellPointer;
@@ -31,6 +35,7 @@ import nl.fountain.xelem.excel.AbstractXLElement;
 import nl.fountain.xelem.excel.AutoFilter;
 import nl.fountain.xelem.excel.Cell;
 import nl.fountain.xelem.excel.Column;
+import nl.fountain.xelem.excel.NamedRange;
 import nl.fountain.xelem.excel.Row;
 import nl.fountain.xelem.excel.Table;
 import nl.fountain.xelem.excel.Worksheet;
@@ -64,6 +69,7 @@ public class SSWorksheet extends AbstractXLElement implements Worksheet {
     private String name;
     private boolean protect;
     private boolean righttoleft;
+    private Map namedRanges;
     private Table table;
     private WorksheetOptions options;
     private AutoFilter autoFilter;
@@ -114,6 +120,23 @@ public class SSWorksheet extends AbstractXLElement implements Worksheet {
     
     public boolean isRightToLeft() {
         return righttoleft;
+    }
+    
+    public NamedRange addNamedRange(String name, String refersTo) {
+        NamedRange nr = new SSNamedRange(name, refersTo);
+        if (namedRanges == null) {
+            namedRanges = new HashMap();
+        }
+        namedRanges.put(name, nr);
+        return nr;
+    }
+    
+    public Map getNamedRanges() {
+        if (namedRanges == null) {
+            return Collections.EMPTY_MAP;
+        } else {
+            return namedRanges;
+        }
     }
     
     public boolean hasWorksheetOptions() {
@@ -335,6 +358,16 @@ public class SSWorksheet extends AbstractXLElement implements Worksheet {
                 createAttributeNS(doc, "RightToLeft", "1"));
         
         parent.appendChild(wse);
+        
+        // Names
+        if (namedRanges != null) {
+            Element names = doc.createElement("Names");
+            wse.appendChild(names);
+            for (Iterator iter = namedRanges.values().iterator(); iter.hasNext();) {
+                NamedRange nr = (NamedRange) iter.next();
+                nr.assemble(names, gio);
+            }
+        }
         
         if (hasTable()) {
             getTable().assemble(wse, gio);

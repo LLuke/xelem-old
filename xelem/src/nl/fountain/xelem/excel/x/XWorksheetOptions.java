@@ -21,6 +21,7 @@
  */
 package nl.fountain.xelem.excel.x;
 
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -40,7 +41,7 @@ public class XWorksheetOptions extends AbstractXLElement implements WorksheetOpt
     
     private Map panes;
     private int zoom;
-    private int tabColorIndex;
+    private int tabColorIndex = -1;
     private String gridlineColor;
     private String visible;
     private boolean selected;
@@ -66,6 +67,10 @@ public class XWorksheetOptions extends AbstractXLElement implements WorksheetOpt
     public void setTopRowVisible(int tr) {
         topRowVisible = tr;
     }
+    
+    private void setTopRowVisible(String s) {
+        topRowVisible = Integer.parseInt(s);
+    }
 
     // @see nl.fountain.xelem.excel.x.WorksheetOptions#getTopRowVisible()
     public int getTopRowVisible() {
@@ -75,6 +80,10 @@ public class XWorksheetOptions extends AbstractXLElement implements WorksheetOpt
     // @see nl.fountain.xelem.excel.x.WorksheetOptions#setLeftColumnVisible(int)
     public void setLeftColumnVisible(int lc) {
         leftColumnVisible = lc;
+    }
+    
+    private void setLeftColumnVisible(String s) {
+        leftColumnVisible = Integer.parseInt(s);
     }
 
     // @see nl.fountain.xelem.excel.x.WorksheetOptions#getLeftColumnVisible()
@@ -86,6 +95,10 @@ public class XWorksheetOptions extends AbstractXLElement implements WorksheetOpt
     public void setZoom(int z) {
         zoom = z;
     }
+    
+    private void setZoom(String s) {
+        zoom = Integer.parseInt(s);
+    }
 
     // @see nl.fountain.xelem.excel.x.WorksheetOptions#getZoom()
     public int getZoom() {
@@ -95,6 +108,10 @@ public class XWorksheetOptions extends AbstractXLElement implements WorksheetOpt
     // @see nl.fountain.xelem.excel.x.WorksheetOptions#setTabColorIndex(int)
     public void setTabColorIndex(int ci) {
         tabColorIndex = ci;
+    }
+    
+    private void setTabColorIndex(String s) {
+        tabColorIndex = Integer.parseInt(s);
     }
 
     // @see nl.fountain.xelem.excel.x.WorksheetOptions#getTabColorIndex()
@@ -106,6 +123,10 @@ public class XWorksheetOptions extends AbstractXLElement implements WorksheetOpt
     public void setSelected(boolean s) {
         selected = s;
     }
+    
+    private void setSelected(String s) {
+        selected = "".equals(s);
+    }
 
     // @see nl.fountain.xelem.excel.x.WorksheetOptions#isSelected()
     public boolean isSelected() {
@@ -115,6 +136,10 @@ public class XWorksheetOptions extends AbstractXLElement implements WorksheetOpt
     // @see nl.fountain.xelem.excel.x.WorksheetOptions#doNotDisplayHeadings(boolean)
     public void doNotDisplayHeadings(boolean b) {
         noHeadings = b;
+    }
+    
+    private void setDoNotDisplayHeadings(String s) {
+        noHeadings = "".equals(s);
     }
 
     // @see nl.fountain.xelem.excel.x.WorksheetOptions#displaysNoHeadings()
@@ -126,6 +151,10 @@ public class XWorksheetOptions extends AbstractXLElement implements WorksheetOpt
     public void doNotDisplayGridlines(boolean b) {
         noGridlines = b;
     }
+    
+    private void setDoNotDisplayGridlines(String s) {
+        noGridlines = "".equals(s);
+    }
 
     // @see nl.fountain.xelem.excel.x.WorksheetOptions#displaysNoGridlines()
     public boolean displaysNoGridlines() {
@@ -135,6 +164,10 @@ public class XWorksheetOptions extends AbstractXLElement implements WorksheetOpt
     // @see nl.fountain.xelem.excel.x.WorksheetOptions#doDisplayFormulas(boolean)
     public void doDisplayFormulas(boolean f) {
         displayFormulas = f;
+    }
+    
+    private void setDisplayFormulas(String s) {
+        displayFormulas = "".equals(s);
     }
 
     // @see nl.fountain.xelem.excel.x.WorksheetOptions#displaysFormulas()
@@ -152,6 +185,14 @@ public class XWorksheetOptions extends AbstractXLElement implements WorksheetOpt
         } else {
             throw new IllegalArgumentException(wsoValue +
                     ". Should be one of WorksheetOptions.SHEET_xxx values.");
+        }
+    }
+    
+    public String getVisible() {
+        if (visible == null) {
+            return SHEET_VISIBLE;
+        } else {
+            return visible;
         }
     }
     
@@ -275,7 +316,7 @@ public class XWorksheetOptions extends AbstractXLElement implements WorksheetOpt
                 createElementNS(doc, "LeftColumnVisible", leftColumnVisible));
         if (zoom > 0) wsoe.appendChild(
                 createElementNS(doc, "Zoom", zoom));
-        if (tabColorIndex != 0) wsoe.appendChild(
+        if (tabColorIndex != -1) wsoe.appendChild(
                 createElementNS(doc, "TabColorIndex", tabColorIndex));
         if (gridlineColor != null) wsoe.appendChild(
                 createElementNS(doc, "GridlineColor", gridlineColor));
@@ -349,6 +390,23 @@ public class XWorksheetOptions extends AbstractXLElement implements WorksheetOpt
             panes.put(new Integer(pane.getNumber()), pane);
         }
         return pane;
+    }
+    
+    public void setChildElement(String localName, String content) {
+        invokeMethod(localName, content);
+    }
+    
+	private void invokeMethod(String name, Object value) {
+        Class[] types = new Class[] { value.getClass() };
+        Method method = null;
+        try {
+            method = this.getClass().getDeclaredMethod("set" + name, types);
+            method.invoke(this, new Object[] { value });
+        } catch (NoSuchMethodException e) {
+            // no big deal
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }

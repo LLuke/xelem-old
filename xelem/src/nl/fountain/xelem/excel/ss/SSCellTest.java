@@ -212,7 +212,7 @@ public class SSCellTest extends XLElementTest {
         Object o = "123456789";
         SSCell sCell = new SSCell() {
             public void setData(String data) {
-                setXLDataType(DATATYPE_NUMBER);
+                setType(DATATYPE_NUMBER);
                 setData(data.length());
              }
         };

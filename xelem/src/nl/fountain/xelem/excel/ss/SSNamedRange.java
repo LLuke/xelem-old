@@ -21,8 +21,11 @@
  */
 package nl.fountain.xelem.excel.ss;
 
+import java.lang.reflect.Method;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.xml.sax.Attributes;
 
 import nl.fountain.xelem.GIO;
 import nl.fountain.xelem.excel.AbstractXLElement;
@@ -47,9 +50,29 @@ public class SSNamedRange extends AbstractXLElement implements NamedRange {
         this.name = name;
         this.refersTo = refersTo;
     }
+    
+    public String getName() {
+        return name;
+    }
+    
+    private void setRefersTo(String s) {
+        refersTo = s;
+    }
+    
+    public String getRefersTo() {
+        return refersTo;
+    }
 
     public void setHidden(boolean hide) {
         hidden = hide;
+    }
+    
+    private void setHidden(String s) {
+        hidden = s.equals("1");
+    }
+    
+    public boolean isHidden() {
+        return hidden;
     }
 
     // @see nl.fountain.xelem.excel.XLElement#getTagName()
@@ -79,6 +102,25 @@ public class SSNamedRange extends AbstractXLElement implements NamedRange {
         
         parent.appendChild(nre);
         return nre;
+    }
+    
+    public void setAttributes(Attributes attrs) {
+        for (int i = 0; i < attrs.getLength(); i++) {
+            invokeMethod(attrs.getLocalName(i), attrs.getValue(i));
+        }
+    }
+    
+	private void invokeMethod(String name, Object value) {
+        Class[] types = new Class[] { value.getClass() };
+        Method method = null;
+        try {
+            method = this.getClass().getDeclaredMethod("set" + name, types);
+            method.invoke(this, new Object[] { value });
+        } catch (NoSuchMethodException e) {
+            // no big deal
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }

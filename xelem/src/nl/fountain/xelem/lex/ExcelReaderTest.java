@@ -6,6 +6,7 @@ package nl.fountain.xelem.lex;
 
 import java.io.File;
 import java.util.Iterator;
+import java.util.Map;
 
 import junit.framework.TestCase;
 import nl.fountain.xelem.XSerializer;
@@ -13,10 +14,12 @@ import nl.fountain.xelem.excel.Cell;
 import nl.fountain.xelem.excel.Column;
 import nl.fountain.xelem.excel.DocumentProperties;
 import nl.fountain.xelem.excel.ExcelWorkbook;
+import nl.fountain.xelem.excel.NamedRange;
 import nl.fountain.xelem.excel.Row;
 import nl.fountain.xelem.excel.Table;
 import nl.fountain.xelem.excel.Workbook;
 import nl.fountain.xelem.excel.Worksheet;
+import nl.fountain.xelem.excel.WorksheetOptions;
 
 import org.xml.sax.SAXParseException;
 
@@ -157,6 +160,15 @@ public class ExcelReaderTest extends TestCase {
         assertTrue(!wb.hasDocumentProperties());
     }
     
+    public void testNamedRange() throws Exception {
+        Workbook wb = getReaderWorkbook();
+        Map map = wb.getNamedRanges();
+        assertEquals(1, map.size());
+        NamedRange nr = (NamedRange) map.get("foo");
+        assertEquals("foo", nr.getName());
+        assertEquals("='Tom Poes'!R9C4:R11C4", nr.getRefersTo());
+        assertTrue(!nr.isHidden());
+    }
     
     public void testWorksheet() throws Exception {
         Workbook wb = getReaderWorkbook();
@@ -170,6 +182,17 @@ public class ExcelReaderTest extends TestCase {
         assertTrue(sheet.isProtected());
         sheet = wb.getWorksheet("Asterix");
         assertTrue(sheet.isRightToLeft());
+    }
+    
+    public void testNamedRangeOnWorksheet() throws Exception {
+        Workbook wb = getReaderWorkbook();
+        Worksheet sheet = wb.getWorksheet("Tom Poes");
+        Map map = sheet.getNamedRanges();
+        assertEquals(1, map.size());
+        NamedRange nr = (NamedRange) map.get("_FilterDatabase");
+        assertEquals("_FilterDatabase", nr.getName());
+        assertEquals("='Tom Poes'!R8C4:R11C5", nr.getRefersTo());
+        assertTrue(nr.isHidden());
     }
     
     public void testTable() throws Exception {
@@ -253,6 +276,37 @@ public class ExcelReaderTest extends TestCase {
         assertTrue(!cell.hasData());
     }
     
-    
+    public void testWorksheetOptions() throws Exception {
+        Workbook wb = getReaderWorkbook();
+        
+        Worksheet sheet = wb.getWorksheet("Tom Poes");        
+        assertTrue(sheet.hasWorksheetOptions());
+        WorksheetOptions wso = sheet.getWorksheetOptions();
+        assertTrue(wso.isSelected());
+        assertEquals(6, wso.getTopRowVisible());
+        assertEquals(1, wso.getLeftColumnVisible());
+        assertEquals(75, wso.getZoom());
+        assertEquals(-1, wso.getTabColorIndex());
+        assertTrue(!wso.displaysNoHeadings());
+        assertTrue(!wso.displaysNoGridlines());
+        assertTrue(!wso.displaysFormulas());
+        assertEquals("SheetVisible", wso.getVisible());
+        
+        sheet = wb.getWorksheet("Donald Duck");
+        wso = sheet.getWorksheetOptions();
+        assertTrue(!wso.isSelected());
+        assertTrue(wso.displaysNoHeadings());
+        assertTrue(wso.displaysNoGridlines());
+        
+        sheet = wb.getWorksheet("Asterix");
+        wso = sheet.getWorksheetOptions();
+        assertTrue(!wso.isSelected());
+        assertEquals(12, wso.getTabColorIndex());
+        assertTrue(wso.displaysFormulas());
+        
+        sheet = wb.getWorksheet("Sponge Bob");
+        wso = sheet.getWorksheetOptions();
+        assertEquals("SheetHidden", wso.getVisible());
+    }
 
 }

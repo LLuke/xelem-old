@@ -2,7 +2,7 @@
  * Created on 22-mrt-2005
  *
  */
-package nl.fountain.xelem.excel.ss;
+package nl.fountain.xelem.lex;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.ContentHandler;
@@ -10,8 +10,7 @@ import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 
 import nl.fountain.xelem.excel.XLElement;
-import nl.fountain.xelem.lex.AnonymousBuilder;
-import nl.fountain.xelem.lex.BuilderFactory;
+import nl.fountain.xelem.excel.ss.SSCell;
 
 /**
  *
@@ -30,7 +29,8 @@ public class SSCellBuilder extends AnonymousBuilder {
             Attributes atts) throws SAXException {
         contents.reset();
         if (XLElement.XMLNS_SS.equals(uri) && "Data".equals(localName)) {
-            current.setXLDataType(atts.getValue(XLElement.XMLNS_SS, "Type"));
+            // this time only the atts of the data-element are set.
+            current.setAttributes(atts);
         }
     }
     

@@ -407,7 +407,7 @@ public class SSCell extends AbstractXLElement implements Cell {
      * 
      * @param type	Must be one of Cell's DATATYPE_XXX values.
      */
-    protected void setXLDataType(String type) {
+    protected void setType(String type) {
         if (DATATYPE_BOOLEAN.equals(type)
                 || DATATYPE_DATE_TIME.equals(type)
                 || DATATYPE_ERROR.equals(type)

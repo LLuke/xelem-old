@@ -22,6 +22,7 @@
 package nl.fountain.xelem.excel;
 
 import java.util.Collection;
+import java.util.Map;
 
 import nl.fountain.xelem.Address;
 import nl.fountain.xelem.CellPointer;
@@ -83,6 +84,30 @@ public interface Worksheet extends XLElement {
     boolean isRightToLeft();
     
     /**
+     * Adds a new NamedRange to this worksheet. Named ranges are usefull when
+     * working with formulas.
+     * <P>
+     * If the workbook has a named range with the same name, the named range
+     * on the worksheet level has precedence over the one defined on the
+     * workbook level. 
+     * <P>
+     * The string <code>refersTo</code> should be in R1C1-reference style or
+     * should be in the format <code>[worksheet name]!R1C1:R1C1</code>.
+     * 
+     * @param name		The name to apply to the range.
+     * @param refersTo	A String of R1C1-reference style.
+     * 
+     * @return New NamedRange.
+     */
+    NamedRange addNamedRange(String name, String refersTo);
+    
+    /**
+     * Gets all the NamedRanges that were added to this worksheet. The map-keys
+     * are equal to their names.
+     */
+    Map getNamedRanges();
+    
+    /**
      * Indicates whether WorksheetOptions was added to this worksheet.
      * 
      * @return <code>true</code> if this worksheet has WorksheetOptions.
@@ -92,7 +117,7 @@ public interface Worksheet extends XLElement {
     /**
      * Gets the WorksheetOptions of this worksheet.
      * 
-     * @return The WorksheetOptions of this worksheet.
+     * @return The WorksheetOptions of this worksheet. Never <code>null</code>.
      */
     WorksheetOptions getWorksheetOptions();
     

@@ -4,6 +4,7 @@
  */
 package nl.fountain.xelem.lex;
 
+import nl.fountain.xelem.excel.NamedRange;
 import nl.fountain.xelem.excel.Worksheet;
 import nl.fountain.xelem.excel.XLElement;
 import nl.fountain.xelem.excel.ss.XLWorkbook;
@@ -35,6 +36,12 @@ public class XLWorkbookBuilder extends AnonymousBuilder {
             Builder builder = factory.getAnonymousBuilder();
             builder.build(reader, this, factory, current.getExcelWorkbook());
         // Styles
+        // NamedRange
+        } else if (XLElement.XMLNS_SS.equals(uri) && "NamedRange". equals(localName)) {
+            NamedRange nr = current.addNamedRange(
+                    atts.getValue(XLElement.XMLNS_SS, "Name"), 
+                    null);
+            nr.setAttributes(atts);
         } else if (XLElement.XMLNS_SS.equals(uri) && "Worksheet". equals(localName)) {
             Builder builder = factory.getSSWorksheetBuilder();
             Worksheet sheet = current.addSheet(
