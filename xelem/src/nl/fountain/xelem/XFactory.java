@@ -255,6 +255,18 @@ public class XFactory {
         styles.put(newID, ne);
     }
     
+    /**
+     * Add a new SpreadsheetML Style element to the factory. If the
+     * factory allready contains an element with the same ss:ID as the
+     * passed element, no element will be added and the method returns
+     * <code>false</code>.
+     * 
+     * @param style	a SpreadsheetML style element
+     * @return 	<code>true</code> if the style element was succesfully added,
+     * 	<code>false</code> otherwise
+     * @throws 	java.lang.NullPointerException if the passed style did not
+     * 	have an attribute ss:ID
+     */
     public boolean addStyle(Element style) {
         String id = style.getAttributes().getNamedItemNS(
                 XLElement.XMLNS_SS, "ID").getNodeValue();

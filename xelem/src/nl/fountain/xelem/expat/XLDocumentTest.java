@@ -251,7 +251,7 @@ public class XLDocumentTest extends TestCase {
         OutputStream out;
         try {
             // create the XLDocument
-            XLDocument xlDoc = new XLDocument("template.xml");
+            XLDocument xlDoc = new XLDocument("testsuitefiles/XLDocumentTest/prices0.xml");
             // append the rows to the sheet 'data'
             xlDoc.appendRows("data", rows);
             // this will be the new filename

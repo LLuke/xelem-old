@@ -12,7 +12,6 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
 import nl.fountain.xelem.excel.Worksheet;
-import nl.fountain.xelem.excel.ss.SSWorksheet;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.Locator;

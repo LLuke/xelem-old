@@ -173,6 +173,18 @@ public class XFactoryTest extends XLElementTest {
         attr.setNodeValue("nieuw");
         nStyle.setAttributeNodeNS(attr);
         assertTrue(x.addStyle(nStyle));
+        
+        Element noStyle = style.getOwnerDocument().createElement("Style");
+        attr = style.getOwnerDocument().createAttributeNS(XLElement.XMLNS_SS, "FOO");
+        attr.setPrefix(XLElement.PREFIX_SS);
+        attr.setNodeValue("no_id");
+        noStyle.setAttributeNodeNS(attr);
+        try {
+            x.addStyle(noStyle);
+            fail("should have thrown Exception.");
+        } catch (NullPointerException e) {
+            //
+        }
     }
     
     public void testGetInfoSheet() throws XelemException {
