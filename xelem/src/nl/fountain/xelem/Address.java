@@ -1,6 +1,6 @@
 /*
  * Created on 30-nov-2004
- * Copyright (C) 2004  Henk van den Berg
+ * Copyright (C) 2004, 2005  Henk van den Berg
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -45,6 +45,8 @@ public class Address implements Comparable {
      */
     protected int c;
     
+    private static int COLUMN_RADIX = 26;
+    
     /**
      * This constructor is protected.
      */
@@ -59,9 +61,112 @@ public class Address implements Comparable {
         r = rowIndex;
         c = columnIndex;
     }
+    
+    /**
+     * Constructs a new Address.
+     * The given string can be of A1-reference style, as used in Excel.
+     * The parameter "A1" constructs an address at row 1, column 1;
+     * "Z23" leads to an address pointing to row 23, column 26.
+     * <P>
+     * This constructor treats the passed string case-insensitive,
+     * row indicators (digits) and column indicators (letters) may be intermingled. 
+     * The next
+     * equations all evaluate as <code>true</code>.
+     * <PRE>
+     *   new Address("BQ65").equals(new Address("65bq"))
+     *   new Address("BQ65").equals(new Address("6B5q"))
+     *   etc.
+     * </PRE>
+     * 
+     * @param address	a String in A1-reference style
+     * @since xelem.2.0
+     */
+    public Address(String address) {
+        r = calculateRow(address);
+        c = calculateColumn(address);
+    }
+    
+    /**
+     * Calculates the column number of a given string in A1-reference style.
+     * Column indicator (letters) and row indicator (digits) may be intermingled.
+     * Treats the passed string case-insensitive. The maximum column notation
+     * that can be calculated is "FXSHRXW" and this string returns
+     * {@link java.lang.Integer#MAX_VALUE}.
+     *  If no letters are present in the given string this method returns 0.
+     * 
+     * @param s a string in A1-reference style
+     * @return the column number of the given string
+     * @since xelem.2.0
+     */
+    public static int calculateColumn(String s) {
+        String su = s.toUpperCase();
+        int colnr = 0;
+        int factor = 1;
+        for (int i = su.length() - 1; i >= 0; i--) {
+            char ch = su.charAt(i);
+            if (Character.isLetter(ch)) {
+                colnr += (ch - 64) * factor;
+                factor *= COLUMN_RADIX;
+            }
+        }
+        return colnr;
+    }
+    
+    /**
+     * Calculates the column notation in A1-reference style of a given column number.
+     * A column number of 0 or less returns as an empty string ("").
+     * A column number equal to {@link java.lang.Integer#MAX_VALUE} returns
+     * "FXSHRXW".
+     * 
+     * @param columnNumber the column number to be calculated
+     * @return the column notation in A1-reference style
+     * @since xelem.2.0
+     */
+    public static String calculateColumn(int columnNumber) {
+        int div = 1;
+        int af = 0;
+        StringBuffer sb = new StringBuffer();
+        int r;
+        while ((r = (columnNumber-af)/div) > 0) {
+            sb.insert(0, getLSD(r));
+            af += div;
+            div *= COLUMN_RADIX;            
+        }
+        return sb.toString();
+    }
+    
+    private static char getLSD(int r) {
+        int lsd = r % COLUMN_RADIX;
+        if (lsd == 0) lsd = COLUMN_RADIX;
+        return (char) (lsd + 64);
+    }
+    
+    /**
+     * Calculates the row number of a given string in A1-reference style.
+     * Column indicator (letters) and row indicator (digits) may be intermingled.
+     * If no digits are present in the given string this method returns 0.
+     * 
+     * @param s a string in A1-reference style
+     * @return the row number of the given string
+     * @since xelem.2.0
+     */
+    public static int calculateRow(String s) {
+        int rownr = 0;
+        int factor = 1;
+        for (int i = s.length() -1; i >=0; i--) {
+            char ch = s.charAt(i);
+            if (Character.isDigit(ch)) {
+                rownr += (ch - 48) * factor;
+                factor *= 10;
+            }
+        }
+        return rownr;
+    }
 
     /**
      * Gets the index of the row of this address.
+     * 
+     * @return the index of the row of this address
      */
     public int getRowIndex() {
         return r;
@@ -69,6 +174,8 @@ public class Address implements Comparable {
 
     /**
      * Gets the index of the column of this address.
+     * 
+     * @return the index of the column of this address
      */
     public int getColumnIndex() {
         return c;
@@ -77,10 +184,25 @@ public class Address implements Comparable {
     /**
      * Specifies whether this address is within the bounds of the
      * spreadsheet.
+     * @return <code>true</code> if this address is within the bounds of
+     * 	the sheet, <code>false</code> otherwise
      */
     public boolean isWithinSheet() {
         return c >= Worksheet.firstColumn && c <= Worksheet.lastColumn 
         	&& r >= Worksheet.firstRow && r <= Worksheet.lastRow;
+    }
+    
+    /**
+     * Translates the position of this address into an
+     * A1-reference string.
+     * 
+     * @return the position of this address in A1-reference style
+     * @since xelem.2.0
+     */
+    public String getA1Reference() {
+        StringBuffer sb = new StringBuffer(calculateColumn(c));
+        sb.append(r);
+        return sb.toString();
     }
 
     /**

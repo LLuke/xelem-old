@@ -16,6 +16,50 @@ public class AddressTest extends TestCase {
     public static void main(String[] args) {
         junit.textui.TestRunner.run(AddressTest.class);
     }
+    
+    public void testCalculateRow() {
+        assertEquals(0, Address.calculateRow(""));
+        assertEquals(1, Address.calculateRow("1"));
+        assertEquals(10, Address.calculateRow("A10"));
+        assertEquals(123, Address.calculateRow("a1@2^3n:"));
+        assertEquals(Integer.MAX_VALUE, Address.calculateRow("2.147;483&647"));
+        assertEquals(0, Address.calculateRow("JAVA"));
+    }
+    
+    public void testCalculateColumn1() {
+        assertEquals(0, Address.calculateColumn(""));
+        assertEquals(1, Address.calculateColumn("A"));
+        assertEquals(26, Address.calculateColumn("Z10"));
+        assertEquals(26, Address.calculateColumn("123z"));
+        assertEquals(27, Address.calculateColumn("AA520"));
+        assertEquals(Integer.MAX_VALUE, Address.calculateColumn("FXSHRXW"));
+        assertEquals(177009, Address.calculateColumn("JAVA"));
+    }
+    
+    public void testCalculateColumn2() {
+        for (int i = 0; i < 300; i++) {
+            String column = Address.calculateColumn(i);
+            assertEquals(i, Address.calculateColumn(column));
+        }
+        assertEquals("", Address.calculateColumn(-5));
+        assertEquals("", Address.calculateColumn(0));
+        assertEquals("JAVA", Address.calculateColumn(177009));
+    }
+    
+    public void testStringConstructor() {
+        assertTrue(new Address("BQ65").equals(new Address("65bq")));
+        assertTrue(new Address("BQ65").equals(new Address("6Bq5")));
+        
+        Address adr = new Address("IV65536");
+        assertEquals(65536, adr.getRowIndex());
+        assertEquals(256, adr.getColumnIndex());
+        assertEquals("IV65536", adr.getA1Reference());
+        
+        adr = new Address("xelem.2.0");
+        assertEquals(20, adr.getRowIndex());
+        assertEquals(11063559, adr.getColumnIndex());
+        assertEquals("XELEM20", adr.getA1Reference());
+    }
 
     public void testIsWithinSheet() {
         Address adr = new Address(Worksheet.firstRow, Worksheet.firstColumn);
