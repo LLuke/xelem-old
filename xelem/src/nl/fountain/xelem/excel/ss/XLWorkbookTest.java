@@ -32,9 +32,7 @@ public class XLWorkbookTest extends XLElementTest {
      */
     protected void setUp() throws Exception {
         String configFileName =
-            this.getClass().getClassLoader()
-            .getResource("nl/fountain/xelem/XFactoryTest.xml")
-            .getFile();
+            "testsuitefiles/XFactoryTest/XFactoryTest.xml";
         XFactory.setConfigurationFileName(configFileName);
         wb = new XLWorkbook("bestand");
     }

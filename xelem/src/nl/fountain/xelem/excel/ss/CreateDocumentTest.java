@@ -40,11 +40,11 @@ import org.w3c.dom.Document;
 public class CreateDocumentTest extends TestCase {
     
     // the path to the directory for test files.
-    private String testFileDir = "test_xls";
+    private String testOutputDir = "testoutput/CreateDocumentTest/";
     
     // when set to true, test files will be created.
     // the path mentioned after 'testFileDir' should exist.
-    private boolean toFile = false;
+    private boolean toFile = true;
     
     private int warnings;
     private boolean printWarnings;
@@ -56,9 +56,7 @@ public class CreateDocumentTest extends TestCase {
     // @see junit.framework.TestCase#setUp()
     protected void setUp() throws Exception {
         String configFileName =
-            this.getClass().getClassLoader()
-            .getResource("nl/fountain/xelem/excel/ss/CreateDocumentTest.xml")
-            .getFile();
+            "testsuitefiles/CreateDocumentTest/CreateDocumentTest.xml";
         XFactory.setConfigurationFileName(configFileName);
         warnings = 0;
         printWarnings = true;
@@ -66,8 +64,9 @@ public class CreateDocumentTest extends TestCase {
     
     public void testAdvise() {
        if (toFile) {
+           System.out.println();
            System.out.println(this.getClass() + " is writing files to: "
-                   + testFileDir + "/");
+                   + testOutputDir);
        }
     }
     
@@ -764,7 +763,7 @@ public class CreateDocumentTest extends TestCase {
     
     private void xmlToFile(Workbook wb) throws Exception {
         Result result = new StreamResult(
-                new File(testFileDir + "/" + wb.getFileName()));
+                new File(testOutputDir + wb.getFileName()));
         transform(wb, result);
     }
     

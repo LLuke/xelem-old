@@ -1,6 +1,22 @@
 /*
  * Created on Dec 24, 2004
  * Copyright (C) 2005  Henk van den Berg
+ * 
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ * 
+ * see license.txt
  *
  */
 package nl.fountain.xelem;
@@ -38,27 +54,29 @@ import org.xml.sax.SAXException;
  * <i>Sometimes you just want to dump a lot of data produced within your java-
  * application into a preformatted template. Building an 
  * {@link nl.fountain.xelem.excel.ss.XLWorkbook XLWorkbook} from scratch may be
- * time consuming and is a waste of effort.</i>
+ * time consuming and seems a waste of effort.</i>
  * <P>
- * This class (allmost) completely ignores the architecture of xelem. It uses
- * a different approach. It parses an
- * existing template-file and tinkers with xml-elements in the derived document.
- * XLDocument acts as a wrapper around these surgical opperations.
+ * Whereas the strategy of xelem can be described as arranging
+ * a conglomerate of Java-classinstances that transform themselves into
+ * an xml-document, this class uses a different approach. It parses an
+ * existing template-file and tinkers with xml-elements in the derived document,
+ * acting as a facade around these surgical opperations.
  * <P>
- * Create your template in Excel. Select columns to set formatting (i.e. StyleID's)
+ * Create your template in Excel. Select columns to set formatting (i.e. style-id's)
  * on entire columns. If you wish, you may put table headings, formula's, titles
- * and what have you, in the first rows of the sheets. Save your template and
+ * and what have you, in the first rows of the sheets. Save your template as an
+ * XML Spreadsheet and
  * instantiate an instance of XLDocument with the parameter 
  * <code>fileName</code> set to the path where your template resides. The methods
  * {@link #appendRow(String, Row) appendRow(String sheetName, Row row)} and 
  * {@link #appendRows(String, Collection) appendRows(String sheetName, Collection rows)}
  * will append the {@link nl.fountain.xelem.excel.Row rows} as row-elements
- * directly under the last row-element of the sheet. As long as the cells in
- * the appended rows do not have a StyleID set, your data
- * will be formatted according to the StyleID's which where set on your columns
- * during the creation of the template. But offcourse, 
- * you could apply StyleID's as well (but take care to only use id's that have
- * a definition in the section <code>&lt;Styles&gt;</code> in your template).
+ * directly under the last row-element of the sheet. As long as the appended rows
+ * and cells do not have a StyleID set, your data
+ * will be formatted according to the style-id's which were set on your columns
+ * during the creation of the template. And offcourse, 
+ * you could set StyleID's on rows and cells, but take care to only use id's that have
+ * a definition in the section <code>&lt;Styles&gt;</code> in your template.
  * <P>
  * The method {@link #setCellData(Cell, String, int, int)} will set or replace
  * (only) the data-element of the mentioned cell.
@@ -74,6 +92,7 @@ public class XLDocument {
     /**
      * Creates a new XLDocument by parsing the specified file into a
      * {@link org.w3c.dom.Document}.
+     * 
      * @param fileName	the filename of the xml-spreadsheet template
      * @throws XelemException	if loading or parsing of the document fails.
      * <br>Could be any of:
@@ -95,7 +114,7 @@ public class XLDocument {
      * Use one of the serialize-methods of {@link nl.fountain.xelem.XSerializer}
      * to serialize this document to a file, outputstream or writer.
      * 
-     * @return the document for which this XLDocument acts as a wrapper
+     * @return the document for which this XLDocument acts as a facade
      */
     public Document getDocument() {
         return doc;
@@ -176,24 +195,40 @@ public class XLDocument {
      * Replaces the old text in the element <code>&lt;FileName&gt;</code> with a
      * new one.
      * <P>
-     * The FileName element contains the name of the file that contains 
+     * The FileName element holds the name of the file that contains 
      * the source range of a PivotTable report.
      * 
      * @param fileName the new text for the element <code>&lt;FileName&gt;</code>
      * @return <code>true</code> if the tag <code>&lt;FileName&gt;</code> was found
      * 	and the text was replaced, <code>false</code> otherwise.
      */
-    public boolean setConsilidationReferenceFileName(String fileName) {
+    public boolean setPTSourceFileName(String fileName) {
         boolean found = false;
         NodeList nodelist = doc.getElementsByTagName("FileName");
         if (nodelist.getLength() == 0) {
-            nodelist = doc.getElementsByTagNameNS(XLElement.XMLNS, "FileName");
+            nodelist = doc.getElementsByTagNameNS(XLElement.XMLNS_X, "FileName");
         }
         if (nodelist.getLength() > 0) {
             Node fileNameElement = nodelist.item(0);           
             Node oldTekst = fileNameElement.getFirstChild();
             Node newTekst = doc.createTextNode(fileName);
             fileNameElement.replaceChild(newTekst, oldTekst);
+            found = true;
+        }
+        return found;
+    }
+    
+    public boolean setPTSourceReference(String ref) {
+        boolean found = false;
+        NodeList nodelist = doc.getElementsByTagName("Reference");
+        if (nodelist.getLength() == 0) {
+            nodelist = doc.getElementsByTagNameNS(XLElement.XMLNS_X, "Reference");
+        }
+        if (nodelist.getLength() > 0) {
+            Node element = nodelist.item(0);           
+            Node oldTekst = element.getFirstChild();
+            Node newTekst = doc.createTextNode(ref);
+            element.replaceChild(newTekst, oldTekst);
             found = true;
         }
         return found;

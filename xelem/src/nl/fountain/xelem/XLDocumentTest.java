@@ -4,7 +4,6 @@
  */
 package nl.fountain.xelem;
 
-import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.io.StringWriter;
@@ -29,10 +28,10 @@ import org.w3c.dom.Node;
 public class XLDocumentTest extends TestCase {
     
 //  the path to the directory for test files.
-    private String testFileDir = "test_xls";
+    private String testOutputDir = "testoutput/XLDocumentTest/";
     
     // when set to true, test files will be created.
-    // the path mentioned after 'testFileDir' should exist.
+    // the path mentioned after 'testOutputDir' should exist.
     private boolean toFile = true;
     
     private String templateFile;
@@ -43,10 +42,16 @@ public class XLDocumentTest extends TestCase {
     
     public void setUp() {
         templateFile =
-            this.getClass().getClassLoader()
-            .getResource("nl/fountain/xelem/aviso.xml")
-            .getFile();
+            "testsuitefiles/XLDocumentTest/aviso.xml";
     }
+    
+    public void testAdvise() {
+        if (toFile) {
+            System.out.println();
+            System.out.println(this.getClass() + " is writing files to: "
+                    + testOutputDir);
+        }
+     }
     
     public void testConstructor() {
         try {
@@ -106,7 +111,7 @@ public class XLDocumentTest extends TestCase {
         String expected = "<Data ss:Type=\"Number\">-12345.67</Data>";
         assertTrue(xml.indexOf(expected) > 0);
         
-        if (toFile) serialize(doc, testFileDir + "/aviso01.xls");
+        if (toFile) serialize(doc, testOutputDir + "aviso01.xls");
     }
     
     public void testAppendRows() throws Exception {
@@ -139,7 +144,7 @@ public class XLDocumentTest extends TestCase {
        expected = "<Data ss:Type=\"String\">wk 02, Claude voor 123456 5,8 u.</Data>";
        assertTrue(xml.indexOf(expected) > 0);
        
-       if (toFile) serialize(doc, testFileDir + "/aviso02.xls");
+       if (toFile) serialize(doc, testOutputDir + "aviso02.xls");
     }
     
     public void testSetCellData() throws Exception {
@@ -178,42 +183,76 @@ public class XLDocumentTest extends TestCase {
 //    }
     
     
-    public void testPivot() throws Exception {
+    public void testPivotWithNamedRange() throws Exception {
         if (toFile) {
-	        Object[][] data = {
-	        	{"koffie", "java", "Sun", new Double(2.95), new Double(55.6)},
-	        	{"koffie", "arabica", "Sun", new Double(3.10), new Double(123.5)},
-	        	{"thee", "ceylon", "Sun", new Double(3.21), new Double(20.356)},
-	        	{"soep", "tomaten", "Moon", new Double(4.23), new Double(456)},
-	        	{"soep", "groente", "Moon", new Double(4.21), new Double(789)}
-	        };
-	        
-	        Collection rows = new ArrayList();
-	        for (int r = 0; r < data.length; r++) {
-	            Row row = new SSRow();
-	            for (int c = 0; c < data[r].length; c++) {
-	                row.addCell(data[r][c]);
-	            }
-	            rows.add(row);
-	        }
+	        Collection rows = getData();
 	        
 	        String template =
-	            this.getClass().getClassLoader()
-	            .getResource("nl/fountain/xelem/prices0.xml")
-	            .getFile();
+	            "testsuitefiles/XLDocumentTest/prices0.xml";
 	        XLDocument xlDoc = new XLDocument(template);
 	        Cell cel = new SSCell();
 	        cel.setData("created on " + new Date());
 	        xlDoc.setCellData(cel, "average prices", 1, 5);
 	        
 	        xlDoc.appendRows("data", rows);
-	        String fileName = testFileDir + "/prices.xls";
-	        File out = new File(fileName);
-	        xlDoc.setConsilidationReferenceFileName(out.getName());
 	        
-	        XSerializer xs = new XSerializer(XSerializer.US_ASCII);
-	        xs.serialize(xlDoc.getDocument(), out);
+	        String fileName = "prices_nr.xls";
+	        xlDoc.setPTSourceFileName(fileName);
+	        
+	        serialize(xlDoc.getDocument(), testOutputDir + fileName);
         }
+    }
+
+    public void testPivotWithRange() throws Exception {
+        if (toFile) {
+	        Collection rows = getData();
+        
+	        String template =
+	            "testsuitefiles/XLDocumentTest/prices1.1.xml";
+	        XLDocument xlDoc = new XLDocument(template);
+	        Cell cel = new SSCell();
+	        cel.setData("created on " + new Date());
+	        xlDoc.setCellData(cel, "max prices", 1, 1);
+	        
+	        xlDoc.appendRows("data", rows);
+	        
+	        String fileName = "prices r.xls";
+	        xlDoc.setPTSourceFileName("[" + fileName + "]data");
+	        xlDoc.setPTSourceReference("R1C1:R" + (rows.size() + 1) + "C5");
+	        
+	        serialize(xlDoc.getDocument(), testOutputDir + fileName);
+        }
+    }
+    
+    private Collection getData() {
+//        Object[][] data = {
+//        	{"koffie", "java", "Sun", new Double(2.95), new Double(55.6)},
+//        	{"koffie", "arabica", "Sun", new Double(3.10), new Double(123.5)},
+//        	{"thee", "ceylon", "Sun", new Double(3.21), new Double(20.356)},
+//        	{"soep", "tomaten", "Moon", new Double(4.23), new Double(456)},
+//        	{"soep", "groente", "Moon", new Double(4.21), new Double(789)},
+//        	{"soep", "ossestaart", "Moon", new Double(4.51), new Double(9.6)}
+//        };
+        
+        Object[][] data = {
+            	{"blue", "A", "Star", new Double(2.95), new Double(55.6)},
+            	{"red", "A", "Planet", new Double(3.10), new Double(123.5)},
+            	{"green", "C", "Star", new Double(3.21), new Double(20.356)},
+            	{"green", "B", "Star", new Double(4.23), new Double(456)},
+            	{"red", "B", "Planet", new Double(4.21), new Double(789)},
+            	{"blue", "D", "Planet", new Double(4.51), new Double(9.6)},
+            	{"yellow", "A", "Commet", new Double(4.15), new Double(19.8)}
+            };
+        
+        Collection rows = new ArrayList();
+        for (int r = 0; r < data.length; r++) {
+            Row row = new SSRow();
+            for (int c = 0; c < data[r].length; c++) {
+                row.addCell(data[r][c]);
+            }
+            rows.add(row);
+        }
+        return rows;
     }
 
     
