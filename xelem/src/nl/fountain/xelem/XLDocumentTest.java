@@ -4,9 +4,13 @@
  */
 package nl.fountain.xelem;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.io.StringWriter;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
 
 import junit.framework.TestCase;
 import nl.fountain.xelem.excel.Cell;
@@ -30,9 +34,18 @@ public class XLDocumentTest extends TestCase {
     // when set to true, test files will be created.
     // the path mentioned after 'testFileDir' should exist.
     private boolean toFile = true;
+    
+    private String templateFile;
 
     public static void main(String[] args) {
         junit.textui.TestRunner.run(XLDocumentTest.class);
+    }
+    
+    public void setUp() {
+        templateFile =
+            this.getClass().getClassLoader()
+            .getResource("nl/fountain/xelem/aviso.xml")
+            .getFile();
     }
     
     public void testConstructor() {
@@ -44,7 +57,7 @@ public class XLDocumentTest extends TestCase {
                     e.getCause().getClass().getName());
         }
         try {
-            XLDocument xldoc = new XLDocument("config/aviso.xml");
+            XLDocument xldoc = new XLDocument(templateFile);
             assertNotNull(xldoc.getDocument());
         } catch (XelemException e1) {
             fail(e1.getMessage());
@@ -52,7 +65,7 @@ public class XLDocumentTest extends TestCase {
     }
     
     public void testGetTable() throws Exception {
-        XLDocument xldoc = new XLDocument("config/aviso.xml");
+        XLDocument xldoc = new XLDocument(templateFile);
         Node table = xldoc.getTableElement("Sheet1");
         assertNotNull(table);
         try {
@@ -84,7 +97,8 @@ public class XLDocumentTest extends TestCase {
         row.addCell("wk 43, piet 45,8 u.");
         row.addCell("002020");
         row.addCell(-12345.67);
-        XLDocument xldoc = new XLDocument("config/aviso.xml");
+        XLDocument xldoc = new XLDocument(templateFile);
+        //XLDocument xldoc = new XLDocument("D:/test/book2.xml");
         xldoc.appendRow("Sheet1", row);
         Document doc = xldoc.getDocument();
         String xml = serialize(doc);
@@ -95,9 +109,36 @@ public class XLDocumentTest extends TestCase {
         if (toFile) serialize(doc, testFileDir + "/aviso01.xls");
     }
     
+    public void testAppendRows() throws Exception {
+       Collection rows = new ArrayList();
+       Row row = new SSRow();
+       row.addCell("501000");
+       row.addCell("wk 02, Claude 5,8 u.");
+       row.addCell("123456");
+       row.addCell(45.67);
+       rows.add(row);
+       row = new SSRow();
+       row.addCell("551000");
+       row.addCell("wk 02, Claude voor 123456 5,8 u.");
+       row.addCell("002020");
+       row.addCell(-45.67);
+       rows.add(row);
+       
+       XLDocument xldoc = new XLDocument(templateFile);
+       xldoc.appendRows("Sheet1", rows);
+       Document doc = xldoc.getDocument();
+       String xml = serialize(doc);
+       //System.out.println(xml);
+       String expected = "<Data ss:Type=\"Number\">-45.67</Data>";
+       assertTrue(xml.indexOf(expected) > 0);
+       expected = "<Data ss:Type=\"String\">wk 02, Claude voor 123456 5,8 u.</Data>";
+       assertTrue(xml.indexOf(expected) > 0);
+       
+       if (toFile) serialize(doc, testFileDir + "/aviso02.xls");
+    }
+    
     public void testSetCellData() throws Exception {
-        //XLDocument xldoc = new XLDocument("config/aviso.xml");
-        XLDocument xldoc = new XLDocument("test_xls/test30.xls");
+        XLDocument xldoc = new XLDocument(templateFile);
         Cell cell = new SSCell();
         cell.setData("nieuw gegeven");
         xldoc.setCellData(cell, "Sheet1", 1, 2);
@@ -108,8 +149,45 @@ public class XLDocumentTest extends TestCase {
         //System.out.println(xml);
     }
     
-
     
+    public void testPivot() throws Exception {
+        if (toFile) {
+	        Object[][] data = {
+	        	{"koffie", "java", "Sun", new Double(2.95), new Double(55.6)},
+	        	{"koffie", "arabica", "Sun", new Double(3.10), new Double(123.5)},
+	        	{"thee", "ceylon", "Sun", new Double(3.21), new Double(20.356)},
+	        	{"soep", "tomaten", "Moon", new Double(4.23), new Double(456)},
+	        	{"soep", "groente", "Moon", new Double(4.21), new Double(789)}
+	        };
+	        
+	        Collection rows = new ArrayList();
+	        for (int r = 0; r < data.length; r++) {
+	            Row row = new SSRow();
+	            for (int c = 0; c < data[r].length; c++) {
+	                row.addCell(data[r][c]);
+	            }
+	            rows.add(row);
+	        }
+	        
+	        String template =
+	            this.getClass().getClassLoader()
+	            .getResource("nl/fountain/xelem/prices0.xml")
+	            .getFile();
+	        XLDocument xlDoc = new XLDocument(template);
+	        Cell cel = new SSCell();
+	        cel.setData("created on " + new Date());
+	        xlDoc.setCellData(cel, "average prices", 1, 5);
+	        
+	        xlDoc.appendRows("data", rows);
+	        String fileName = testFileDir + "/prices.xls";
+	        File out = new File(fileName);
+	        xlDoc.setConsilidationReferenceFileName(out.getName());
+	        
+	        XSerializer xs = new XSerializer(XSerializer.US_ASCII);
+	        xs.serialize(xlDoc.getDocument(), out);
+        }
+    }
+
     
     private void serialize(Document doc, String fileName) throws Exception {
         OutputStream out = new FileOutputStream(fileName);       

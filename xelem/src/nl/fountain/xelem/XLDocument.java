@@ -1,5 +1,6 @@
 /*
  * Created on Dec 24, 2004
+ * Copyright (C) 2005  Henk van den Berg
  *
  */
 package nl.fountain.xelem;
@@ -39,6 +40,8 @@ import org.xml.sax.SAXException;
  * {@link nl.fountain.xelem.excel.ss.XLWorkbook XLWorkbook} from scratch may be
  * time consuming and is a waste of effort.</i>
  * <P>
+ * This class (allmost) completely ignores the architecture of xelem, parses an
+ * existing template-file and tinkers with xml-elements in a more direct approach.
  * Create your template in Excel. Select columns to set formatting (i.e. StyleID's)
  * on entire columns. If you wish, you may put table headings, formula's, titles
  * and what have you, in the first rows of the sheets. Save your template and
@@ -46,7 +49,8 @@ import org.xml.sax.SAXException;
  * <code>fileName</code> set to the path where your template resides. The methods
  * {@link #appendRow(String, Row) appendRow(String sheetName, Row row)} and 
  * {@link #appendRows(String, Collection) appendRows(String sheetName, Collection rows)}
- * will append rows directly under the last row-element of the sheet. Your data
+ * will append {@link nl.fountain.xelem.excel.Row rows} 
+ * directly under the last row-element of the sheet. Your data
  * will be formatted according to the StyleID's which where set on your columns
  * during the creation of the template. 
  * <P>
@@ -81,19 +85,42 @@ public class XLDocument {
     }
     
     /**
+     * Gets the underlying {@link org.w3c.dom.Document Document}-implementation.
+     * Use one of the serialize-methods of {@link nl.fountain.xelem.XSerializer}
+     * to serialize this document to a file, outputstream or writer.
      * 
-     * @return the {@link org.w3c.dom.Document} for which this XLDocument
-     * 	acts as a wrapper
+     * @return the document for which this XLDocument acts as a wrapper
      */
     public Document getDocument() {
         return doc;
     }
     
+    /**
+     * Appends the {@link nl.fountain.xelem.excel.Row} to the mentioned sheet.
+     * The row will be appended right under the last row-elemnt in the template.
+     * 
+     * @param sheetName	the name of the sheet to which the row must be appended
+     * @param row	the row to append
+     * 
+     * @throws java.util.NoSuchElementException	if the mentioned sheet 
+     * 	was not found in the template.
+     */
     public void appendRow(String sheetName, Row row) {
         Element rowElement = row.createElement(doc);
         getTableElement(sheetName).appendChild(rowElement);
     }
     
+    /**
+     * Appends all the {@link nl.fountain.xelem.excel.Row rows} in the Collection
+     * to the mentioned sheet. The rows will be appended in the order of the 
+     * collection right under the last row-element in the template.
+     * 
+     * @param sheetName	the name of the sheet to which the rows must be appended
+     * @param rows	a Collection of rows
+     * 
+     * @throws java.util.NoSuchElementException	if the mentioned sheet 
+     * 	was not found in the template.
+     */
     public void appendRows(String sheetName, Collection rows) {
         Node table = getTableElement(sheetName);
         for (Iterator iter = rows.iterator(); iter.hasNext();) {
@@ -102,6 +129,14 @@ public class XLDocument {
         }      
     }
     
+    /**
+     * Will set or replace (only) the value of the data-element of the mentioned cell.
+     * 
+     * @param cell
+     * @param sheetName
+     * @param rowIndex
+     * @param columnIndex
+     */
     public void setCellData(Cell cell, String sheetName, int rowIndex, int columnIndex) {
         Element data = cell.getDataElement(doc);
         Element cellElement = getCellElement(sheetName, rowIndex, columnIndex);
@@ -117,6 +152,22 @@ public class XLDocument {
         } else {
             cellElement.replaceChild(data, oldData);
         }
+    }
+    
+    public boolean setConsilidationReferenceFileName(String fileName) {
+        boolean found = false;
+        NodeList nodelist = doc.getElementsByTagName("FileName");
+        if (nodelist.getLength() == 0) {
+            nodelist = doc.getElementsByTagNameNS(XLElement.XMLNS, "FileName");
+        }
+        if (nodelist.getLength() > 0) {
+            Node fileNameElement = nodelist.item(0);           
+            Node oldTekst = fileNameElement.getFirstChild();
+            Node newTekst = doc.createTextNode(fileName);
+            fileNameElement.replaceChild(newTekst, oldTekst);
+            found = true;
+        }
+        return found;
     }
     
     protected Element getSheetElement(String sheetName) {
@@ -159,7 +210,13 @@ public class XLDocument {
                     return (Element) node;
                 }
             }
+            if (tableElement == null) {
+                tableElement = doc.createElementNS(XLElement.XMLNS_SS, "Table");
+                sheet.appendChild(tableElement);
+                tableMap.put(sheetName, tableElement);
+            }
         }
+        
         return tableElement;
     }
     
@@ -258,5 +315,6 @@ public class XLDocument {
         }
         return document;
     }
+    
 
 }
