@@ -196,6 +196,8 @@ public interface Cell extends XLElement {
      */
     void setMergeAcross(int m);
     
+    int getMergeAcross();
+    
     /**
      * Merges this cell with adjacent cells on the same column. 
      * <P>
@@ -214,6 +216,8 @@ public interface Cell extends XLElement {
      * @param 	m	The number of cells to include in the merge.
      */
     void setMergeDown(int m);
+    
+    int getMergeDown();
     
     /**
      * Sets the given Number as the data of this cell. The attribute
@@ -403,6 +407,10 @@ public interface Cell extends XLElement {
      * @return The value of the ss:Type-attribute of the Data-element.
      */
     String getXlDataType();
+    
+    boolean hasData();
+    
+    boolean hasError();
     
     Element getDataElement(Document doc);
 }

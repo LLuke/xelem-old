@@ -37,6 +37,13 @@ public class XLWorkbookTest extends XLElementTest {
         wb = new XLWorkbook("bestand");
     }
     
+    public void testName() {
+        Workbook wb = new XLWorkbook(null);
+        assertEquals("null.xls", wb.getFileName());
+        wb = new XLWorkbook();
+        assertEquals(".xls", wb.getFileName());
+    }
+    
     public void testDocumentProperties() {
         String xml = xmlToString(wb, new GIO());
         assertEquals(-1, xml.indexOf("<o:DocumentProperties"));

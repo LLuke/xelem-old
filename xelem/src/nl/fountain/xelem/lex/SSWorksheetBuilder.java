@@ -4,6 +4,7 @@
  */
 package nl.fountain.xelem.lex;
 
+import nl.fountain.xelem.excel.Cell;
 import nl.fountain.xelem.excel.Column;
 import nl.fountain.xelem.excel.Row;
 import nl.fountain.xelem.excel.Table;
@@ -22,6 +23,7 @@ public class SSWorksheetBuilder extends AnonymousBuilder {
 
     private SSWorksheet current;
     private Table table;
+    private Row row;
 
     public void build(XMLReader reader, ContentHandler parent,
             BuilderFactory factory, XLElement xle) {
@@ -44,7 +46,6 @@ public class SSWorksheetBuilder extends AnonymousBuilder {
             }
             column.setAttributes(atts);
         } else if (XLElement.XMLNS_SS.equals(uri) && "Row".equals(localName)) {
-            Row row;
             String index = atts.getValue(XLElement.XMLNS_SS, "Index");
             if (index != null) {
                 row = table.addRowAt(Integer.parseInt(index));
@@ -52,13 +53,24 @@ public class SSWorksheetBuilder extends AnonymousBuilder {
                 row = table.addRow();
             }
             row.setAttributes(atts);
+        } else if (XLElement.XMLNS_SS.equals(uri) && "Cell".equals(localName)) {
+            Cell cell;
+            String index = atts.getValue(XLElement.XMLNS_SS, "Index");
+            if (index != null) {
+                cell = row.addCellAt(Integer.parseInt(index));
+            } else {
+                cell = row.addCell();
+            }
+            cell.setAttributes(atts);
+            Builder builder = factory.getSSCellBuilder();
+            builder.build(reader, this, factory, cell);
         }
         
     }
 
     public void endElement(String uri, String localName, String qName) throws SAXException {
         if (current.getNameSpace().equals(uri)) {
-            if (current.getTagName().equals(qName)) {
+            if (current.getTagName().equals(localName)) {
                 reader.setContentHandler(parent);
                 return;
             }

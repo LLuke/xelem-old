@@ -9,6 +9,7 @@ import java.util.Iterator;
 
 import junit.framework.TestCase;
 import nl.fountain.xelem.XSerializer;
+import nl.fountain.xelem.excel.Cell;
 import nl.fountain.xelem.excel.Column;
 import nl.fountain.xelem.excel.DocumentProperties;
 import nl.fountain.xelem.excel.ExcelWorkbook;
@@ -37,6 +38,20 @@ public class ExcelReaderTest extends TestCase {
         // 1.5: com.sun.org.apache.xerces.internal.jaxp.SAXParserImpl
         //System.out.println(xlr.getSaxParser().getClass());
         assertNotNull(xlr.getSaxParser());
+    }
+    
+    public void testGetWorkbookName() throws Exception {
+        ExcelReader xlr = new ExcelReader();
+        String systemId = "A:/foo/bar/file.xml";
+        assertEquals("file", xlr.getWorkbookName(systemId));
+        systemId = "source";
+        assertEquals("source", xlr.getWorkbookName(systemId));
+        systemId = ".xml";
+        assertEquals("", xlr.getWorkbookName(systemId));
+        systemId = "";
+        assertEquals("", xlr.getWorkbookName(systemId));
+        systemId = "A:/foo/bar/.";
+        assertEquals("", xlr.getWorkbookName(systemId));
     }
     
     public void testReadNoXML() throws Exception {
@@ -70,7 +85,7 @@ public class ExcelReaderTest extends TestCase {
     public void testRead() throws Exception {
         Workbook wb = getReaderWorkbook();
         assertNotNull(wb);
-        assertEquals("reader.xml", wb.getName());
+        assertEquals("reader", wb.getName());
         //System.out.println(wb.getFileName());
 //        Map map = xlr.getUris();
 //        for (Iterator iter = map.keySet().iterator(); iter.hasNext();) {
@@ -194,7 +209,7 @@ public class ExcelReaderTest extends TestCase {
         assertTrue(table.hasRowAt(3));
         
         Row row3 = table.getRowAt(3);
-        assertEquals("s31", row3.getStyleID());
+        assertEquals("s24", row3.getStyleID());
         assertEquals(27.0D, row3.getHeight(), 0.0D);
         assertTrue(row3.isHidden());
         assertEquals(0, row3.getSpan());
@@ -205,6 +220,37 @@ public class ExcelReaderTest extends TestCase {
         assertTrue(table.hasRowAt(22));
         
         assertEquals(8, table.getRows().size());
+    }
+    
+    public void testCell() throws Exception {
+        Workbook wb = getReaderWorkbook();
+        Table table = wb.getWorksheet("Tom Poes").getTable();
+        
+        Row row3 = table.getRowAt(3);
+        assertTrue(row3.hasCellAt(1));
+        Cell cell = row3.getCellAt(1);
+        assertEquals("String", cell.getXlDataType());
+        assertEquals("blaadje 1", cell.getData$());
+        assertTrue(cell.hasData());
+        assertTrue(!cell.hasError());
+        
+        cell = table.getRowAt(6).getCellAt(2);
+        assertEquals("=R[-2]C[1]+R[-1]C[1]", cell.getFormula());
+        assertEquals("Number", cell.getXlDataType());
+        assertEquals("0", cell.getData$());
+        
+        cell = table.getRowAt(10).getCellAt(2);
+        assertEquals("=5/R[-4]C", cell.getFormula());
+        assertEquals("Error", cell.getXlDataType());
+        assertEquals("#DIV/0!", cell.getData$());
+        assertTrue(cell.hasData());
+        assertTrue(cell.hasError());
+        
+        cell = table.getRowAt(20).getCellAt(2);
+        assertEquals(1, cell.getMergeAcross());
+        assertEquals(5, cell.getMergeDown());
+        assertEquals("", cell.getData$());
+        assertTrue(!cell.hasData());
     }
     
     

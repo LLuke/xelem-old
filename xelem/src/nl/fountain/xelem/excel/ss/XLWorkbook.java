@@ -94,6 +94,14 @@ public class XLWorkbook extends AbstractXLElement implements Workbook {
     private SimpleDateFormat sdf;
     
     /**
+     * Creates a new XLWorkbook.
+     *
+     */
+    public XLWorkbook() {
+        this("");
+    }
+    
+    /**
      * Creates a new XLWorkbook with the given name.
      */
     public XLWorkbook(String name) {

@@ -40,21 +40,21 @@
    <Interior ss:Color="#CCFFFF" ss:Pattern="Solid"/>
   </Style>
   <Style ss:ID="s24">
+   <Interior ss:Color="#FF0000" ss:Pattern="Solid"/>
+  </Style>
+  <Style ss:ID="s25">
    <Interior ss:Color="#CCFFCC" ss:Pattern="Solid"/>
   </Style>
-  <Style ss:ID="s26">
+  <Style ss:ID="s27">
    <Alignment ss:Horizontal="Center" ss:Vertical="Bottom"/>
    <Interior ss:Color="#FFFF99" ss:Pattern="Solid"/>
   </Style>
-  <Style ss:ID="s28">
+  <Style ss:ID="s29">
    <Alignment ss:Horizontal="Center" ss:Vertical="Bottom"/>
    <Interior ss:Color="#CC99FF" ss:Pattern="Solid"/>
   </Style>
-  <Style ss:ID="s30">
-   <Alignment ss:Horizontal="Center" ss:Vertical="Bottom"/>
-  </Style>
   <Style ss:ID="s31">
-   <Interior ss:Color="#FF0000" ss:Pattern="Solid"/>
+   <Alignment ss:Horizontal="Center" ss:Vertical="Bottom"/>
   </Style>
  </Styles>
  <Worksheet ss:Name="Tom Poes">
@@ -67,16 +67,17 @@
    <Column ss:StyleID="s22" ss:AutoFitWidth="0" ss:Width="78.75"/>
    <Column ss:Index="7" ss:StyleID="s22" ss:AutoFitWidth="1"/>
    <Column ss:Index="9" ss:StyleID="s23" ss:AutoFitWidth="0" ss:Span="1"/>
-   <Row ss:Index="3" ss:AutoFitHeight="0" ss:Height="27" ss:StyleID="s31" ss:Hidden="1">
+   <Row ss:Index="3" ss:AutoFitHeight="0" ss:Height="27" ss:Hidden="1"
+    ss:StyleID="s24">
     <Cell><Data ss:Type="String">blaadje 1</Data></Cell>
    </Row>
    <Row ss:Index="6">
     <Cell ss:Index="2" ss:Formula="=R[-2]C[1]+R[-1]C[1]"><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row ss:Index="8">
-    <Cell ss:Index="4" ss:StyleID="s24"><Data ss:Type="String">foo</Data><NamedCell
+    <Cell ss:Index="4" ss:StyleID="s25"><Data ss:Type="String">foo</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
-    <Cell ss:StyleID="s24"><Data ss:Type="String">bar</Data><NamedCell
+    <Cell ss:StyleID="s25"><Data ss:Type="String">bar</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
    </Row>
    <Row>
@@ -85,6 +86,7 @@
     <Cell><Data ss:Type="String">a</Data><NamedCell ss:Name="_FilterDatabase"/></Cell>
    </Row>
    <Row>
+    <Cell ss:Index="2" ss:Formula="=5/R[-4]C"><Data ss:Type="Error">#DIV/0!</Data></Cell>
     <Cell ss:Index="4"><Data ss:Type="Number">2</Data><NamedCell
       ss:Name="_FilterDatabase"/></Cell>
     <Cell><Data ss:Type="String">b</Data><NamedCell ss:Name="_FilterDatabase"/></Cell>
@@ -95,11 +97,11 @@
     <Cell><Data ss:Type="String">c</Data><NamedCell ss:Name="_FilterDatabase"/></Cell>
    </Row>
    <Row ss:Index="20">
-    <Cell ss:Index="2" ss:MergeAcross="1" ss:MergeDown="5" ss:StyleID="s26"/>
-    <Cell ss:Index="6" ss:MergeAcross="1" ss:MergeDown="1" ss:StyleID="s26"/>
+    <Cell ss:Index="2" ss:MergeAcross="1" ss:MergeDown="5" ss:StyleID="s27"/>
+    <Cell ss:Index="6" ss:MergeAcross="1" ss:MergeDown="1" ss:StyleID="s27"/>
    </Row>
    <Row ss:Index="22">
-    <Cell ss:Index="7" ss:MergeDown="3" ss:StyleID="s28"/>
+    <Cell ss:Index="7" ss:MergeDown="3" ss:StyleID="s29"/>
    </Row>
   </Table>
   <WorksheetOptions xmlns="urn:schemas-microsoft-com:office:excel">
@@ -113,8 +115,8 @@
    <Panes>
     <Pane>
      <Number>3</Number>
-     <ActiveRow>15</ActiveRow>
-     <ActiveCol>3</ActiveCol>
+     <ActiveRow>9</ActiveRow>
+     <ActiveCol>1</ActiveCol>
     </Pane>
    </Panes>
    <ProtectObjects>False</ProtectObjects>
@@ -134,7 +136,7 @@
     <Cell ss:Index="2"><Data ss:Type="String">blaadje 1</Data></Cell>
    </Row>
    <Row ss:Index="7">
-    <Cell ss:Index="3" ss:MergeAcross="1" ss:MergeDown="1" ss:StyleID="s30"><Data
+    <Cell ss:Index="3" ss:MergeAcross="1" ss:MergeDown="1" ss:StyleID="s31"><Data
       ss:Type="String">merged over 2r2c</Data></Cell>
    </Row>
    <Row ss:Index="11">

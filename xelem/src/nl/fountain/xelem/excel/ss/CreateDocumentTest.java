@@ -6,6 +6,7 @@ package nl.fountain.xelem.excel.ss;
 
 import java.io.File;
 import java.io.StringWriter;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Iterator;
 
@@ -382,6 +383,14 @@ public class CreateDocumentTest extends TestCase {
         
         Number number = null;
         sheet.addCellAt(18, 3).setData(number);
+        sheet.addCellAt(19, 3).setData(
+                new BigDecimal("1234567890123456789012345678901234567890"
+                        + "12345678901234567890123456789012345678901234567890"
+                        + "12345678901234567890123456789012345678901234567890"
+                        + "12345678901234567890123456789012345678901234567890"
+                        + "12345678901234567890123456789012345678901234567890"
+                        + "12345678901234567890123456789012345678901234567890"
+                        + "1234567890123456789"));
         
         String xml = xmlToString(wb);
         assertTrue(xml.indexOf("<ss:Cell ss:StyleID=\"bold\">") > 0);

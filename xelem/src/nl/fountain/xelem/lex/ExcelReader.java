@@ -86,6 +86,16 @@ public class ExcelReader {
         }
         return handler;
     }
+    
+    protected String getWorkbookName(String systemId) {
+        File file = new File(systemId);
+        String[] s = file.getName().split("\\.");
+        if (s.length > 0) {
+            return s[0];
+        } else {
+            return "";
+        }
+    }
       
     
     //////////////////////////////////////////////////////////////////////////////
@@ -123,9 +133,9 @@ public class ExcelReader {
 //                    + "\n\tlcalName=" + localName
 //                    + "\n\tqName=" + qName);
             if (XLElement.XMLNS_SS.equals(uri) && "Workbook".equals(localName)) {
-                String filename = getFileName();
-                currentWorkbook = new XLWorkbook(new File(getFileName()).getName());
-                currentWorkbook.setFileName(filename);
+                String systemId = getSystemId();
+                currentWorkbook = new XLWorkbook(getWorkbookName(systemId));
+                currentWorkbook.setFileName(systemId);
                 Builder builder = getFactory().getXLWorkbookBuilder();
                 builder.build(reader, this, getFactory(), currentWorkbook);
             }       
@@ -157,16 +167,18 @@ public class ExcelReader {
             this.locator = locator;
         }
         
-        private String getFileName() {
-            String filename = "source";
+        private String getSystemId() {
+            String systemId = "source";
             if (locator != null) {
                 String temp = locator.getSystemId();
                 if (temp != null) {
-                    filename = temp;
+                    systemId = temp;
                 }
             }
-            return filename;
+            return systemId;
         }
+        
+
         
 
     }

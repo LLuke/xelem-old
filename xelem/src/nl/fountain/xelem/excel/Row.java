@@ -285,6 +285,8 @@ public interface Row extends XLElement {
      */
     Cell getCellAt(int index);
     
+    boolean hasCellAt(int index);
+    
     /**
      * Gets all the cells of this row in the order of their index.
      * 

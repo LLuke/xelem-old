@@ -4,6 +4,7 @@
  */
 package nl.fountain.xelem.excel.ss;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Locale;
 
@@ -81,6 +82,11 @@ public class SSCellTest extends XLElementTest {
        assertEquals("Error", cell.getXlDataType());
        assertEquals("#N/A", cell.getData$());
        assertEquals("=#N/A", cell.getFormula());
+       
+       n = new BigDecimal(123456.789);
+       cell.setData(n);
+       assertEquals("Number", cell.getXlDataType());
+       assertEquals("123456.789", cell.getData$().substring(0, 10));
     }
     
     public void testDataTypeDate() {

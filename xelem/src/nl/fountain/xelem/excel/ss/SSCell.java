@@ -31,6 +31,7 @@ import nl.fountain.xelem.excel.Cell;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.xml.sax.Attributes;
 
 /**
  * An implementation of the XLElement Cell.
@@ -71,6 +72,7 @@ import org.w3c.dom.Element;
 public class SSCell extends AbstractXLElement implements Cell {
     
     private int idx;
+    private boolean hasdata;
     private String styleID;
     private String formula;
     private String href;
@@ -134,8 +136,24 @@ public class SSCell extends AbstractXLElement implements Cell {
         mergeacross = m;
     }
     
+    private void setMergeAcross(String s) {
+        mergeacross = Integer.parseInt(s);
+    }
+    
+    public int getMergeAcross() {
+        return mergeacross;
+    }
+    
     public void setMergeDown(int m) {
         mergedown = m;
+    }
+    
+    private void setMergeDown(String s) {
+        mergedown = Integer.parseInt(s);
+    }
+    
+    public int getMergeDown() {
+        return mergedown;
     }
 
     public String getXlDataType() { 
@@ -147,8 +165,7 @@ public class SSCell extends AbstractXLElement implements Cell {
             setError(ERRORVALUE_NA);
             return;
         }
-        datatype = DATATYPE_NUMBER;
-        data$ = data.toString();
+        setData(data.doubleValue());
     }
     
     public void setData(Integer data) {
@@ -157,7 +174,7 @@ public class SSCell extends AbstractXLElement implements Cell {
             return;
         }
         datatype = DATATYPE_NUMBER;
-        data$ = data.toString();
+        setData$(data.toString());
     }
     
     public void setData(Double data) {
@@ -170,7 +187,7 @@ public class SSCell extends AbstractXLElement implements Cell {
         } else {
             datatype = DATATYPE_NUMBER;
         }
-        data$ = data.toString();
+        setData$(data.toString());
     }
     
     public void setData(Long data) {
@@ -179,7 +196,7 @@ public class SSCell extends AbstractXLElement implements Cell {
             return;
         }
         datatype = DATATYPE_NUMBER;
-        data$ = data.toString();
+        setData$(data.toString());
     }
     
     public void setData(Float data) {
@@ -192,7 +209,7 @@ public class SSCell extends AbstractXLElement implements Cell {
         } else {
             datatype = DATATYPE_NUMBER;
         }
-        data$ = data.toString();
+        setData$(data.toString());
     }
 
     public void setData(Date data) {
@@ -201,7 +218,7 @@ public class SSCell extends AbstractXLElement implements Cell {
             return;
         }
         datatype = DATATYPE_DATE_TIME;
-        data$ = XLUtil.format(data);
+        setData$(XLUtil.format(data));
     }
 
     public void setData(Boolean data) {
@@ -218,7 +235,7 @@ public class SSCell extends AbstractXLElement implements Cell {
             return;
         }
         datatype = DATATYPE_STRING;
-        data$ = data;
+        setData$(data);
     }
     
     public void setData(Object data) {
@@ -240,28 +257,28 @@ public class SSCell extends AbstractXLElement implements Cell {
 
     public void setError(String error_value) {
         datatype = DATATYPE_ERROR;
-        data$ = error_value;
+        setData$(error_value);
         setFormula("=" + error_value);
     }
     
     public void setData(byte data) {
         datatype = DATATYPE_NUMBER;
-        data$ = String.valueOf(data);
+        setData$(String.valueOf(data));
     }
     
     public void setData(short data) {
         datatype = DATATYPE_NUMBER;
-        data$ = String.valueOf(data);
+        setData$(String.valueOf(data));
     }
 
     public void setData(int data) {
         datatype = DATATYPE_NUMBER;
-        data$ = String.valueOf(data);
+        setData$(String.valueOf(data));
     }
 
     public void setData(long data) {
         datatype = DATATYPE_NUMBER;
-        data$ = String.valueOf(data);
+        setData$(String.valueOf(data));
     }
     
     public void setData(float data) {
@@ -270,7 +287,7 @@ public class SSCell extends AbstractXLElement implements Cell {
         } else {
             datatype = DATATYPE_NUMBER;
         }
-        data$ = String.valueOf(data);
+        setData$(String.valueOf(data));
     }
 
     public void setData(double data) {
@@ -279,8 +296,7 @@ public class SSCell extends AbstractXLElement implements Cell {
         } else {
             datatype = DATATYPE_NUMBER;
         }
-        data$ = String.valueOf(data);
-        
+        setData$(String.valueOf(data));       
     }
     
     public void setData(char data) {
@@ -290,10 +306,23 @@ public class SSCell extends AbstractXLElement implements Cell {
     public void setData(boolean data) {
         datatype = DATATYPE_BOOLEAN;
         if (data) {
-            data$ = "1";
+            setData$("1");
         } else {
-            data$ = "0";
+            setData$("0");
         }
+    }
+    
+    private void setData$(String s) {
+        data$ = s;
+        hasdata = true;
+    }
+    
+    public boolean hasData() {
+        return hasdata;
+    }
+    
+    public boolean hasError() {
+        return DATATYPE_ERROR.equals(getXlDataType());
     }
 
     public String getData$() {
@@ -338,6 +367,31 @@ public class SSCell extends AbstractXLElement implements Cell {
             ce.appendChild(data);
         }
         return ce;
+    }
+    
+    public void setAttributes(Attributes attrs) {
+        for (int i = 0; i < attrs.getLength(); i++) {
+            invokeMethod(attrs.getLocalName(i), attrs.getValue(i));
+        }
+    }
+    
+    public void setChildElement(String localName, String content) {
+        if ("Data".equals(localName)) {
+            setData$(content);
+        }
+    }
+    
+	private void invokeMethod(String name, Object value) {
+        Class[] types = new Class[] { value.getClass() };
+        Method method = null;
+        try {
+            method = this.getClass().getDeclaredMethod("set" + name, types);
+            method.invoke(this, new Object[] { value });
+        } catch (NoSuchMethodException e) {
+            // no big deal
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     
     public Element getDataElement(Document doc) {
