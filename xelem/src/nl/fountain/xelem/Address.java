@@ -78,12 +78,12 @@ public class Address implements Comparable {
      *   etc.
      * </PRE>
      * 
-     * @param address	a String in A1-reference style
+     * @param a1_ref	a String in A1-reference style
      * @since xelem.2.0
      */
-    public Address(String address) {
-        r = calculateRow(address);
-        c = calculateColumn(address);
+    public Address(String a1_ref) {
+        r = calculateRow(a1_ref);
+        c = calculateColumn(a1_ref);
     }
     
     /**
@@ -126,19 +126,19 @@ public class Address implements Comparable {
         int div = 1;
         int af = 0;
         StringBuffer sb = new StringBuffer();
-        int r;
-        while ((r = (columnNumber-af)/div) > 0) {
-            sb.insert(0, getLSD(r));
+        int q;
+        while ((q = (columnNumber-af)/div) > 0) {
+            sb.insert(0, getDigit(q));
             af += div;
             div *= COLUMN_RADIX;            
         }
         return sb.toString();
     }
     
-    private static char getLSD(int r) {
-        int lsd = r % COLUMN_RADIX;
-        if (lsd == 0) lsd = COLUMN_RADIX;
-        return (char) (lsd + 64);
+    private static char getDigit(int q) {
+        int r = q % COLUMN_RADIX;
+        if (r == 0) r = COLUMN_RADIX;
+        return (char) (r + 64);
     }
     
     /**

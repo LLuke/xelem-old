@@ -26,6 +26,19 @@ public class CellPointerTest extends TestCase {
         assertEquals(1, cp.getRowIndex());
     }
     
+    public void testMoveToString() {
+        CellPointer cp = new CellPointer();
+        cp.moveTo("AA10");
+        assertEquals(10, cp.getRowIndex());
+        assertEquals(27, cp.getColumnIndex());
+        cp.move(-2, -1);
+        assertEquals("Z8", cp.getA1Reference());
+        cp.move(7, 2);
+        assertEquals("AB15", cp.getA1Reference());
+        cp.moveTo("012point");
+        assertEquals("POINT12", cp.getA1Reference());
+    }
+    
     public void testSetMovement() {
         CellPointer cp = new CellPointer();
         
@@ -104,23 +117,6 @@ public class CellPointerTest extends TestCase {
         cp.moveTo(25, 107);
         assertEquals("R25C107", cp.getAbsoluteAddress());
     }
-    
-//    public void testGetRelativeAddress() {
-//        CellPointer cp = new CellPointer();
-//        assertEquals("RC", cp.getRelativeAddress(1, 1));
-//        assertEquals("R[-1]C", cp.getRelativeAddress(2, 1));
-//        assertEquals("RC[-2]", cp.getRelativeAddress(1, 3));
-//        cp.moveTo(10, 10);
-//        assertEquals("R[8]C[6]", cp.getRelativeAddress(2, 4));
-//        assertEquals("R[-5]C[-2]", cp.getRelativeAddress(15, 12));
-//    }
-//    
-//    public void testGetRelativeAddressAddress() {
-//        CellPointer cp = new CellPointer();
-//        cp.moveTo(10, 10);
-//        Address adr = new Address(3, 4);
-//        assertEquals("R[7]C[6]", cp.getRelativeAddress(adr));
-//    }
     
     public void testToString() {
         CellPointer cp = new CellPointer();

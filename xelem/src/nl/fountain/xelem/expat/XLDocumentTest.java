@@ -262,7 +262,8 @@ public class XLDocumentTest extends TestCase {
             // the size of the new source table
             xlDoc.setPTSourceReference(1, 1, rows.size() + 1, 5);
             // output the new file
-            out = new BufferedOutputStream(new FileOutputStream(fileName));
+            out = new BufferedOutputStream(
+                    new FileOutputStream(testOutputDir + fileName));
             new XSerializer().serialize(xlDoc.getDocument(), out);
             out.close();
         } catch (XelemException e) {

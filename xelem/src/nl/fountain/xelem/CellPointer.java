@@ -208,6 +208,9 @@ public class CellPointer extends Address {
      * Moves this cellpointer to a new position relative to it's old position.
      * If this cellpointer was previously at oldR, oldC, the new position will 
      * be at oldR + rows, oldC + columns.
+     * 
+     * @param rows the number of rows to move
+     * @param columns the number of columns to move
      */
     public void move(int rows, int columns) {
         r += rows;
@@ -216,6 +219,9 @@ public class CellPointer extends Address {
     
     /**
      * Moves this cellpointer to the specified row and column number.
+     * 
+     * @param row the row where this cellpointer should move to
+     * @param column the column where this cellpointer should move to
      */
     public void moveTo(int row, int column) {
         r = row;
@@ -223,7 +229,20 @@ public class CellPointer extends Address {
     }
     
     /**
+     * Moves this cellpointer to the address specified by the given A1-reference
+     * string.
+     * 
+     * @param a1_ref a string of A1-reference type
+     */
+    public void moveTo(String a1_ref) {
+        r = calculateRow(a1_ref);
+        c = calculateColumn(a1_ref);
+    }
+    
+    /**
      * Moves this cellpointer to the specified address.
+     * 
+     * @param address the address where this cellpointer should move to
      */
     public void moveTo(Address address) {
         r = address.r;
