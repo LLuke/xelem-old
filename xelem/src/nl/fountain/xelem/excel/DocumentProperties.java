@@ -13,10 +13,17 @@ public interface DocumentProperties extends XLElement {
     
     void setTitle(String title);
     void setSubject(String subject);
+    void setKeywords(String keywords);
+    void setDescription(String description);
+    void setCategory(String category);
     void setAuthor(String author);
     void setLastAuthor(String lastAuthor);
-    void setCreated(Date created);
+    void setManager(String manager);
     void setCompany(String company);
+    void setHyperlinkBase(String hyperlinkbase);
+    void setAppName(String appname);
+    void setCreated(Date created);
+    
     
 
 }

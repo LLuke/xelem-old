@@ -51,7 +51,7 @@ public class XFactory {
     private static boolean loaded = false;
     private static List doc_comments;
     private static Map styles;
-    
+    private static Map sheets;
     
     private XFactory() throws XelemException {
         if (!loaded) loadConfiguration(getConfigurationFileName());
@@ -176,6 +176,10 @@ public class XFactory {
         return styles.keySet();
     }
     
+    public Element getSheet(String name) {
+        return (Element) sheets.get(name);
+    }
+    
     /**
      * Merges two SpreadsheetML Style elements. If a style element with the
      * ss:ID <code>newID</code> allready was present in the factory, nothing happens.
@@ -237,6 +241,7 @@ public class XFactory {
     private void init() {
         doc_comments = new ArrayList();
         styles = new HashMap();
+        sheets = new HashMap();
     }
     
     private void loadConfiguration(String fileName) throws XelemException {
@@ -261,6 +266,15 @@ public class XFactory {
                 String id = style.getAttributes().getNamedItemNS(
                         XLElement.XMLNS_SS, "ID").getNodeValue();
                 styles.put(id, style);
+            }
+            
+            NodeList sheetList = config.getElementsByTagNameNS(
+                    XLElement.XMLNS_SS, "Worksheet");
+            for (int i = 0; i < sheetList.getLength(); i++) {
+                Node sheet = sheetList.item(i);
+                String name = sheet.getAttributes().getNamedItemNS(
+                        XLElement.XMLNS_SS, "Name").getNodeValue();
+                sheets.put(name, sheet);
             }
             
         } catch (DOMException e) {

@@ -35,6 +35,7 @@ import nl.fountain.xelem.excel.x.XExcelWorkbook;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 
 /**
  *
@@ -51,6 +52,7 @@ public class XLWorkbook extends AbstractXLElement implements Workbook {
     private Map namedRanges;
     private boolean printComments = true;
     private boolean printDocComments = true;
+    private boolean appendInfoSheet;
     private XFactory xFactory;
     private List warnings;
     private SimpleDateFormat sdf;
@@ -89,6 +91,11 @@ public class XLWorkbook extends AbstractXLElement implements Workbook {
         } catch (UnsupportedStyleException e) {
             addWarning(e);
         }
+    }
+    
+    // @see nl.fountain.xelem.excel.Workbook#setAppendInfoSheet(boolean)
+    public void setAppendInfoSheet(boolean append) {
+        appendInfoSheet = append;
     }
     
     public DocumentProperties addDocumentProperties() {
@@ -278,13 +285,23 @@ public class XLWorkbook extends AbstractXLElement implements Workbook {
         }
 
         // Worksheets
-        if (sheets.size() < 1)
+        if (sheets.size() < 1) {
             addSheet();
+        }
         for (Iterator iter = getWorksheets().iterator(); iter.hasNext();) {
             Worksheet ws = (Worksheet) iter.next();
             ws.assemble(doc, root, gio);
         }
         
+        // append xelem-info sheet
+        if (appendInfoSheet) {
+	        Node infoWS = doc.importNode(getFactory().getSheet(INFO_WORKSHEET), true);
+	        root.appendChild(infoWS);
+	        gio.addStyleID("info_def");
+	        gio.addStyleID("info_desc");
+	        gio.addStyleID("hyperlink");
+	        gio.addStyleID("info_hyperlink");
+        }
         
         // append Global Information
         int selectedSheets = gio.getSelectedSheetsCount();

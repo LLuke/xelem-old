@@ -8,6 +8,7 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 import nl.fountain.xelem.GIO;
+import nl.fountain.xelem.XFactory;
 import nl.fountain.xelem.excel.DocumentProperties;
 import nl.fountain.xelem.excel.DuplicateNameException;
 import nl.fountain.xelem.excel.Workbook;
@@ -29,7 +30,11 @@ public class XLWorkbookTest extends XLElementTest {
      * @see TestCase#setUp()
      */
     protected void setUp() throws Exception {
-        super.setUp();
+        String configFileName =
+            this.getClass().getClassLoader()
+            .getResource("nl/fountain/xelem/XFactoryTest.xml")
+            .getFile();
+        XFactory.setConfigurationFileName(configFileName);
         wb = new XLWorkbook("bestand");
     }
     
@@ -120,10 +125,16 @@ public class XLWorkbookTest extends XLElementTest {
     
     public void testMergeStyles() {
         wb.mergeStyles("wbNieuw", "b_yellow", "bold");
-        wb.mergeStyles("wbNieuwer", "wbNieuw", "currency");
+        wb.mergeStyles("wbNieuwer", "wbNieuw", "decimal2");
         wb.addSheet().addCell().setStyleID("wbNieuwer");
         
         String xml = xmlToString(wb, new GIO());
+        assertTrue(xml.indexOf("<Style ss:ID=\"wbNieuwer\">") > 0);
+        assertTrue(xml.indexOf("<Interior ss:Color=\"#FFFF00\" " +
+        		"ss:Pattern=\"Solid\"/>") > 0);
+        assertTrue(xml.indexOf("<Font x:Family=\"Swiss\" ss:Bold=\"1\"/>") > 0);
+        assertTrue(xml.indexOf("<NumberFormat ss:Format=\"0.00\"/>") > 0);
+        
         //System.out.println(xml);
     }
     

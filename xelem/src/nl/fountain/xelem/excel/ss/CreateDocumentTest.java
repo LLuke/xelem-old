@@ -22,6 +22,7 @@ import nl.fountain.xelem.XFactory;
 import nl.fountain.xelem.XelemException;
 import nl.fountain.xelem.excel.Cell;
 import nl.fountain.xelem.excel.Column;
+import nl.fountain.xelem.excel.DocumentProperties;
 import nl.fountain.xelem.excel.ExcelWorkbook;
 import nl.fountain.xelem.excel.Pane;
 import nl.fountain.xelem.excel.Row;
@@ -61,6 +62,13 @@ public class CreateDocumentTest extends TestCase {
         XFactory.setConfigurationFileName(configFileName);
         warnings = 0;
         printWarnings = true;
+    }
+    
+    public void testAdvise() {
+       if (toFile) {
+           System.out.println(this.getClass() + " is writing files to: "
+                   + testFileDir + "/");
+       }
     }
     
     public void testConfigurationFile() throws XelemException {
@@ -628,7 +636,29 @@ public class CreateDocumentTest extends TestCase {
         if (toFile) xmlToFile(wb);
     }
     
-
+    public void testDocumentProperties() throws Exception {
+        Workbook wb = new XLWorkbook("test24");
+        wb.addSheet().addCell().setHRef("href");
+        DocumentProperties dp = wb.addDocumentProperties();
+        dp.setAppName("appname");
+        dp.setAuthor("author");
+        dp.setCategory("category");
+        dp.setCompany("company");
+        dp.setCreated(new Date(0));
+        dp.setDescription("description");
+        dp.setHyperlinkBase("file://D:/bla/bla/");
+        dp.setKeywords("key words foo bar");
+        dp.setLastAuthor("last author");
+        dp.setManager("manager");
+        dp.setSubject("subject");
+        dp.setTitle("title");
+        
+        String xml = xmlToString(wb);
+        assertTrue(xml.indexOf("<o:Created>1970-01-01T01:00Z</o:Created>") > 0);
+        
+        //System.out.println(xml);
+        if (toFile) xmlToFile(wb);
+    }
     
     
     private String xmlToString(Workbook wb) throws Exception {
