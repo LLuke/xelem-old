@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jardesc>
-    <jar path="D:/eclipse_jar/xelem/xelem.1.0.jar"/>
+    <jar path="D:/eclipse_jar/xelem/xelem.1.0.1.jar"/>
     <options overwrite="false" compress="true" exportErrors="true" exportWarnings="true" saveDescription="true" descriptionLocation="/xelem/xelem.jardesc" useSourceFolders="false" buildIfNeeded="true"/>
     <manifest manifestVersion="1.0" usesManifest="true" reuseManifest="false" saveManifest="false" generateManifest="true" manifestLocation="">
         <sealing sealJar="true">
@@ -23,9 +23,10 @@
         <javaElement handleIdentifier="=xelem/src&lt;nl.fountain.xelem{GIO.java"/>
         <javaElement handleIdentifier="=xelem/src&lt;nl.fountain.xelem.excel.x{XPane.java"/>
         <javaElement handleIdentifier="=xelem/src&lt;nl.fountain.xelem.excel{Worksheet.java"/>
-        <javaElement handleIdentifier="=xelem/src&lt;nl.fountain.xelem.excel.ss{SSTable.java"/>
         <javaElement handleIdentifier="=xelem/src&lt;nl.fountain.xelem.excel.ss{XLWorkbook.java"/>
+        <javaElement handleIdentifier="=xelem/src&lt;nl.fountain.xelem.excel.ss{SSTable.java"/>
         <javaElement handleIdentifier="=xelem/src&lt;nl.fountain.xelem.excel{XLElement.java"/>
+        <javaElement handleIdentifier="=xelem/src&lt;nl.fountain.xelem{XLDocument.java"/>
         <javaElement handleIdentifier="=xelem/src&lt;nl.fountain.xelem{XSerializer.java"/>
         <javaElement handleIdentifier="=xelem/src&lt;nl.fountain.xelem.excel.ss{SSRow.java"/>
         <javaElement handleIdentifier="=xelem/src&lt;nl.fountain.xelem.excel{ExcelWorkbook.java"/>
