@@ -24,7 +24,6 @@ package nl.fountain.xelem.excel;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import nl.fountain.xelem.GIO;
 
@@ -37,7 +36,7 @@ import org.w3c.dom.Element;
  */
 public abstract class AbstractXLElement implements XLElement {
     
-    private static Map nsMap;
+    //private static Map nsMap;
     private List comments;
     private boolean printComments;
     
@@ -193,5 +192,6 @@ public abstract class AbstractXLElement implements XLElement {
         return attr;
     }
     
+    //////////////////////////////////////////////////////////////////////////////
 
 }

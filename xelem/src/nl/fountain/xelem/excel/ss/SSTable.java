@@ -40,8 +40,8 @@ import org.w3c.dom.Element;
  */
 public class SSTable extends AbstractXLElement implements Table {
     
-    private TreeMap columns;
-    private TreeMap rows;
+    TreeMap columns;
+    TreeMap rows;
     private String styleID;
     private double rowheight;
     private double columnwidth;
