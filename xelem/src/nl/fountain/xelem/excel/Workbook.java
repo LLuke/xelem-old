@@ -67,19 +67,19 @@ public interface Workbook extends XLElement {
     /**
      * Sets whether this Workbook's {@link #createDocument()}-method
      * will print comments which were set with
-     * {@link nl.fountain.xelem.excel.XLElement#addComment(String)}.
+     * {@link nl.fountain.xelem.excel.XLElement#addElementComment(String)}.
      * <P>
      * The default is true.
      * 
-     * @see nl.fountain.xelem.excel.XLElement#addComment(String)
+     * @see nl.fountain.xelem.excel.XLElement#addElementComment(String)
      */
-    void setPrintComments(boolean print);
+    void setPrintElementComments(boolean print);
     
     /**
      * Specifies whether this Workbook's {@link #createDocument()}-method
      * will include comments.
      */
-    boolean isPrintingComments();
+    boolean isPrintingElementComments();
     
     /**
      * Sets whether this Workbook's {@link #createDocument()}-method

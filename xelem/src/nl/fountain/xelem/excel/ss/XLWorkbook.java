@@ -203,7 +203,7 @@ public class XLWorkbook extends AbstractXLElement implements Workbook {
         return (Worksheet) sheets.remove(name);
     }
 
-    public void setPrintComments(boolean print) {
+    public void setPrintElementComments(boolean print) {
         printComments = print;
     }
 
@@ -211,7 +211,7 @@ public class XLWorkbook extends AbstractXLElement implements Workbook {
         printDocComments = print;
     }
 
-    public boolean isPrintingComments() {
+    public boolean isPrintingElementComments() {
         return printComments;
     }
 
@@ -242,7 +242,7 @@ public class XLWorkbook extends AbstractXLElement implements Workbook {
     public Element assemble(Element root, GIO gio) {
         Document doc = root.getOwnerDocument();
         warnings = null;
-        gio.setPrintComments(isPrintingComments());
+        gio.setPrintComments(isPrintingElementComments());
         doc.insertBefore(doc.createProcessingInstruction("mso-application",
                 "progid=\"Excel.Sheet\""), root);
         
@@ -259,8 +259,8 @@ public class XLWorkbook extends AbstractXLElement implements Workbook {
         root.setAttribute("xmlns:ss", XMLNS_SS);
         root.setAttribute("xmlns:html", XMLNS_HTML);
         
-        if (isPrintingComments() && getComments() != null) {
-            for (Iterator iter = getComments().iterator(); iter.hasNext();) {
+        if (isPrintingElementComments() && getElementComments() != null) {
+            for (Iterator iter = getElementComments().iterator(); iter.hasNext();) {
                 String comment = (String) iter.next();
                 root.appendChild(doc.createComment(comment));
             }
@@ -395,7 +395,9 @@ public class XLWorkbook extends AbstractXLElement implements Workbook {
             warnings = new ArrayList();
             sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss:SSS");
         }
-        StringBuffer msg = new StringBuffer("\n\tWARNING: ");
+        StringBuffer msg = new StringBuffer("\nWARNING ");
+        msg.append(warnings.size() + 1);
+        msg.append("): ");
         msg.append(e.toString());
         StackTraceElement[] st = e.getStackTrace();
         for (int i = 0; i < st.length; i++) {

@@ -4,6 +4,8 @@
  */
 package nl.fountain.xelem;
 
+import nl.fountain.xelem.excel.Worksheet;
+
 
 /**
  * Keeps track of the position of cells being added to the
@@ -16,7 +18,8 @@ package nl.fountain.xelem;
  * {@link nl.fountain.xelem.excel.WorksheetOptions#setActiveCell(int, int)}.]
  * <P>
  * The position of the cellpointer is reflected in it's
- * {@link #getRowIndex()}- and {@link #getColumnIndex()}-values.
+ * {@link #getRowIndex() getRowIndex}- and 
+ * {@link #getColumnIndex() getColumnIndex}-values.
  * The cellpointer moves to a new position relative to its old
  * position at a call to {@link #move}. In what direction it moves and over
  * how many cells depends on it's settings. The default setting is to step
@@ -59,7 +62,7 @@ public class CellPointer extends Address {
      * @see nl.fountain.xelem.excel.Worksheet#getCellPointer()
      */
     public CellPointer() {
-        super(firstRow, firstColumn);
+        super(1, 1);
         hStep = 1;
         vStep = 1;
         hMove = 1;
@@ -203,15 +206,34 @@ public class CellPointer extends Address {
     }
     
     /**
+     * Moves this cellpointer to the specified address.
+     */
+    public void moveTo(Address address) {
+        r = address.r;
+        c = address.c;
+    }
+    
+    /**
+     * Moves this cellpointer to the first column of the present row.
+     * The first column is determined by the value of 
+     * {@link nl.fountain.xelem.excel.Worksheet#firstColumn}.
+     */
+    public void moveHome() {
+        c = Worksheet.firstColumn;
+    }
+    
+    /**
      * Moves this cellpointer to the first column of the next row.
-     * The first column is determined by the value of {@link #firstColumn},
-     * how many rows the new position will be from the present position
-     * is determined by the value of verticalStepDistance.
+     * The first column is determined by the value of 
+     * {@link nl.fountain.xelem.excel.Worksheet#firstColumn}.
+     * How many rows the new position will be from the present position
+     * is determined by the value of 
+     * {@link #setVerticalStepDistance(int) verticalStepDistance}.
      *
      */
     public void moveCRLF() {
         r += vStep;
-        c = firstColumn;
+        c = Worksheet.firstColumn;
     }
 
 }

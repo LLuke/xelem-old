@@ -71,7 +71,7 @@ public class GIO {
      * 
      * @param 	print	<code>false</code> if comments must be ignored.
      * 
-     * @see nl.fountain.xelem.excel.Workbook#setPrintComments(boolean print)
+     * @see nl.fountain.xelem.excel.Workbook#setPrintElementComments(boolean print)
      */
     public void setPrintComments(boolean print) {
         printComments = print;

@@ -30,11 +30,11 @@ public abstract class AbstractXLElement implements XLElement {
      * Add a comment to this XLElement. Whether the comment will be printed
      * in the xml produced during assembly, depends on the setting of the
      * Workbook's 
-     * {@link nl.fountain.xelem.excel.Workbook#setPrintComments(boolean)}-method.
+     * {@link nl.fountain.xelem.excel.Workbook#setPrintElementComments(boolean)}-method.
      * 
      * @param 	comment the comment to be added.
      */
-    public void addComment(String comment) {
+    public void addElementComment(String comment) {
         if (comments == null) {
             comments = new ArrayList();
         }
@@ -46,7 +46,7 @@ public abstract class AbstractXLElement implements XLElement {
      * 
      * @return 	a list of Strings.
      */
-    public List getComments() {
+    public List getElementComments() {
         return comments;
     }
     
@@ -65,8 +65,8 @@ public abstract class AbstractXLElement implements XLElement {
     protected Element assemble(Document doc, GIO gio) {
         Element element = doc.createElementNS(getNameSpace(), getTagName());
         element.setPrefix(getPrefix());
-        if (gio.isPrintingComments() && getComments() != null) {
-            for (Iterator iter = getComments().iterator(); iter.hasNext();) {
+        if (gio.isPrintingComments() && getElementComments() != null) {
+            for (Iterator iter = getElementComments().iterator(); iter.hasNext();) {
                 String comment = (String) iter.next();
                 element.appendChild(doc.createComment(comment));
             }

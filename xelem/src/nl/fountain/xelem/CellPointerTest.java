@@ -105,26 +105,78 @@ public class CellPointerTest extends TestCase {
         assertEquals("R25C107", cp.getAbsoluteAddress());
     }
     
-    public void testGetRelativeAddress() {
-        CellPointer cp = new CellPointer();
-        assertEquals("RC", cp.getRelativeAddress(1, 1));
-        assertEquals("R[-1]C", cp.getRelativeAddress(2, 1));
-        assertEquals("RC[-2]", cp.getRelativeAddress(1, 3));
-        cp.moveTo(10, 10);
-        assertEquals("R[8]C[6]", cp.getRelativeAddress(2, 4));
-        assertEquals("R[-5]C[-2]", cp.getRelativeAddress(15, 12));
-    }
-    
-    public void testGetRelativeAddressAddress() {
-        CellPointer cp = new CellPointer();
-        cp.moveTo(10, 10);
-        Address adr = new Address(3, 4);
-        assertEquals("R[7]C[6]", cp.getRelativeAddress(adr));
-    }
+//    public void testGetRelativeAddress() {
+//        CellPointer cp = new CellPointer();
+//        assertEquals("RC", cp.getRelativeAddress(1, 1));
+//        assertEquals("R[-1]C", cp.getRelativeAddress(2, 1));
+//        assertEquals("RC[-2]", cp.getRelativeAddress(1, 3));
+//        cp.moveTo(10, 10);
+//        assertEquals("R[8]C[6]", cp.getRelativeAddress(2, 4));
+//        assertEquals("R[-5]C[-2]", cp.getRelativeAddress(15, 12));
+//    }
+//    
+//    public void testGetRelativeAddressAddress() {
+//        CellPointer cp = new CellPointer();
+//        cp.moveTo(10, 10);
+//        Address adr = new Address(3, 4);
+//        assertEquals("R[7]C[6]", cp.getRelativeAddress(adr));
+//    }
     
     public void testToString() {
         CellPointer cp = new CellPointer();
         assertEquals("nl.fountain.xelem.CellPointer[row=1,column=1]", cp.toString());
+    }
+    
+    public void testEquals() {
+        CellPointer cp = new CellPointer();
+        Address adr = new Address(5, 7);
+        assertTrue(!adr.equals(cp));
+        assertTrue(!cp.equals(adr));
+        
+        cp.moveTo(5, 7);
+        assertTrue(!adr.equals(cp));
+        assertTrue(!cp.equals(adr));
+        
+        Object cpo = new CellPointer();
+        assertTrue(!adr.equals(cpo));
+        assertTrue(!cpo.equals(adr));
+        
+        Address adrn = new Address(1,1);
+        assertTrue(!adrn.equals(cpo));
+        assertTrue(!cpo.equals(adrn));
+    }
+    
+    public void testCompareTo() {
+        CellPointer cp = new CellPointer();
+        try {
+            cp.compareTo(null);
+            fail("geen exceptie gegooid");
+        } catch (NullPointerException e) {
+            //
+        }
+        
+        Address adr = new Address(5, 7);
+        try {
+            cp.compareTo(adr);
+            fail("geen exceptie gegooid");
+        } catch (ClassCastException e1) {
+            //
+        }
+        
+        CellPointer cp2 = new CellPointer();
+        assertEquals(0, cp.compareTo(cp2));
+        
+        cp2.moveTo(1, 2);
+        assertTrue(cp.compareTo(cp2) < 0);
+        
+        cp2.moveTo(2, 1);
+        assertTrue(cp.compareTo(cp2) < 0);
+        
+        cp2.moveTo(1, 257);
+        assertTrue(cp.compareTo(cp2) < 0);
+ 
+        cp.moveTo(2, 1);
+        assertTrue(cp.compareTo(cp2) > 0);
     }
 
 }

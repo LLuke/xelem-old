@@ -90,16 +90,16 @@ public interface XLElement {
     
     /**
      * Adds a comment to this XLElement.
-     * @param comment	
-     * @see nl.fountain.xelem.excel.Workbook#setPrintComments(boolean print)
+     * @param comment	The string to be printed in xml as a comment to the element.
+     * @see nl.fountain.xelem.excel.Workbook#setPrintElementComments(boolean print)
      */
-    void addComment(String comment);
+    void addElementComment(String comment);
     
     /**
      * Gets a List of added comments.
      * @return List of Strings
      */
-    List getComments();   
+    List getElementComments();   
     
     /**
      * Assembles the state of this XLElement and all of it's children into an

@@ -116,10 +116,10 @@ public class XLWorkbookTest extends XLElementTest {
     
     
     public void testPrintComments() {
-        assertTrue(wb.isPrintingComments());
+        assertTrue(wb.isPrintingElementComments());
         assertTrue(wb.isPrintingDocComments());
-        wb.setPrintComments(false);
-        assertTrue(!wb.isPrintingComments());
+        wb.setPrintElementComments(false);
+        assertTrue(!wb.isPrintingElementComments());
         wb.setPrintDocComments(false);
         assertTrue(!wb.isPrintingDocComments());
     }

@@ -33,10 +33,6 @@ public class SSWorksheetTest extends XLElementTest {
 
     public void testConstructor() {
         assertEquals("Sheet1", ws.getName());
-        assertEquals(1, ws.getCellPointer().firstColumn);
-        assertEquals(1, ws.getCellPointer().firstRow);
-        assertEquals(256, ws.getCellPointer().lastColumn);
-        assertEquals(65536, ws.getCellPointer().lastRow);
         assertEquals(1, ws.getCellPointer().getHorizontalStepDistance());
         assertEquals(1, ws.getCellPointer().getVerticalStepDistance());
         assertEquals(CellPointer.MOVE_RIGHT, ws.getCellPointer().getMovement());
@@ -66,7 +62,7 @@ public class SSWorksheetTest extends XLElementTest {
         assertNotNull(cell);
         Cell rCell = ws.getCellAt(1, 1);
         assertSame(cell, rCell);
-        Cell rCell2 = ws.getTable().getRow(1).getCellAt(1);
+        Cell rCell2 = ws.getTable().getRowAt(1).getCellAt(1);
         assertSame(cell, rCell2);
     }
 
@@ -77,9 +73,9 @@ public class SSWorksheetTest extends XLElementTest {
         assertNotNull(cell);
         Cell rCell = ws.getCellAt(5, 7);
         assertSame(cell, rCell);
-        Cell rCell2 = ws.getTable().getRow(5).getCellAt(7);
+        Cell rCell2 = ws.getTable().getRowAt(5).getCellAt(7);
         assertSame(cell, rCell2);
-        Cell rCell3 = ws.getRow(5).getCellAt(7);
+        Cell rCell3 = ws.getRowAt(5).getCellAt(7);
         assertSame(cell, rCell3);
     }
 
@@ -89,10 +85,10 @@ public class SSWorksheetTest extends XLElementTest {
         assertEquals(1, ws.getCellPointer().getRowIndex());
         assertEquals(2, ws.getCellPointer().getColumnIndex());
         assertEquals(1, ws.getTable().rowCount());
-        assertEquals(1, ws.getRow(1).size());
+        assertEquals(1, ws.getRowAt(1).size());
         Cell rCell = ws.getCellAt(1, 1);
         assertSame(cell, rCell);
-        Cell rCell2 = ws.getTable().getRow(1).getCellAt(1);
+        Cell rCell2 = ws.getTable().getRowAt(1).getCellAt(1);
         assertSame(cell, rCell2);
     }
     
@@ -111,7 +107,7 @@ public class SSWorksheetTest extends XLElementTest {
             cell4 = ws.addCell();
             fail("geen exceptie gegooid.");
         } catch (IndexOutOfBoundsException e) {
-            assertEquals("rowIndex = 10, columnIndex = 257", e.getMessage());
+            assertEquals("columnIndex = 257", e.getMessage());
         }
         assertNull(cell4);
         assertEquals(256, ws.getTable().maxCellIndex());
@@ -131,33 +127,33 @@ public class SSWorksheetTest extends XLElementTest {
         Column column = ws.addColumn();
         assertEquals(1, ws.getTable().maxColumnIndex());
         assertEquals(1, ws.getTable().columnCount());
-        Column column2 = ws.getColumn(1);
+        Column column2 = ws.getColumnAt(1);
         assertSame(column, column2);
         
         Column column3 = ws.addColumn();
         assertEquals(2, ws.getTable().maxColumnIndex());
         assertEquals(2, ws.getTable().columnCount());
-        Column column4 = ws.getColumn(2);
+        Column column4 = ws.getColumnAt(2);
         assertSame(column3, column4);
         assertNotSame(column4, column2);
     }
     
     public void testAddColumnint() {
-        Column column = ws.addColumn(5);
+        Column column = ws.addColumnAt(5);
         assertEquals(5, ws.getTable().maxColumnIndex());
         assertEquals(1, ws.getTable().columnCount());
-        Column column5 = ws.getColumn(5);
+        Column column5 = ws.getColumnAt(5);
         assertSame(column, column5);
         
         Column column6 = ws.addColumn();
         assertEquals(6, ws.getTable().maxColumnIndex());
         assertEquals(2, ws.getTable().columnCount());
-        Column column6r = ws.getColumn(6);
+        Column column6r = ws.getColumnAt(6);
         assertSame(column6, column6r);
         
         Column column300 = null;
         try {
-            column300 = ws.addColumn(300);
+            column300 = ws.addColumnAt(300);
             fail("geen exceptie gegooid.");
         } catch (IndexOutOfBoundsException e) {
             assertEquals("columnIndex = 300", e.getMessage());
@@ -166,7 +162,7 @@ public class SSWorksheetTest extends XLElementTest {
     }
 
     public void testAssemble() {
-        ws.addRow(5);
+        ws.addRowAt(5);
         ws.setProtected(true);
         ws.setRightToLeft(true);
         WorksheetOptions wso = ws.getWorksheetOptions();

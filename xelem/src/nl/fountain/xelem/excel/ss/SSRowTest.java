@@ -111,13 +111,18 @@ public class SSRowTest extends XLElementTest {
     public void testAddCell_index_Cell() {
         assertEquals(0, row.size());
         Cell cell = new SSCell();
-        Cell returnCell = row.addCellAt(-1, cell);
-        assertEquals(1, row.size());
-        assertSame(cell, returnCell);
-        assertSame(cell, row.getCellMap().get(new Integer(1)));
+        Cell returnCell = null;
+        try {
+            returnCell = row.addCellAt(-1, cell);
+            fail("geenexceptie gegooid.");
+        } catch (IndexOutOfBoundsException e) {
+            //
+        }
+        assertEquals(0, row.size());
+        assertNull(returnCell);
         
         Cell returnCell2 = row.addCellAt(5, cell);
-        assertEquals(2, row.size());
+        assertEquals(1, row.size());
         assertSame(cell, returnCell2);
         assertSame(cell, row.getCellMap().get(new Integer(5)));
     }

@@ -19,7 +19,7 @@ import java.util.TreeMap;
  * if necessary. See also: {@link nl.fountain.xelem.excel.Table#rowIterator()}.
  * 
  * @see nl.fountain.xelem.excel.Worksheet#addRow()
- * @see nl.fountain.xelem.excel.Table#addRow(CellPointer)
+ * @see nl.fountain.xelem.excel.Table#addRow()
  */
 public interface Row extends XLElement {
     
@@ -82,6 +82,10 @@ public interface Row extends XLElement {
      * 
      * @return A new cell with an initial datatype of "String" and an
      * 			empty ("") value.
+     * @throws IndexOutOfBoundsException If the index is less then
+     * 			{@link nl.fountain.xelem.excel.Worksheet#firstColumn}
+     * 			or greater then
+     * 			{@link nl.fountain.xelem.excel.Worksheet#lastColumn}
      */
     Cell addCell();
     
@@ -95,7 +99,10 @@ public interface Row extends XLElement {
      * @param data	The data to be displayed in this cell.
      * 
      * @return A new cell.
-     * 
+     * @throws IndexOutOfBoundsException If the index is less then
+     * 			{@link nl.fountain.xelem.excel.Worksheet#firstColumn}
+     * 			or greater then
+     * 			{@link nl.fountain.xelem.excel.Worksheet#lastColumn}
      * @see nl.fountain.xelem.excel.Cell#setData(Object)
      */
     Cell addCell(Object data);
@@ -112,7 +119,10 @@ public interface Row extends XLElement {
      * @param styleID	The id of the style to employ on this cell.
      * 
      * @return A new cell.
-     * 
+     * @throws IndexOutOfBoundsException If the index is less then
+     * 			{@link nl.fountain.xelem.excel.Worksheet#firstColumn}
+     * 			or greater then
+     * 			{@link nl.fountain.xelem.excel.Worksheet#lastColumn}
      * @see nl.fountain.xelem.excel.Cell#setData(Object)
      * @see nl.fountain.xelem.excel.Cell#setStyleID(String)
      */
@@ -126,7 +136,10 @@ public interface Row extends XLElement {
      * @param data		The data to be displayed in this cell.
      * 
      * @return A new cell with a datatype "Number" and the given double as value. 
-     * 
+     * @throws IndexOutOfBoundsException If the index is less then
+     * 			{@link nl.fountain.xelem.excel.Worksheet#firstColumn}
+     * 			or greater then
+     * 			{@link nl.fountain.xelem.excel.Worksheet#lastColumn}
      * @see nl.fountain.xelem.excel.Cell#setData(double)
      */
     Cell addCell(double data);
@@ -141,7 +154,10 @@ public interface Row extends XLElement {
      * @param styleID	The id of the style to employ on this cell.
      * 
      * @return A new cell with a datatype "Number" and the given double as value. 
-     * 
+     * @throws IndexOutOfBoundsException If the index is less then
+     * 			{@link nl.fountain.xelem.excel.Worksheet#firstColumn}
+     * 			or greater then
+     * 			{@link nl.fountain.xelem.excel.Worksheet#lastColumn}
      * @see nl.fountain.xelem.excel.Cell#setData(double)
      * @see nl.fountain.xelem.excel.Cell#setStyleID(String)
      */
@@ -153,8 +169,11 @@ public interface Row extends XLElement {
      * at {@link #maxCellIndex()} + 1.
      * 
      * @param data		The data to be displayed in this cell.
-     * 
      * @return A new cell with a datatype "Number" and the given int as value. 
+     * @throws IndexOutOfBoundsException If the index is less then
+     * 			{@link nl.fountain.xelem.excel.Worksheet#firstColumn}
+     * 			or greater then
+     * 			{@link nl.fountain.xelem.excel.Worksheet#lastColumn}
      */
     Cell addCell(int data);
     
@@ -168,7 +187,10 @@ public interface Row extends XLElement {
      * @param styleID	The id of the style to employ on this cell.
      * 
      * @return A new cell with a datatype "Number" and the given int as value. 
-     * 
+     * @throws IndexOutOfBoundsException If the index is less then
+     * 			{@link nl.fountain.xelem.excel.Worksheet#firstColumn}
+     * 			or greater then
+     * 			{@link nl.fountain.xelem.excel.Worksheet#lastColumn}
      * @see nl.fountain.xelem.excel.Cell#setStyleID(String)
      */
     Cell addCell(int data, String styleID);
@@ -179,8 +201,11 @@ public interface Row extends XLElement {
      * at {@link #maxCellIndex()} + 1.
      * 
      * @param 	cell	The cell that is to be appended to this row.
-     * 
      * @return 	The passed cell.
+     * @throws IndexOutOfBoundsException If the index is less then
+     * 			{@link nl.fountain.xelem.excel.Worksheet#firstColumn}
+     * 			or greater then
+     * 			{@link nl.fountain.xelem.excel.Worksheet#lastColumn}
      */
     Cell addCell(Cell cell);
     
@@ -192,6 +217,10 @@ public interface Row extends XLElement {
      * 
      * @return A new cell with an initial datatype of "String" and an
      * 			empty ("") value.
+     * @throws IndexOutOfBoundsException If the index is less then
+     * 			{@link nl.fountain.xelem.excel.Worksheet#firstColumn}
+     * 			or greater then
+     * 			{@link nl.fountain.xelem.excel.Worksheet#lastColumn}
      */
     Cell addCellAt(int index); 
     
@@ -203,6 +232,10 @@ public interface Row extends XLElement {
      * @param cell	The cell that is to be appended to this row.
      * 
      * @return 	The passed cell.
+     * @throws IndexOutOfBoundsException If the index is less then
+     * 			{@link nl.fountain.xelem.excel.Worksheet#firstColumn}
+     * 			or greater then
+     * 			{@link nl.fountain.xelem.excel.Worksheet#lastColumn}
      */
     Cell addCellAt(int index, Cell cell);
     

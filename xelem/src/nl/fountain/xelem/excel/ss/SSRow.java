@@ -12,6 +12,7 @@ import nl.fountain.xelem.GIO;
 import nl.fountain.xelem.excel.AbstractXLElement;
 import nl.fountain.xelem.excel.Cell;
 import nl.fountain.xelem.excel.Row;
+import nl.fountain.xelem.excel.Worksheet;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -65,46 +66,46 @@ public class SSRow extends AbstractXLElement implements Row {
 //    }
 
     public Cell addCell() {
-        return addCellAt(0, new SSCell());
+        return addCellAt(maxCellIndex() + 1, new SSCell());
     }
     
     public Cell addCell(Object data) {
         Cell cell = new SSCell();
         cell.setData(data);
-        return addCellAt(0, cell);
+        return addCellAt(maxCellIndex() + 1, cell);
     }
     
     public Cell addCell(Object data, String styleID) {
         Cell cell = new SSCell();
         cell.setData(data);
         cell.setStyleID(styleID);
-        return addCellAt(0, cell);
+        return addCellAt(maxCellIndex() + 1, cell);
     }
     
     public Cell addCell(double data) {
         Cell cell = new SSCell();
         cell.setData(data);
-        return addCellAt(0, cell);
+        return addCellAt(maxCellIndex() + 1, cell);
     }
     
     public Cell addCell(double data, String styleID) {
         Cell cell = new SSCell();
         cell.setData(data);
         cell.setStyleID(styleID);
-        return addCellAt(0, cell);
+        return addCellAt(maxCellIndex() + 1, cell);
     }
     
     public Cell addCell(int data) {
         Cell cell = new SSCell();
         cell.setData(data);
-        return addCellAt(0, cell);
+        return addCellAt(maxCellIndex() + 1, cell);
     }
     
     public Cell addCell(int data, String styleID) {
         Cell cell = new SSCell();
         cell.setData(data);
         cell.setStyleID(styleID);
-        return addCellAt(0, cell);
+        return addCellAt(maxCellIndex() + 1, cell);
     }
 
     public Cell addCellAt(int index) {
@@ -112,11 +113,13 @@ public class SSRow extends AbstractXLElement implements Row {
     }
     
     public Cell addCell(Cell cell) {
-        return addCellAt(0, cell);
+        return addCellAt(maxCellIndex() + 1, cell);
     }
     
     public Cell addCellAt(int index, Cell cell) {
-        if (index < 1) index = maxCellIndex() + 1;
+        if (index < Worksheet.firstColumn || index > Worksheet.lastColumn) {
+            throw new IndexOutOfBoundsException("columnIndex = " + index);
+        }
         cells.put(new Integer(index), cell);
         return cell;
     }

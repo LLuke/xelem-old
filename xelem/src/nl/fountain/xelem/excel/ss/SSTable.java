@@ -8,12 +8,12 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.TreeMap;
 
-import nl.fountain.xelem.CellPointer;
 import nl.fountain.xelem.GIO;
 import nl.fountain.xelem.excel.AbstractXLElement;
 import nl.fountain.xelem.excel.Column;
 import nl.fountain.xelem.excel.Row;
 import nl.fountain.xelem.excel.Table;
+import nl.fountain.xelem.excel.Worksheet;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -55,59 +55,67 @@ public class SSTable extends AbstractXLElement implements Table {
         columnwidth = points;
     }
     
-    public Column addColumn(CellPointer cellpointer) {
-        return addColumn(maxColumnIndex() + 1, new SSColumn(), cellpointer);
+    public Column addColumn() {
+        return addColumnAt(maxColumnIndex() + 1, new SSColumn());
     }
     
-    public Column addColumn(int index, CellPointer cellpointer) {
-        return addColumn(index, new SSColumn(), cellpointer);
+    public Column addColumnAt(int index) {
+        return addColumnAt(index, new SSColumn());
     }
     
-    public Column addColumn(Column column, CellPointer cellpointer) {
-        return addColumn(maxColumnIndex() + 1, column, cellpointer);
+    public Column addColumn(Column column) {
+        return addColumnAt(maxColumnIndex() + 1, column);
     }
     
-    public Column addColumn(int index, Column column, CellPointer cellpointer) {
-        if (index < cellpointer.firstColumn || index > cellpointer.lastColumn) {
+    public Column addColumnAt(int index, Column column) {
+        if (index < Worksheet.firstColumn || index > Worksheet.lastColumn) {
             throw new IndexOutOfBoundsException("columnIndex = " + index);
         }
         columns.put(new Integer(index), column);
         return column;
     }
     
-    public Column removeColumn(int columnIndex) {
+    public Column removeColumnAt(int columnIndex) {
         return (Column) columns.remove(new Integer(columnIndex));
     }
     
-    public Column getColumn(int columnIndex) {
-        return (Column) columns.get(new Integer(columnIndex));
+    public Column getColumnAt(int columnIndex) {
+        Column column = (Column) columns.get(new Integer(columnIndex));
+        if (column == null) {
+            column = addColumnAt(columnIndex);
+        }
+        return column;
+    }
+    
+    public boolean hasColumnAt(int index) {
+        return columns.get(new Integer(index)) != null;
     }
     
     public Collection getColumns() {
         return columns.values();
     }
 
-    public Row addRow(CellPointer cellpointer) {
-        return addRow(maxRowIndex() + 1, new SSRow(), cellpointer);
+    public Row addRow() {
+        return addRowAt(maxRowIndex() + 1, new SSRow());
     }
 
-    public Row addRow(int index, CellPointer cellpointer) {
-        return addRow(index, new SSRow(), cellpointer);
+    public Row addRowAt(int index) {
+        return addRowAt(index, new SSRow());
     }
 
-    public Row addRow(Row row, CellPointer cellpointer) {
-        return addRow(maxRowIndex() + 1, row, cellpointer);
+    public Row addRow(Row row) {
+        return addRowAt(maxRowIndex() + 1, row);
     }
     
-    public Row addRow(int index, Row row, CellPointer cellpointer) {
-        if (index < cellpointer.firstRow || index > cellpointer.lastRow) {
+    public Row addRowAt(int index, Row row) {
+        if (index < Worksheet.firstRow || index > Worksheet.lastRow) {
             throw new IndexOutOfBoundsException("rowIndex = " + index);
         }
         rows.put(new Integer(index), row);
         return row;
     }
 
-    public Row removeRow(int rowIndex) {
+    public Row removeRowAt(int rowIndex) {
         Row row = (Row) rows.remove(new Integer(rowIndex));
         return row;
     }
@@ -120,17 +128,21 @@ public class SSTable extends AbstractXLElement implements Table {
         return rows;
     }
 
-    public Row getRow(int rowIndex, CellPointer cellpointer) {
+    public Row getRowAt(int rowIndex) {
         Row row = (Row) rows.get(new Integer(rowIndex));
         if (row == null) {
-            row = addRow(rowIndex, cellpointer);
+            row = addRowAt(rowIndex);
         }
         return row;
     }
     
-    public Row getRow(int index) {
-        return (Row) rows.get(new Integer(index));
+    public boolean hasRowAt(int index) {
+        return rows.get(new Integer(index)) != null;
     }
+    
+//    public Row getRow(int index) {
+//        return (Row) rows.get(new Integer(index));
+//    }
 
     public int rowCount() {
         return rows.size();

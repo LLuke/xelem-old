@@ -6,18 +6,42 @@ package nl.fountain.xelem.excel;
 
 import java.util.Collection;
 
+import nl.fountain.xelem.Address;
 import nl.fountain.xelem.CellPointer;
 
 /**
  * Represents the Worksheet element.
+ * 
  */
 public interface Worksheet extends XLElement {
+    
+    /**
+     * The left-most limit of the worksheets columns. The default is 1.
+     */
+    public static int firstColumn = 1;
+    /**
+     * The top row of the worksheet. The default is 1.
+     */
+    public static int firstRow = 1;
+    /**
+     * The right-most limit of the worksheets columns. The default is 256.
+     */
+    public static int lastColumn = 256;
+    /**
+     * The bottom row of the worksheet. The default is 65536.
+     */
+    public static int lastRow = 65536;
     
     /**
      * Returns the name of this worksheet.
      * 
      */
     String getName();
+    
+    /**
+     * Returns the name of this worksheet for purposes of reference.
+     */
+    String getReferenceName();
     
     /**
      * Sets whether protection will be applied to this worksheet.
@@ -220,6 +244,27 @@ public interface Worksheet extends XLElement {
     Cell addCell(int data, String styleID);
     
     /**
+     * Adds a new cell at the given address. If this worksheet
+     * didn't have a row at the row index of the given address, 
+     * a new row will be added. If there was a cell at the given address,
+     * replaces this cell. If this worksheet did not have a table, 
+     * a new table will be added.
+     * <br>
+     * Moves the cellpointer to a new position relative to
+     * <code>address</code>.
+     * 
+     * @param address The address where the new cell should be added.
+     * @return A new cell with an initial datatype of "String" and an
+     * 			empty ("") value.
+     * 
+     * @throws IndexOutOfBoundsException if the address
+     * 			is not within the limits of the worksheet.
+     * 
+     * @see nl.fountain.xelem.CellPointer#move()
+     */
+    Cell addCellAt(Address address);
+    
+    /**
      * Adds a new cell at the given row and column index. If this worksheet
      * didn't have a row at the given index, a new row will be added. If the
      * place at the given coordinates was allredy occupied by another cell,
@@ -241,6 +286,27 @@ public interface Worksheet extends XLElement {
      * @see nl.fountain.xelem.CellPointer#move()
      */
     Cell addCellAt(int rowIndex, int columnIndex);
+    
+    /**
+     * Adds the given cell at the given address. If this worksheet
+     * didn't have a row at the row index of the given address, 
+     * a new row will be added. If there was a cell at the given address,
+     * replaces this cell. If this worksheet did not have a table, 
+     * a new table will be added.
+     * <br>
+     * Moves the cellpointer to a new position relative to
+     * <code>address</code>.
+     * 
+     * @param address The address where the cell should be added.
+     * @param cell			The cell to be added.
+     * @return The passed cell.
+     * 
+     * @throws IndexOutOfBoundsException if the address
+     * 			is not within the limits of the worksheet.
+     * 
+     * @see nl.fountain.xelem.CellPointer#move()
+     */
+    Cell addCellAt(Address address, Cell cell);
     
     /**
      * Adds the given cell at the given row and column index. If this worksheet
@@ -266,6 +332,14 @@ public interface Worksheet extends XLElement {
     Cell addCellAt(int rowIndex, int columnIndex, Cell cell);
     
     /**
+     * Removes the cell at the given address.
+     * 
+     * @param address	The position of the cell to remove.
+     * @return The removed cell or <code>null</code>.
+     */
+    Cell removeCellAt(Address address);
+    
+    /**
      * Removes the cell at the given coordinates.
      * 
      * @param rowIndex		The row index (row number).
@@ -274,6 +348,15 @@ public interface Worksheet extends XLElement {
      * @return The removed cell or <code>null</code>.
      */
     Cell removeCellAt(int rowIndex, int columnIndex);
+    
+    /**
+     * Gets the cell at the given address.
+     * 
+     * @param address		The position of the cell.
+     * @return The cell at the given address or <code>null</code> 
+     * 			if no cell was at that position.
+     */
+    Cell getCellAt(Address address);
     
     /**
      * Gets the cell at the given coordinates.
@@ -287,6 +370,17 @@ public interface Worksheet extends XLElement {
     Cell getCellAt(int rowIndex, int columnIndex);
     
     /**
+     * Specifies whether there is a cell at the given address.
+     */
+    boolean hasCellAt(Address address);
+    
+    /**
+     * Specifies whether there is a cell at the intersection of the given
+     * row and column index.
+     */
+    boolean hasCellAt(int rowIndex, int columnIndex);
+    
+    /**
      * Adds a new Row to this worksheet. If no rows were previously added
      * the row will be added at index 1. Otherwise the row will be added at 
      * {@link nl.fountain.xelem.excel.Table#maxRowIndex() maxRowIndex} 
@@ -294,8 +388,8 @@ public interface Worksheet extends XLElement {
      * 
      * @return A new Row.
      * @throws IndexOutOfBoundsException If the calculated index is less then
-     * 			{@link nl.fountain.xelem.CellPointer#firstRow} or greater
-     * 			then {@link nl.fountain.xelem.CellPointer#lastRow}.
+     * 			{@link #firstRow} or greater
+     * 			then {@link #lastRow}.
      */
     Row addRow();
     
@@ -305,11 +399,11 @@ public interface Worksheet extends XLElement {
      * 
      * @param index The index (row number) of the row.
      * @return A new Row.
-     * @throws IndexOutOfBoundsException If the given index is less then
-     * 			{@link nl.fountain.xelem.CellPointer#firstRow} or greater
-     * 			then {@link nl.fountain.xelem.CellPointer#lastRow}.
+     *  @throws IndexOutOfBoundsException If the given index is less then
+     * 			{@link #firstRow} or greater
+     * 			then {@link #lastRow}.
      */
-    Row addRow(int index);
+    Row addRowAt(int index);
     
     /**
      * Adds the given row to this worksheet. If no rows were previously added
@@ -319,9 +413,9 @@ public interface Worksheet extends XLElement {
      * 
      * @param row	The row to be added.
      * @return The passed row.
-     * @throws IndexOutOfBoundsException If the calculated index is less then
-     * 			{@link nl.fountain.xelem.CellPointer#firstRow} or greater
-     * 			then {@link nl.fountain.xelem.CellPointer#lastRow}.
+     *  @throws IndexOutOfBoundsException If the calculated index is less then
+     * 			{@link #firstRow} or greater
+     * 			then {@link #lastRow}.
      */
     Row addRow(Row row);
     
@@ -332,11 +426,11 @@ public interface Worksheet extends XLElement {
      * @param index The index (row number) of the row.
      * @param row	The row to be added.
      * @return The passed row.
-     * @throws IndexOutOfBoundsException If the given index is less then
-     * 			{@link nl.fountain.xelem.CellPointer#firstRow} or greater
-     * 			then {@link nl.fountain.xelem.CellPointer#lastRow}.
+     *  @throws IndexOutOfBoundsException If the given index is less then
+     * 			{@link #firstRow} or greater
+     * 			then {@link #lastRow}.
      */
-    Row addRow(int index, Row row);
+    Row addRowAt(int index, Row row);
     
     /**
      * Removes the row at the given index.
@@ -346,7 +440,7 @@ public interface Worksheet extends XLElement {
      * @return The removed row or <code>null</code> if the index was not occupied
      * 			by a row.
      */
-    Row removeRow(int rowIndex);
+    Row removeRowAt(int rowIndex);
     
     /**
      * Gets all the rows of this worksheet in the order of their index.
@@ -360,11 +454,14 @@ public interface Worksheet extends XLElement {
      * 
      * @param rowIndex The index (row number) of the row.
      * 
-     * @return The row at the given index or <code>null</code> 
-     * 			if there was no row at the given index.
+     * @return The row at the given index, never <code>null</code>.
      */
-    Row getRow(int rowIndex);
+    Row getRowAt(int rowIndex);
     
+    /**
+     * Specifies whether there is a row at the given row index.
+     */
+    boolean hasRowAt(int rowIndex);
     
     /**
      * Adds a new Column to this worksheet. If no columns were previously added
@@ -374,8 +471,8 @@ public interface Worksheet extends XLElement {
      * 
      * @return A new column.
      * @throws IndexOutOfBoundsException If the calculated index is less then
-     * 			{@link nl.fountain.xelem.CellPointer#firstColumn} or greater
-     * 			then {@link nl.fountain.xelem.CellPointer#lastColumn}.
+     * 			{@link #firstColumn} or greater
+     * 			then {@link #lastColumn}.
      */
     Column addColumn();
     
@@ -386,10 +483,10 @@ public interface Worksheet extends XLElement {
      * @param index The index (column number) of the column.
      * @return A new column.
      * @throws IndexOutOfBoundsException If the given index is less then
-     * 			{@link nl.fountain.xelem.CellPointer#firstColumn} or greater
-     * 			then {@link nl.fountain.xelem.CellPointer#lastColumn}.
+     * 			{@link #firstColumn} or greater
+     * 			then {@link #lastColumn}.
      */
-    Column addColumn(int index);
+    Column addColumnAt(int index);
     
     /**
      * Adds the given column to this worksheet. If no columns were previously added
@@ -400,8 +497,8 @@ public interface Worksheet extends XLElement {
      * @param column	The column to be added.
      * @return The passed column.
      * @throws IndexOutOfBoundsException If the calculated index is less then
-     * 			{@link nl.fountain.xelem.CellPointer#firstColumn} or greater
-     * 			then {@link nl.fountain.xelem.CellPointer#lastColumn}.
+     * 			{@link #firstColumn} or greater
+     * 			then {@link #lastColumn}.
      */
     Column addColumn(Column column);
     
@@ -412,11 +509,11 @@ public interface Worksheet extends XLElement {
      * @param index The index (column number) of the column.
      * @param column	The column to be added.
      * @return The passed column.
-     * @throws IndexOutOfBoundsException If the calculated index is less then
-     * 			{@link nl.fountain.xelem.CellPointer#firstColumn} or greater
-     * 			then {@link nl.fountain.xelem.CellPointer#lastColumn}.
+     * @throws IndexOutOfBoundsException If the given index is less then
+     * 			{@link #firstColumn} or greater
+     * 			then {@link #lastColumn}.
      */
-    Column addColumn(int index, Column column);
+    Column addColumnAt(int index, Column column);
     
     /**
      * Removes the column at the given index.
@@ -426,7 +523,7 @@ public interface Worksheet extends XLElement {
      * @return The removed column or <code>null</code> if the index was not occupied
      * 			by a column.
      */
-    Column removeColumn(int columnIndex);
+    Column removeColumnAt(int columnIndex);
     
     /**
      * Gets all the columns of this worksheet in the order of their index.
@@ -436,14 +533,19 @@ public interface Worksheet extends XLElement {
     Collection getColumns();
     
     /**
-     * Gets the column at the given index.
+     * Gets the column at the given index. If no column was at the given index,
+     * returns a new column.
      * 
      * @param columnIndex The index (column number) of the column.
      * 
-     * @return The column at the given index or <code>null</code> 
-     * 			if there was no column at the given index.
+     * @return The column at the given index. Never <code>null</code>.
      */
-    Column getColumn(int columnIndex);
+    Column getColumnAt(int columnIndex);
+    
+    /**
+     * Specifies whether there is a column at the given column index.
+     */
+    boolean hasColumnAt(int columnIndex);
     
     /**
      * Sets the AutoFilter-option on the specified range.

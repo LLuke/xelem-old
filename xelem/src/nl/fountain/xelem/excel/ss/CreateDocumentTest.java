@@ -94,8 +94,8 @@ public class CreateDocumentTest extends TestCase {
         Iterator iter = wb.getWarnings().iterator();
         String w1 = (String) iter.next();
         String w2 = (String) iter.next();
-        assertTrue(w1.indexOf("WARNING: java.io.FileNotFoundException:") > 0);
-        assertTrue(w2.indexOf("WARNING: nl.fountain.xelem." +
+        assertTrue(w1.indexOf("WARNING 1): java.io.FileNotFoundException:") > 0);
+        assertTrue(w2.indexOf("WARNING 2): nl.fountain.xelem." +
         		"UnsupportedStyleException: Style 'bar' not found.") > 0);
         assertTrue(xml.indexOf("<Style ss:ID=\"bar\"/>") > 0);
         
@@ -208,7 +208,7 @@ public class CreateDocumentTest extends TestCase {
         assertTrue(xml.indexOf("<Style ss:ID=\"no_definition\"/>") > 0);
         String warningString = (String) wb.getWarnings().get(0);
         assertTrue(warningString.indexOf(
-           "WARNING: nl.fountain.xelem.UnsupportedStyleException: " +
+           "WARNING 1): nl.fountain.xelem.UnsupportedStyleException: " +
            "Style 'no_definition' not found.") > 0);
         
         //System.out.println(xml);
@@ -220,7 +220,7 @@ public class CreateDocumentTest extends TestCase {
         Workbook wb = new XLWorkbook("test07");
         Worksheet sheet = wb.addSheet();
         
-        Column column = sheet.addColumn(5);
+        Column column = sheet.addColumnAt(5);
         column.setStyleID("b_yellow");
         column.setWidth(25.2);
         column.setSpan(5);
@@ -230,10 +230,10 @@ public class CreateDocumentTest extends TestCase {
         
         sheet.addColumn().setStyleID("b_lblue");
         
-        Column column2 = sheet.addColumn(12);
+        Column column2 = sheet.addColumnAt(12);
         column2.setStyleID("bold");
         
-        Column b = sheet.addColumn(2);
+        Column b = sheet.addColumnAt(2);
         b.setHidden(true);
         
         String xml = xmlToString(wb);
@@ -252,7 +252,7 @@ public class CreateDocumentTest extends TestCase {
         Workbook wb = new XLWorkbook("test08");
         Worksheet sheet = wb.addSheet();
         
-        Row row = sheet.addRow(5);
+        Row row = sheet.addRowAt(5);
         row.setStyleID("b_yellow");
         row.setHeight(25.2);
         row.setSpan(5);
@@ -262,10 +262,10 @@ public class CreateDocumentTest extends TestCase {
         
         sheet.addRow().setStyleID("b_lblue");
         
-        Row row2 = sheet.addRow(12);
+        Row row2 = sheet.addRowAt(12);
         row2.setStyleID("bold");
         
-        sheet.addRow(3).setHidden(true);
+        sheet.addRowAt(3).setHidden(true);
         
         String xml = xmlToString(wb);
         assertTrue(xml.indexOf("<ss:Row ss:Index=\"3\" ss:Hidden=\"1\"/>") > 0);
@@ -283,13 +283,13 @@ public class CreateDocumentTest extends TestCase {
         Workbook wb = new XLWorkbook("test09");
         Worksheet sheet = wb.addSheet();
         
-        Column column = sheet.addColumn(5);
+        Column column = sheet.addColumnAt(5);
         column.setStyleID("b_yellow");
         column.setSpan(5);
         column.setWidth(25.2);
         sheet.addColumn().setStyleID("b_lblue");
         
-        Row row = sheet.addRow(5);
+        Row row = sheet.addRowAt(5);
         row.setStyleID("b_yellow");
         row.setSpan(5);
         row.setHeight(25.2);
@@ -360,7 +360,7 @@ public class CreateDocumentTest extends TestCase {
         c4.setFormula("=NOW()");
         c4.setStyleID("gray_date");
         
-        sheet.addColumn(2).setWidth(200);
+        sheet.addColumnAt(2).setWidth(200);
         
         sheet.addCellAt(9, 1);
         sheet.addCell("&1<2>3\" ' € @         ");
@@ -535,7 +535,7 @@ public class CreateDocumentTest extends TestCase {
     public void testAutoFilter() throws Exception {
         Workbook wb = new XLWorkbook("test19");
         Worksheet sheet = wb.addSheet();
-        sheet.addRow(10);
+        sheet.addRowAt(10);
         sheet.addCell("foo", "b_yellow");
         sheet.addCell("bar", "b_yellow");
         sheet.addCell("tender", "b_yellow");
@@ -561,8 +561,8 @@ public class CreateDocumentTest extends TestCase {
         sheet.addCell(new Date(), "gray_date");
         sheet.addCell(new Date(), "gray_date");
         
-        sheet.addColumn(2).setAutoFitWidth(false);
-        sheet.addColumn(3).setAutoFitWidth(true);
+        sheet.addColumnAt(2).setAutoFitWidth(false);
+        sheet.addColumnAt(3).setAutoFitWidth(true);
         
         String xml = xmlToString(wb);
         assertTrue(xml.indexOf("<ss:Column ss:Index=\"2\" ss:AutoFitWidth=\"0\"/>") > 0);
@@ -615,20 +615,20 @@ public class CreateDocumentTest extends TestCase {
     public void testComments() throws Exception {
         Workbook wb = new XLWorkbook("test23");
         Worksheet sheet = wb.addSheet();
-        sheet.addComment("   commentaar 1   ");
-        sheet.addComment("   commentaar 2   ");
+        sheet.addElementComment("   commentaar 1   ");
+        sheet.addElementComment("   commentaar 2   ");
         
         String xml = xmlToString(wb);
         assertTrue(xml.indexOf("<!--   commentaar 1   -->") > 0);
         assertTrue(xml.indexOf("<!--   commentaar 2   -->") > 0);
         
-        wb.setPrintComments(false);
+        wb.setPrintElementComments(false);
         xml = xmlToString(wb);
         assertEquals(-1, xml.indexOf("<!--   commentaar 1   -->"));
         assertEquals(-1, xml.indexOf("<!--   commentaar 2   -->"));
         
-        wb.addComment("  workbook comment  ");
-        wb.setPrintComments(true);
+        wb.addElementComment("  workbook comment  ");
+        wb.setPrintElementComments(true);
         xml = xmlToString(wb);
         assertTrue(xml.indexOf("<!--  workbook comment  -->") > 0);
         
@@ -750,11 +750,11 @@ public class CreateDocumentTest extends TestCase {
         sheet.getCellPointer().moveCRLF();
         sheet.addCell(sheet.getCellPointer().getAbsoluteAddress());
         
-        sheet.getCellPointer().moveTo(15, 12);
-        Cell cf = sheet.addCell();
-        sheet.getCellPointer().moveTo(10, 10);
-        cf.setFormula("=" + sheet.getCellPointer().getRelativeAddress(15, 12));
-        sheet.addCell("bla bla");
+//        sheet.getCellPointer().moveTo(15, 12);
+//        Cell cf = sheet.addCell();
+//        sheet.getCellPointer().moveTo(10, 10);
+//        cf.setFormula("=" + sheet.getCellPointer().getRelativeAddress(15, 12));
+//        sheet.addCell("bla bla");
         
         xmlToFile(wb);
     }
