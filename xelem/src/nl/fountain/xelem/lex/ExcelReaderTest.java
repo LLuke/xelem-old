@@ -6,6 +6,7 @@ package nl.fountain.xelem.lex;
 
 import junit.framework.TestCase;
 import nl.fountain.xelem.excel.DocumentProperties;
+import nl.fountain.xelem.excel.ExcelWorkbook;
 import nl.fountain.xelem.excel.Workbook;
 
 import org.xml.sax.SAXParseException;
@@ -86,6 +87,20 @@ public class ExcelReaderTest extends TestCase {
         assertEquals("foo", props.getCategory());
         assertEquals("http://xelem.sourceforge.net/", props.getHyperlinkBase());
         assertEquals("11.5703", props.getVersion());
+    }
+    
+    public void testExcelWorkbook() throws Exception {
+        ExcelReader xlr = new ExcelReader();
+        Workbook wb = xlr.read("testsuitefiles/ReaderTest/excelworkbook.xml");
+        ExcelWorkbook exw = wb.getExcelWorkbook();
+        
+        assertEquals(0, exw.getActiveSheet());
+        assertEquals(8640, exw.getWindowHeight());
+        assertEquals(360, exw.getWindowTopX());
+        assertEquals(285, exw.getWindowTopY());
+        assertEquals(14940, exw.getWindowWidth());
+        assertTrue(!exw.getProtectStructure());
+        assertTrue(exw.getProtectWindows());
     }
     
     

@@ -51,4 +51,10 @@ public interface ExcelWorkbook extends XLElement {
      */
     int getActiveSheet();
     
+    void setProtectStructure(boolean protect);
+    boolean getProtectStructure();
+    
+    void setProtectWindows(boolean protect);
+    boolean getProtectWindows();
+    
 }

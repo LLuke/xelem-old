@@ -41,7 +41,7 @@ import org.w3c.dom.Element;
  */
 public class SSRow extends AbstractXLElement implements Row {
 
-    private TreeMap cells;
+    TreeMap cells;
     private int idx;
     private String styleID;
     private double height;

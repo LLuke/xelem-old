@@ -4,7 +4,10 @@
  */
 package nl.fountain.xelem.lex;
 
-import nl.fountain.xelem.excel.o.ODocumentPropertiesBuilder;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 import nl.fountain.xelem.excel.ss.XLWorkbookBuilder;
 
 /**
@@ -13,7 +16,7 @@ import nl.fountain.xelem.excel.ss.XLWorkbookBuilder;
 public class BuilderFactory {
     
     private XLWorkbookBuilder xlworkbookbuilder;
-    private ODocumentPropertiesBuilder odocumentpropertiesbuilder;
+    private List anonymousBuilders;
     
     public Builder getXLWorkbookBuilder() {
         if (xlworkbookbuilder == null) {
@@ -22,15 +25,28 @@ public class BuilderFactory {
         return xlworkbookbuilder;
     }
     
-    public Builder getODocumentPropertiesBuilder() {
-        if (odocumentpropertiesbuilder == null) {
-            odocumentpropertiesbuilder = new ODocumentPropertiesBuilder();
+    public Builder getAnonymousBuilder() {
+        AnonymousBuilder aBuilder = null;
+        for (Iterator iter = getBuilders().iterator(); iter.hasNext();) {
+            AnonymousBuilder builder = (AnonymousBuilder) iter.next();
+            if (!builder.isOccupied()) {
+                aBuilder = builder;
+                break;
+            }
         }
-        return odocumentpropertiesbuilder;
+        if (aBuilder == null) {
+            aBuilder = new AnonymousBuilder();
+            getBuilders().add(aBuilder);
+        }
+        aBuilder.setOccupied(true);
+        return aBuilder;
     }
     
-    public Builder getDefaultBuilder() {
-        return new DefaultBuilder();
+    private List getBuilders() {
+        if (anonymousBuilders == null) {
+            anonymousBuilders = new ArrayList();
+        }
+        return anonymousBuilders;
     }
 
 }

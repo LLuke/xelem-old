@@ -151,6 +151,27 @@ public abstract class AbstractXLElement implements XLElement {
     }
     
     /**
+     * Creates an {@link org.w3c.dom.Element} with the given <code>qName</code>
+     * as it's qualified name and the given value of <code>b</code> appended to
+     * it as a {@link org.w3c.dom.Text}, translated as "True" or "False". 
+     * Namespace and
+     * prefix of the returned element are the same as those of the 
+     * calling AbstractXLElement-subclass.
+     * 
+     * @param 	doc the enveloping Document.
+     * @param 	qName	the qualified name of the newly created element.
+     * @param 	b	the data for the Node.
+     * 
+     * @return 	a newly created element.
+     */
+    protected Element createElementNS(Document doc, String qName, boolean b) {
+        Element n = doc.createElementNS(getNameSpace(), qName);
+        n.setPrefix(getPrefix());
+        n.appendChild(doc.createTextNode(b ? "True" : "False"));
+        return n;
+    }
+    
+    /**
      * Creates an {@link org.w3c.dom.Attr} with the given <code>qName</code>
      * as it's qualified name and the given value of <code>i</code> as it's
      * value. 

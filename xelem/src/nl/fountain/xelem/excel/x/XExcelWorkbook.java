@@ -38,6 +38,8 @@ public class XExcelWorkbook extends AbstractXLElement implements ExcelWorkbook {
     private int windowTopX;
     private int windowTopY;
     private int activeSheet = -1;
+    private boolean protectstructure;
+    private boolean protectwindows;
     
     /**
      * Creates a new XExcelWorkbook.
@@ -136,6 +138,42 @@ public class XExcelWorkbook extends AbstractXLElement implements ExcelWorkbook {
 	    if (activeSheet < 0) return 0;
 	    return activeSheet;
 	}
+	
+	public void setProtectStructure(boolean protect) {
+	    protectstructure = protect;
+    }
+	
+    /**
+     * Method called by 
+     * {@link nl.fountain.xelem.lex.ExcelReader}.
+     * 
+     * @param s the node value of the tag <code>%gt;ProtectStructure&lt;</code>
+     */
+	public void setProtectStructure(String s) {
+	    protectstructure = s.equalsIgnoreCase("true");
+	}
+	
+	public boolean getProtectStructure() {
+        return protectstructure;
+    }
+	
+	public void setProtectWindows(boolean protect) {
+	    protectwindows = protect;
+    }
+	
+    /**
+     * Method called by 
+     * {@link nl.fountain.xelem.lex.ExcelReader}.
+     * 
+     * @param s the node value of the tag <code>%gt;ProtectWindows&lt;</code>
+     */
+	public void setProtectWindows(String s) {
+	    protectwindows = s.equalsIgnoreCase("true");
+	}
+	
+	public boolean getProtectWindows() {
+        return protectwindows;
+    }
 
     public String getTagName() {
         return "ExcelWorkbook";
@@ -163,6 +201,8 @@ public class XExcelWorkbook extends AbstractXLElement implements ExcelWorkbook {
             ewbe.appendChild(createElementNS(doc, "WindowTopY", windowTopY));
         if (activeSheet > -1)
             ewbe.appendChild(createElementNS(doc, "ActiveSheet", activeSheet));
+        ewbe.appendChild(createElementNS(doc, "ProtectStructure", protectstructure));
+        ewbe.appendChild(createElementNS(doc, "ProtectWindows", protectwindows));
         
         parent.appendChild(ewbe);
         return ewbe;

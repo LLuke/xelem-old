@@ -138,6 +138,8 @@ public class CreateDocumentTest extends TestCase {
         assertTrue(xml.indexOf("<x:WindowWidth>10000</x:WindowWidth>") > 0);
         assertTrue(xml.indexOf("<x:WindowTopX>1000</x:WindowTopX>") > 0);
         assertTrue(xml.indexOf("<x:WindowTopY>500</x:WindowTopY>") > 0);
+        assertTrue(xml.indexOf("<x:ProtectStructure>False</x:ProtectStructure>") > 0);
+        assertTrue(xml.indexOf("<x:ProtectWindows>False</x:ProtectWindows>") > 0);
         
         //System.out.println(xml);
         if (toFile) xmlToFile(wb);
@@ -724,13 +726,18 @@ public class CreateDocumentTest extends TestCase {
         Workbook wb = new XLWorkbook("test29");
         wb.addSheet();
         wb.addSheet();
-        wb.addSheet();
+        wb.addSheet().addCell("this sheet is selected; "
+                + "the workbooks structure and it's windows are protected.");
         wb.addSheet();
         wb.addSheet();
         wb.getExcelWorkbook().setActiveSheet(2);
+        wb.getExcelWorkbook().setProtectStructure(true);
+        wb.getExcelWorkbook().setProtectWindows(true);
         
         String xml = xmlToString(wb);
         assertTrue(xml.indexOf("<x:ActiveSheet>2</x:ActiveSheet>") > 0);
+        assertTrue(xml.indexOf("<x:ProtectStructure>True</x:ProtectStructure>") > 0);
+        assertTrue(xml.indexOf("<x:ProtectWindows>True</x:ProtectWindows>") > 0);
         
         //System.out.println(xml);
         if (toFile) xmlToFile(wb);
