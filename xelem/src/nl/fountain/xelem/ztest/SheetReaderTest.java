@@ -19,7 +19,7 @@ public class SheetReaderTest extends TestCase {
     
     public void testConstructor() {
         try {
-            new SheetReader("src/nl/fountain/xelem/infoSheet.xml");
+            new SheetReader("testsuitefiles/ReaderTest/reader.xml");
         } catch (IOException e) {
             e.printStackTrace();
         }

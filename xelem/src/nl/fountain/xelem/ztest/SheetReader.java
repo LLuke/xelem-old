@@ -15,6 +15,7 @@ import nl.fountain.xelem.excel.Worksheet;
 import nl.fountain.xelem.excel.ss.SSWorksheet;
 
 import org.xml.sax.Attributes;
+import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 import org.xml.sax.helpers.ParserAdapter;
@@ -25,7 +26,8 @@ import org.xml.sax.helpers.ParserAdapter;
 public class SheetReader extends DefaultHandler {
     
     private Worksheet sheet;
-    private String valueString;
+    private String valueString = "";
+    private Locator locator;
     
     public SheetReader(String fileName) throws IOException {
         try {
@@ -44,8 +46,9 @@ public class SheetReader extends DefaultHandler {
     }
     
     public void startDocument() throws SAXException {
+        locate();
         System.out.println("start document");
-        sheet = new SSWorksheet("naam");
+        //sheet = new SSWorksheet("naam");
     }
     
     public void startElement(String uri, String localName, String qName,
@@ -53,12 +56,21 @@ public class SheetReader extends DefaultHandler {
         if (!"".equals(valueString)) System.out.println("text=" + valueString);
         valueString = "";
         System.out.println("==============================================");
+        locate();
         System.out.println("uri=" + uri);
         System.out.println("localName=" + localName);
         System.out.println("qName=" + qName);
-        for (int i = 0; i < attributes.getLength(); i++) {
-            System.out.print("\t" + attributes.getQName(i) + "=");
-            System.out.println(attributes.getValue(i));
+        if (attributes.getLength() > 0) {
+            System.out.println("-------------- attributes:" + attributes.getLength());
+        
+	        for (int i = 0; i < attributes.getLength(); i++) {
+	            System.out.println("\t" + "uri=" + attributes.getURI(i));
+	            System.out.println("\t" + "localName=" + attributes.getLocalName(i));
+	            System.out.println("\t" + "qName=" + attributes.getQName(i));
+	            System.out.println("\t" + "value=" + attributes.getValue(i));
+	            System.out.println("\t" + "type=" + attributes.getType(i));
+	        }
+	        System.out.println("-------------- /attributes");
         }
     }
     
@@ -74,10 +86,53 @@ public class SheetReader extends DefaultHandler {
     
 //    public void endElement(String uri, String localName, String qName)
 //            throws SAXException {
-//        System.out.println("uri=" + uri);
-//        System.out.println("localName=" + localName);
-//        System.out.println("qName=" + qName);
-//        System.out.println("END text=" + valueString);
+//        locate();
+//        System.out.println("/////////////////" + qName);
 //    }
+    
+    // @see org.xml.sax.helpers.DefaultHandler#processingInstruction(java.lang.String, java.lang.String)
+    public void processingInstruction(String target, String data)
+            throws SAXException {
+        locate();
+        System.out.println("==processing instruction==");
+        System.out.println("target=" + target);
+        System.out.println("data=" + data);
+        System.out.println("[/processing instruction]");
+    }
+    
+    // @see org.xml.sax.helpers.DefaultHandler#startPrefixMapping(java.lang.String, java.lang.String)
+    public void startPrefixMapping(String prefix, String uri)
+            throws SAXException {
+        locate();
+        System.out.println("==prefix mapping==");
+        System.out.println("prefix=" + prefix);
+        System.out.println("uri=" + uri);
+        System.out.println("[/prefix mapping]");
+    }
+    
+    // @see org.xml.sax.helpers.DefaultHandler#unparsedEntityDecl(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
+    public void unparsedEntityDecl(String name, String publicId,
+            String systemId, String notationName) throws SAXException {
+        locate();
+        System.out.println("==unparsed entity declaration==");
+        System.out.println("name=" + name);
+        System.out.println("publicId=" + publicId);
+        System.out.println("systemId=" + systemId);
+        System.out.println("notationName=" + notationName);
+        System.out.println("[/unparsed entity declaration]");
+    }
+    
+    // @see org.xml.sax.helpers.DefaultHandler#setDocumentLocator(org.xml.sax.Locator)
+    public void setDocumentLocator(Locator locator) {
+        System.out.println(locator);
+        this.locator = locator;
+    }
+    
+    private void locate() {
+        System.out.println("[" + locator.getSystemId() + "] [" 
+                + locator.getPublicId() + "] [ln="
+                + locator.getLineNumber() + "] [cn="
+                + locator.getColumnNumber() + "]");
+    }
 
 }
