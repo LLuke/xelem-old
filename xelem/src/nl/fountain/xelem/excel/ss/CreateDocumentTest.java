@@ -607,7 +607,7 @@ public class CreateDocumentTest extends TestCase {
         if (toFile) xmlToFile(wb);
     }
     
-    public void testComments() throws Exception {
+    public void testElementComments() throws Exception {
         Workbook wb = new XLWorkbook("test23");
         Worksheet sheet = wb.addSheet();
         sheet.addElementComment("   commentaar 1   ");
@@ -640,6 +640,7 @@ public class CreateDocumentTest extends TestCase {
         dp.setCategory("category");
         dp.setCompany("company");
         dp.setCreated(new Date(0));
+        dp.setLastSaved(new Date());
         dp.setDescription("description");
         dp.setHyperlinkBase("file://D:/bla/bla/");
         dp.setKeywords("key words foo bar");

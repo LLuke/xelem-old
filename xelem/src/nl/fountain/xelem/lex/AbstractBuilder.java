@@ -23,6 +23,10 @@ public abstract class AbstractBuilder implements Builder {
     protected BuilderFactory factory;
     protected CharArrayWriter contents;
     
+    protected AbstractBuilder() {
+        contents = new CharArrayWriter();
+    }
+    
     protected void build(XMLReader reader, ContentHandler parent, BuilderFactory factory) {
         this.reader = reader;
         this.parent = parent;
@@ -61,6 +65,7 @@ public abstract class AbstractBuilder implements Builder {
 
     public void startElement(String uri, String localName, String qName,
             Attributes atts) throws SAXException {
+        contents.reset();
     }
 
     public void endElement(String uri, String localName, String qName)
@@ -68,7 +73,8 @@ public abstract class AbstractBuilder implements Builder {
     }
 
     public void characters(char[] ch, int start, int length)
-            throws SAXException {
+		throws SAXException {
+        contents.write(ch, start, length);
     }
 
     public void ignorableWhitespace(char[] ch, int start, int length)

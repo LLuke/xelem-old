@@ -30,7 +30,7 @@ public class XLWorkbookBuilder extends AbstractBuilder {
     public void startElement(String uri, String localName, String qName,
             Attributes atts) throws SAXException {
         if (XLElement.XMLNS_O.equals(uri) && "DocumentProperties".equals(qName)) {
-            Builder builder = factory.getODocumentPropertiesBuilder();
+            Builder builder = factory.getDefaultBuilder();
             builder.build(reader, this, factory, currentWorkbook.getDocumentProperties());
         }
     }

@@ -10,11 +10,15 @@
   <Subject>a test file</Subject>
   <Author>ExcelReader                 tester</Author>
   <Keywords>java xml bla bla</Keywords>
-  <Description>testing ë é ç ƒ Ñ documentproperties</Description>
-  <LastAuthor>henk van den berg</LastAuthor>
+  <Description>testing ë é ç ƒ Ñ documentproperties&#13;&#10;more comments&#13;&#10;and more...</Description>
+  <LastAuthor>Tom Poes</LastAuthor>
+  <LastPrinted>2005-03-16T14:32:56Z</LastPrinted>
   <Created>2005-03-15T13:01:26Z</Created>
   <LastSaved>2005-03-15T13:19:09Z</LastSaved>
+  <Category>foo</Category>
+  <Manager>Asterix</Manager>
   <Company>NIWI-KNAW</Company>
+  <HyperlinkBase>http://xelem.sourceforge.net/</HyperlinkBase>
   <Version>11.5703</Version>
  </DocumentProperties>
  <ExcelWorkbook xmlns="urn:schemas-microsoft-com:office:excel">
@@ -43,12 +47,17 @@
    </Row>
   </Table>
   <WorksheetOptions xmlns="urn:schemas-microsoft-com:office:excel">
+   <Print>
+    <ValidPrinterInfo/>
+    <PaperSizeIndex>9</PaperSizeIndex>
+    <HorizontalResolution>600</HorizontalResolution>
+    <VerticalResolution>600</VerticalResolution>
+   </Print>
    <Selected/>
    <Panes>
     <Pane>
      <Number>3</Number>
-     <ActiveRow>20</ActiveRow>
-     <ActiveCol>10</ActiveCol>
+     <ActiveRow>2</ActiveRow>
     </Pane>
    </Panes>
    <ProtectObjects>False</ProtectObjects>

@@ -39,6 +39,16 @@ public interface ExcelWorkbook extends XLElement {
     void setWindowTopY(int y);
     int getWindowTopY();
     
+    /**
+     * Set the active sheet. 0-based.
+     * @param nr the index of the active sheet.
+     */
     void setActiveSheet(int nr);
+    
+    /**
+     * Gets the active sheet. 0 based.
+     * @return an int >= 0
+     */
+    int getActiveSheet();
     
 }

@@ -4,8 +4,6 @@
  */
 package nl.fountain.xelem.excel.o;
 
-import java.io.CharArrayWriter;
-
 import nl.fountain.xelem.excel.XLElement;
 import nl.fountain.xelem.lex.AbstractBuilder;
 import nl.fountain.xelem.lex.BuilderFactory;
@@ -21,10 +19,6 @@ import org.xml.sax.XMLReader;
 public class ODocumentPropertiesBuilder extends AbstractBuilder {
     
     private ODocumentProperties current;
-    
-    public ODocumentPropertiesBuilder() {
-        contents = new CharArrayWriter();
-    }
 
     public void build(XMLReader reader, ContentHandler parent, 
             BuilderFactory factory, XLElement xle) {

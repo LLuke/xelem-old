@@ -49,6 +49,16 @@ public class XExcelWorkbook extends AbstractXLElement implements ExcelWorkbook {
     public void setWindowHeight(int height) {
         windowHeight = height;
     }
+    
+    /**
+     * Method called by 
+     * {@link nl.fountain.xelem.lex.ExcelReader}.
+     * 
+     * @param s the node value of the tag <code>%gt;WindowHeight&lt;</code>
+     */
+    public void setWindowHeight(String s) {
+        windowHeight = Integer.parseInt(s);
+    }
 
     public int getWindowHeight() {
         return windowHeight;
@@ -56,6 +66,16 @@ public class XExcelWorkbook extends AbstractXLElement implements ExcelWorkbook {
 
     public void setWindowWidth(int width) {
         windowWidth = width;
+    }
+    
+    /**
+     * Method called by 
+     * {@link nl.fountain.xelem.lex.ExcelReader}.
+     * 
+     * @param s the node value of the tag <code>%gt;WindowWidth&lt;</code>
+     */
+    public void setWindowWidth(String s) {
+       windowWidth = Integer.parseInt(s); 
     }
 
     public int getWindowWidth() {
@@ -65,6 +85,16 @@ public class XExcelWorkbook extends AbstractXLElement implements ExcelWorkbook {
     public void setWindowTopX(int x) {
         windowTopX = x;
     }
+    
+    /**
+     * Method called by 
+     * {@link nl.fountain.xelem.lex.ExcelReader}.
+     * 
+     * @param s the node value of the tag <code>%gt;WindowTopX&lt;</code>
+     */
+    public void setWindowTopX(String s) {
+       windowTopX = Integer.parseInt(s);
+    }
 
     public int getWindowTopX() {
         return windowTopX;
@@ -72,6 +102,16 @@ public class XExcelWorkbook extends AbstractXLElement implements ExcelWorkbook {
 
     public void setWindowTopY(int y) {
         windowTopY = y;
+    }
+    
+    /**
+     * Method called by 
+     * {@link nl.fountain.xelem.lex.ExcelReader}.
+     * 
+     * @param s the node value of the tag <code>%gt;WindowTopY&lt;</code>
+     */
+    public void setWindowTopY(String s) {
+        windowTopY = Integer.parseInt(s);
     }
 
     public int getWindowTopY() {
@@ -81,6 +121,21 @@ public class XExcelWorkbook extends AbstractXLElement implements ExcelWorkbook {
     public void setActiveSheet(int nr) {
         activeSheet = nr;
     }
+    
+    /**
+     * Method called by 
+     * {@link nl.fountain.xelem.lex.ExcelReader}.
+     * 
+     * @param s the node value of the tag <code>%gt;ActiveSheet&lt;</code>
+     */
+    public void setActiveSheet(String s) {
+        activeSheet = Integer.parseInt(s);
+    }
+    
+	public int getActiveSheet() {
+	    if (activeSheet < 0) return 0;
+	    return activeSheet;
+	}
 
     public String getTagName() {
         return "ExcelWorkbook";

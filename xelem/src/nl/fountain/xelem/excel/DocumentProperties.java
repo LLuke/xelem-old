@@ -72,5 +72,9 @@ public interface DocumentProperties extends XLElement {
     void setCreated(Date created);
     Date getCreated();
     
-
+    void setLastSaved(Date lastsaved);
+    Date getLastSaved();
+    
+    Date getLastPrinted();
+    String getVersion();
 }

@@ -28,5 +28,9 @@ public class BuilderFactory {
         }
         return odocumentpropertiesbuilder;
     }
+    
+    public Builder getDefaultBuilder() {
+        return new DefaultBuilder();
+    }
 
 }

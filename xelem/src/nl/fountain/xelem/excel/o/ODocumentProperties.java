@@ -45,10 +45,12 @@ public class ODocumentProperties extends AbstractXLElement implements DocumentPr
     private String lastAuthor;
     private String manager;
     private String created;
-    private Date createdDate;
+    private String lastsaved;
+    private String lastprinted;
     private String company;
     private String hyperlinkbase;
     private String appname;
+    private String version;
     
     /**
      * Creates a new ODocumentProperties.
@@ -102,7 +104,6 @@ public class ODocumentProperties extends AbstractXLElement implements DocumentPr
     }
 
     public void setCreated(Date created) {
-        createdDate = created;
         this.created = XLUtil.format(created).substring(0, 16) + "Z";
     }
     
@@ -114,7 +115,30 @@ public class ODocumentProperties extends AbstractXLElement implements DocumentPr
      */
     public void setCreated(String created) {
         this.created = created;
-        createdDate = XLUtil.parse(created);
+    }
+    
+    public void setLastSaved(Date lastsaved) {
+        this.lastsaved = XLUtil.format(lastsaved).substring(0, 16) + "Z";
+    }
+    
+    /**
+     * Method called by 
+     * {@link nl.fountain.xelem.lex.ExcelReader}.
+     * 
+     * @param lastsaved the node value of the tag <code>%gt;LastSaved&lt;</code>
+     */
+    public void setLastSaved(String lastsaved) {
+        this.lastsaved = lastsaved;
+    } 
+
+    /**
+     * Method called by 
+     * {@link nl.fountain.xelem.lex.ExcelReader}.
+     * 
+     * @param lastprinted the node value of the tag <code>%gt;LastPrinted&lt;</code>
+     */
+    public void setLastPrinted(String lastprinted) {
+        this.lastprinted = lastprinted;
     }
 
     public String getTagName() {
@@ -157,6 +181,8 @@ public class ODocumentProperties extends AbstractXLElement implements DocumentPr
                 createElementNS(doc, "AppName", appname));
         if (created != null) dpe.appendChild(
                 createElementNS(doc, "Created", created));
+        if (lastsaved != null) dpe.appendChild(
+                createElementNS(doc, "LastSaved", lastsaved));
         
         parent.appendChild(dpe);
         return dpe;
@@ -207,7 +233,37 @@ public class ODocumentProperties extends AbstractXLElement implements DocumentPr
     }
 
     public Date getCreated() {
-        return createdDate;
+        Date date = null;
+        if (created != null) {
+            date = XLUtil.parse(created);
+        }
+        return date;
     }
+    
+    public Date getLastSaved() {
+        Date date = null;
+        if (lastsaved != null) {
+            date = XLUtil.parse(lastsaved);
+        }
+        return date;
+    }
+    
+    public Date getLastPrinted() {
+        Date date = null;
+        if (lastprinted != null) {
+            date = XLUtil.parse(lastprinted);
+        }
+        return date;
+    }
+    
+    public void setVersion(String version) {
+        this.version = version;
+    }
+    
+    public String getVersion() {
+        return version;
+    }
+    
+    
 
 }
