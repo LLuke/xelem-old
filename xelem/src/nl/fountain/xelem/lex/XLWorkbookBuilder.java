@@ -34,13 +34,12 @@ public class XLWorkbookBuilder extends AnonymousBuilder {
         } else if (XLElement.XMLNS_X.equals(uri) && "ExcelWorkbook".equals(localName)) {
             Builder builder = factory.getAnonymousBuilder();
             builder.build(reader, this, factory, current.getExcelWorkbook());
+        // Styles
         } else if (XLElement.XMLNS_SS.equals(uri) && "Worksheet". equals(localName)) {
             Builder builder = factory.getSSWorksheetBuilder();
             Worksheet sheet = current.addSheet(
                     atts.getValue(XLElement.XMLNS_SS, "Name"));
-            for (int i = 0; i < atts.getLength(); i++) {
-                invokeMethod(sheet, atts.getLocalName(i), atts.getValue(i));
-            }
+            sheet.setAttributes(atts);
             builder.build(reader, this, factory, sheet);
         }
     }

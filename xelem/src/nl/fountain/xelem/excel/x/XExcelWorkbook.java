@@ -21,6 +21,8 @@
  */
 package nl.fountain.xelem.excel.x;
 
+import java.lang.reflect.Method;
+
 import nl.fountain.xelem.GIO;
 import nl.fountain.xelem.excel.AbstractXLElement;
 import nl.fountain.xelem.excel.ExcelWorkbook;
@@ -52,13 +54,8 @@ public class XExcelWorkbook extends AbstractXLElement implements ExcelWorkbook {
         windowHeight = height;
     }
     
-    /**
-     * Method called by 
-     * {@link nl.fountain.xelem.lex.ExcelReader}.
-     * 
-     * @param s the node value of the tag <code>&lt;WindowHeight&gt;</code>
-     */
-    public void setWindowHeight(String s) {
+    // method called by ExcelReader
+    private void setWindowHeight(String s) {
         windowHeight = Integer.parseInt(s);
     }
 
@@ -70,13 +67,8 @@ public class XExcelWorkbook extends AbstractXLElement implements ExcelWorkbook {
         windowWidth = width;
     }
     
-    /**
-     * Method called by 
-     * {@link nl.fountain.xelem.lex.ExcelReader}.
-     * 
-     * @param s the node value of the tag <code>&lt;WindowWidth&gt;</code>
-     */
-    public void setWindowWidth(String s) {
+    //  method called by ExcelReader
+    private void setWindowWidth(String s) {
        windowWidth = Integer.parseInt(s); 
     }
 
@@ -88,13 +80,8 @@ public class XExcelWorkbook extends AbstractXLElement implements ExcelWorkbook {
         windowTopX = x;
     }
     
-    /**
-     * Method called by 
-     * {@link nl.fountain.xelem.lex.ExcelReader}.
-     * 
-     * @param s the node value of the tag <code>&lt;WindowTopX&gt;</code>
-     */
-    public void setWindowTopX(String s) {
+    //  method called by ExcelReader
+    private void setWindowTopX(String s) {
        windowTopX = Integer.parseInt(s);
     }
 
@@ -106,13 +93,8 @@ public class XExcelWorkbook extends AbstractXLElement implements ExcelWorkbook {
         windowTopY = y;
     }
     
-    /**
-     * Method called by 
-     * {@link nl.fountain.xelem.lex.ExcelReader}.
-     * 
-     * @param s the node value of the tag <code>&lt;WindowTopY&gt;</code>
-     */
-    public void setWindowTopY(String s) {
+    //  method called by ExcelReader
+    private void setWindowTopY(String s) {
         windowTopY = Integer.parseInt(s);
     }
 
@@ -124,13 +106,8 @@ public class XExcelWorkbook extends AbstractXLElement implements ExcelWorkbook {
         activeSheet = nr;
     }
     
-    /**
-     * Method called by 
-     * {@link nl.fountain.xelem.lex.ExcelReader}.
-     * 
-     * @param s the node value of the tag <code>&lt;ActiveSheet&gt;</code>
-     */
-    public void setActiveSheet(String s) {
+    //  method called by ExcelReader
+    private void setActiveSheet(String s) {
         activeSheet = Integer.parseInt(s);
     }
     
@@ -143,13 +120,8 @@ public class XExcelWorkbook extends AbstractXLElement implements ExcelWorkbook {
 	    protectstructure = protect;
     }
 	
-    /**
-     * Method called by 
-     * {@link nl.fountain.xelem.lex.ExcelReader}.
-     * 
-     * @param s the node value of the tag <code>&lt;ProtectStructure&gt;</code>
-     */
-	public void setProtectStructure(String s) {
+	//	 method called by ExcelReader
+	private void setProtectStructure(String s) {
 	    protectstructure = s.equalsIgnoreCase("true");
 	}
 	
@@ -161,13 +133,8 @@ public class XExcelWorkbook extends AbstractXLElement implements ExcelWorkbook {
 	    protectwindows = protect;
     }
 	
-    /**
-     * Method called by 
-     * {@link nl.fountain.xelem.lex.ExcelReader}.
-     * 
-     * @param s the node value of the tag <code>&lt;ProtectWindows&gt;</code>
-     */
-	public void setProtectWindows(String s) {
+	//	 method called by ExcelReader
+	private void setProtectWindows(String s) {
 	    protectwindows = s.equalsIgnoreCase("true");
 	}
 	
@@ -206,6 +173,23 @@ public class XExcelWorkbook extends AbstractXLElement implements ExcelWorkbook {
         
         parent.appendChild(ewbe);
         return ewbe;
+    }
+    
+    public void setChildElement(String localName, String content) {
+        invokeMethod(localName, content);
+    }
+    
+	private void invokeMethod(String name, Object value) {
+        Class[] types = new Class[] { value.getClass() };
+        Method method = null;
+        try {
+            method = this.getClass().getDeclaredMethod("set" + name, types);
+            method.invoke(this, new Object[] { value });
+        } catch (NoSuchMethodException e) {
+            // no big deal
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }

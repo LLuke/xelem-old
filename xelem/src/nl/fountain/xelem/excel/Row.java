@@ -79,6 +79,8 @@ public interface Row extends XLElement {
      */
     void setSpan(int s);
     
+    int getSpan();
+    
     /**
      * Sets the height of this row.
      * 
@@ -86,12 +88,16 @@ public interface Row extends XLElement {
      */
     void setHeight(double h);
     
+    double getHeight();
+    
     /**
      * Sets whether this row will be hidden.
      * 
      * @param hide	<code>true</code> if this row must not be displayed.
      */
     void setHidden(boolean hide);
+    
+    boolean isHidden();
     
     //void setAutoFitHeight(boolean autoFit);
     

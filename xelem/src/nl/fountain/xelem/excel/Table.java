@@ -298,4 +298,8 @@ public interface Table extends XLElement {
      */
     int maxColumnIndex();  
     
+    int getExpandedColumnCount();
+    
+    int getExpandedRowCount();
+    
 }

@@ -63,6 +63,8 @@ public interface Column extends XLElement {
      */
     void setAutoFitWidth(boolean autoFit);
     
+    boolean getAutoFitWith();
+    
     /**
      * Sets the span of this column.
      * The value of 
@@ -82,12 +84,16 @@ public interface Column extends XLElement {
      */
     void setSpan(int s);
     
+    int getSpan();
+    
     /**
      * Sets the width of this column.
      * 
      * @param w	The width of the column (in points).
      */
     void setWidth(double w);
+    
+    double getWidth();
     
     /**
      * Sets whether this column will be hidden.

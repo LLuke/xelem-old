@@ -30,6 +30,7 @@ import nl.fountain.xelem.GIO;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.xml.sax.Attributes;
 
 /**
  * An abstract implementation of an XLElement.
@@ -65,6 +66,10 @@ public abstract class AbstractXLElement implements XLElement {
     public List getElementComments() {
         return comments;
     }
+    
+    public void setAttributes(Attributes attrs) {}
+    
+    public void setChildElement(String localName, String content) {}
     
     /**
      * Creates an {@link org.w3c.dom.Element} with the tag-name, namespace and

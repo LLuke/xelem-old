@@ -21,12 +21,15 @@
  */
 package nl.fountain.xelem.excel.ss;
 
+import java.lang.reflect.Method;
+
 import nl.fountain.xelem.GIO;
 import nl.fountain.xelem.excel.AbstractXLElement;
 import nl.fountain.xelem.excel.Column;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.xml.sax.Attributes;
 
 /**
  * An implementation of the XLElement Column.
@@ -59,12 +62,39 @@ public class SSColumn extends AbstractXLElement implements Column {
         autoFitWidth = autoFit;
     }
     
+    //method called by ExcelReader
+    private void setAutoFitWidth(String s) {
+        autoFitWidth = s.equals("1");
+    }
+    
+    public boolean getAutoFitWith() {
+        return autoFitWidth;
+    }
+    
     public void setSpan(int s) {
         span = s;
     }
     
+    //method called by ExcelReader
+    private void setSpan(String s) {
+        span = Integer.parseInt(s);
+    }
+    
+    public int getSpan() {
+        return span;
+    }
+    
     public void setWidth(double w) {
         width = w;
+    }
+    
+    // method called by ExcelReader
+    private void setWidth(String s) {
+        width = Double.parseDouble(s);
+    }
+    
+    public double getWidth() {
+        return width;
     }
     
     public void setHidden(boolean hide) {
@@ -105,6 +135,25 @@ public class SSColumn extends AbstractXLElement implements Column {
         
         parent.appendChild(ce);
         return ce;
+    }
+    
+    public void setAttributes(Attributes attrs) {
+        for (int i = 0; i < attrs.getLength(); i++) {
+            invokeMethod(attrs.getLocalName(i), attrs.getValue(i));
+        }
+    }
+    
+	private void invokeMethod(String name, Object value) {
+        Class[] types = new Class[] { value.getClass() };
+        Method method = null;
+        try {
+            method = this.getClass().getDeclaredMethod("set" + name, types);
+            method.invoke(this, new Object[] { value });
+        } catch (NoSuchMethodException e) {
+            // no big deal
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**

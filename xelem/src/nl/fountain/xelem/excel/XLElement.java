@@ -27,6 +27,8 @@ import nl.fountain.xelem.GIO;
 
 import org.w3c.dom.Element;
 
+import org.xml.sax.Attributes;
+
 
 /**
  * Represents an element in SpreadsheetML. 
@@ -88,7 +90,7 @@ public interface XLElement {
     public static final String PREFIX_HTML = "html";
     
     /**
-     * Gets the tagname (qualified name) of this XLElement.
+     * Gets the tagname (localName) of this XLElement.
      * @return qualified name
      */
     String getTagName();
@@ -130,4 +132,8 @@ public interface XLElement {
      * @return	the newly assembled element. may be null.
      */
     Element assemble(Element parent, GIO gio);
+    
+    void setAttributes(Attributes attrs);
+    
+    void setChildElement(String localName, String content);
 }

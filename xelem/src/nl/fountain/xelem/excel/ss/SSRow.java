@@ -21,6 +21,7 @@
  */
 package nl.fountain.xelem.excel.ss;
 
+import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.TreeMap;
@@ -33,6 +34,7 @@ import nl.fountain.xelem.excel.Worksheet;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.xml.sax.Attributes;
 
 /**
  * An implementation of the XLElement Row.
@@ -44,7 +46,7 @@ public class SSRow extends AbstractXLElement implements Row {
     TreeMap cells;
     private int idx;
     private String styleID;
-    private double height;
+    private double height = -1.0;
     private int span;
     private boolean hidden;
     //private boolean autoFitHeight;
@@ -70,12 +72,36 @@ public class SSRow extends AbstractXLElement implements Row {
         height = h;
     }
     
+    private void setHeight(String s) {
+        height = Double.parseDouble(s);
+    }
+    
+    public double getHeight() {
+        return height;
+    }
+    
     public void setSpan(int s) {
         span = s;
     }
     
+    private void setSpan(String s) {
+        span = Integer.parseInt(s);
+    }
+    
+    public int getSpan() {
+        return span;
+    }
+    
     public void setHidden(boolean hide) {
         hidden = hide;
+    }
+    
+    private void setHidden(String s) {
+        hidden = s.equals("1");
+    }
+    
+    public boolean isHidden() {
+        return hidden;
     }
     
 //    public void setAutoFitHeight(boolean autoFit) {
@@ -234,6 +260,25 @@ public class SSRow extends AbstractXLElement implements Row {
             cell.assemble(rowElement, gio);
         }
         return rowElement;
+    }
+    
+    public void setAttributes(Attributes attrs) {
+        for (int i = 0; i < attrs.getLength(); i++) {
+            invokeMethod(attrs.getLocalName(i), attrs.getValue(i));
+        }
+    }
+    
+	private void invokeMethod(String name, Object value) {
+        Class[] types = new Class[] { value.getClass() };
+        Method method = null;
+        try {
+            method = this.getClass().getDeclaredMethod("set" + name, types);
+            method.invoke(this, new Object[] { value });
+        } catch (NoSuchMethodException e) {
+            // no big deal
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     
     /**

@@ -21,6 +21,7 @@
  */
 package nl.fountain.xelem.excel.ss;
 
+import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.TreeMap;
@@ -34,6 +35,7 @@ import nl.fountain.xelem.excel.Worksheet;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.xml.sax.Attributes;
 
 /**
  * An implementation of the XLElement Table.
@@ -45,6 +47,8 @@ public class SSTable extends AbstractXLElement implements Table {
     private String styleID;
     private double rowheight;
     private double columnwidth;
+    private int expandedcolumncount;
+    private int expandedrowcount;
 
     /**
      * Constructs a new SSTable.
@@ -156,10 +160,6 @@ public class SSTable extends AbstractXLElement implements Table {
     public boolean hasRowAt(int index) {
         return rows.get(new Integer(index)) != null;
     }
-    
-//    public Row getRow(int index) {
-//        return (Row) rows.get(new Integer(index));
-//    }
 
     public int rowCount() {
         return rows.size();
@@ -249,6 +249,43 @@ public class SSTable extends AbstractXLElement implements Table {
             row.assemble(te, gio);
         }
         return te;
+    }
+    
+    public void setAttributes(Attributes attrs) {
+        for (int i = 0; i < attrs.getLength(); i++) {
+            invokeMethod(attrs.getLocalName(i), attrs.getValue(i));
+        }
+    }
+    
+	private void invokeMethod(String name, Object value) {
+        Class[] types = new Class[] { value.getClass() };
+        Method method = null;
+        try {
+            method = this.getClass().getDeclaredMethod("set" + name, types);
+            method.invoke(this, new Object[] { value });
+        } catch (NoSuchMethodException e) {
+            // no big deal
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+	
+    public int getExpandedColumnCount() {
+        return expandedcolumncount;
+    }
+    
+    // method called by ExcelReader
+    private void setExpandedColumnCount(String s) {
+        expandedcolumncount = Integer.parseInt(s);
+    }
+    
+    public int getExpandedRowCount() {
+        return expandedrowcount;
+    }
+    
+    // method called by ExcelReader
+    private void setExpandedRowCount(String s) {
+        expandedrowcount = Integer.parseInt(s);
     }
     
     /////////////////////////////////////////////

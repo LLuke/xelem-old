@@ -21,6 +21,7 @@
  */
 package nl.fountain.xelem.excel.ss;
 
+import java.lang.reflect.Method;
 import java.util.Collection;
 
 import nl.fountain.xelem.Address;
@@ -39,6 +40,7 @@ import nl.fountain.xelem.excel.x.XWorksheetOptions;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.xml.sax.Attributes;
 
 /**
  * An implementation of the XLElement Worksheet.
@@ -92,13 +94,8 @@ public class SSWorksheet extends AbstractXLElement implements Worksheet {
         protect = p;
     }
     
-    /**
-     * Method called by 
-     * {@link nl.fountain.xelem.lex.ExcelReader}.
-     * 
-     * @param s the value of the attribute <code>Protected</code>
-     */
-    public void setProtected(String s) {
+    // method called by ExcelReader
+    private void setProtected(String s) {
         protect = s.equals("1");
     }
     
@@ -110,13 +107,8 @@ public class SSWorksheet extends AbstractXLElement implements Worksheet {
         righttoleft = r;
     }
     
-    /**
-     * Method called by 
-     * {@link nl.fountain.xelem.lex.ExcelReader}.
-     * 
-     * @param s the value of the attribute <code>RightToLeft</code>
-     */
-    public void setRightToLeft(String s) {
+    //  method called by ExcelReader
+    private void setRightToLeft(String s) {
         righttoleft = s.equals("1");
     }
     
@@ -354,6 +346,25 @@ public class SSWorksheet extends AbstractXLElement implements Worksheet {
             autoFilter.assemble(wse, gio);
         }
         return wse;
+    }
+    
+    public void setAttributes(Attributes attrs) {
+        for (int i = 0; i < attrs.getLength(); i++) {
+            invokeMethod(attrs.getLocalName(i), attrs.getValue(i));
+        }
+    }
+    
+	private void invokeMethod(String name, Object value) {
+        Class[] types = new Class[] { value.getClass() };
+        Method method = null;
+        try {
+            method = this.getClass().getDeclaredMethod("set" + name, types);
+            method.invoke(this, new Object[] { value });
+        } catch (NoSuchMethodException e) {
+            // no big deal
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }

@@ -21,15 +21,16 @@
  */
 package nl.fountain.xelem.excel.o;
 
+import java.lang.reflect.Method;
 import java.util.Date;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 
 import nl.fountain.xelem.GIO;
 import nl.fountain.xelem.XLUtil;
 import nl.fountain.xelem.excel.AbstractXLElement;
 import nl.fountain.xelem.excel.DocumentProperties;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 /**
  * An implementation of the XLElement DocumentProperties.
@@ -113,7 +114,7 @@ public class ODocumentProperties extends AbstractXLElement implements DocumentPr
      * 
      * @param created the node value of the tag <code>&lt;Created&gt;</code>
      */
-    public void setCreated(String created) {
+    private void setCreated(String created) {
         this.created = created;
     }
     
@@ -127,7 +128,7 @@ public class ODocumentProperties extends AbstractXLElement implements DocumentPr
      * 
      * @param lastsaved the node value of the tag <code>&lt;LastSaved&gt;</code>
      */
-    public void setLastSaved(String lastsaved) {
+    private void setLastSaved(String lastsaved) {
         this.lastsaved = lastsaved;
     } 
 
@@ -137,7 +138,7 @@ public class ODocumentProperties extends AbstractXLElement implements DocumentPr
      * 
      * @param lastprinted the node value of the tag <code>&lt;LastPrinted&gt;</code>
      */
-    public void setLastPrinted(String lastprinted) {
+    private void setLastPrinted(String lastprinted) {
         this.lastprinted = lastprinted;
     }
 
@@ -186,6 +187,23 @@ public class ODocumentProperties extends AbstractXLElement implements DocumentPr
         
         parent.appendChild(dpe);
         return dpe;
+    }
+        
+    public void setChildElement(String localName, String content) {
+        invokeMethod(localName, content);
+    }
+    
+	private void invokeMethod(String name, Object value) {
+        Class[] types = new Class[] { value.getClass() };
+        Method method = null;
+        try {
+            method = this.getClass().getDeclaredMethod("set" + name, types);
+            method.invoke(this, new Object[] { value });
+        } catch (NoSuchMethodException e) {
+            // no big deal
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public String getTitle() {
@@ -256,7 +274,7 @@ public class ODocumentProperties extends AbstractXLElement implements DocumentPr
         return date;
     }
     
-    public void setVersion(String version) {
+    private void setVersion(String version) {
         this.version = version;
     }
     

@@ -4,11 +4,16 @@
  */
 package nl.fountain.xelem.lex;
 
+import java.io.File;
 import java.util.Iterator;
 
 import junit.framework.TestCase;
+import nl.fountain.xelem.XSerializer;
+import nl.fountain.xelem.excel.Column;
 import nl.fountain.xelem.excel.DocumentProperties;
 import nl.fountain.xelem.excel.ExcelWorkbook;
+import nl.fountain.xelem.excel.Row;
+import nl.fountain.xelem.excel.Table;
 import nl.fountain.xelem.excel.Workbook;
 import nl.fountain.xelem.excel.Worksheet;
 
@@ -18,6 +23,8 @@ import org.xml.sax.SAXParseException;
  *
  */
 public class ExcelReaderTest extends TestCase {
+    
+    private Workbook readerwb;
 
     public static void main(String[] args) {
         junit.textui.TestRunner.run(ExcelReaderTest.class);
@@ -61,8 +68,7 @@ public class ExcelReaderTest extends TestCase {
     }
     
     public void testRead() throws Exception {
-        ExcelReader xlr = new ExcelReader();
-        Workbook wb = xlr.read("testsuitefiles/ReaderTest/reader.xml");
+        Workbook wb = getReaderWorkbook();
         assertNotNull(wb);
         assertEquals("reader.xml", wb.getName());
         //System.out.println(wb.getFileName());
@@ -73,6 +79,21 @@ public class ExcelReaderTest extends TestCase {
 //        }
     }
     
+    private Workbook getReaderWorkbook() throws Exception {
+        if (readerwb == null) {
+	        ExcelReader xlr = new ExcelReader();
+	        readerwb = xlr.read("testsuitefiles/ReaderTest/reader.xml");
+        }
+        return readerwb;
+    }
+    
+    public void testReWrite() throws Exception {
+        ExcelReader xlr = new ExcelReader();
+        Workbook wb = xlr.read("testsuitefiles/ReaderTest/reader.xml");
+        File out = new File("testoutput/ReaderTest/rewrite.xls");
+        new XSerializer().serialize(wb, out);
+    }
+
     public void testDocumentProperties() throws Exception {
         ExcelReader xlr = new ExcelReader();
         Workbook wb = xlr.read("testsuitefiles/ReaderTest/docprops.xml");
@@ -113,9 +134,17 @@ public class ExcelReaderTest extends TestCase {
         assertTrue(exw.getProtectWindows());
     }
     
-    public void testWorksheet() throws Exception {
+    public void testExcelWorkbook2() throws Exception {
         ExcelReader xlr = new ExcelReader();
-        Workbook wb = xlr.read("testsuitefiles/ReaderTest/reader.xml");
+        Workbook wb = xlr.read("testsuitefiles/ReaderTest/excelworkbook2.xml");
+        
+        assertTrue(wb.hasExcelWorkbook());
+        assertTrue(!wb.hasDocumentProperties());
+    }
+    
+    
+    public void testWorksheet() throws Exception {
+        Workbook wb = getReaderWorkbook();
         Iterator iter = wb.getSheetNames().iterator();
         
         assertEquals("Tom Poes", iter.next());
@@ -126,6 +155,56 @@ public class ExcelReaderTest extends TestCase {
         assertTrue(sheet.isProtected());
         sheet = wb.getWorksheet("Asterix");
         assertTrue(sheet.isRightToLeft());
+    }
+    
+    public void testTable() throws Exception {
+        Workbook wb = getReaderWorkbook();
+        Table table = wb.getWorksheet("Tom Poes").getTable();
+        
+        assertEquals(10, table.getExpandedColumnCount());
+        assertEquals(25, table.getExpandedRowCount());
+        assertEquals("s21", table.getStyleID());
+    }
+    
+    public void testColumn() throws Exception {
+        Workbook wb = getReaderWorkbook();
+        Table table = wb.getWorksheet("Tom Poes").getTable();
+        
+        Column column1 = table.getColumnAt(1);
+        assertEquals("s22", column1.getStyleID());
+        assertTrue(!column1.getAutoFitWith());
+        assertEquals(0, column1.getSpan());
+        assertEquals(78.75D, column1.getWidth(), 0.0D);
+        
+        Column column7 = table.getColumnAt(7);
+        assertEquals("s22", column7.getStyleID());
+        assertTrue(column7.getAutoFitWith());
+        
+        Column column9 = table.getColumnAt(9);
+        assertEquals(1, column9.getSpan());
+        
+        assertEquals(3, table.getColumns().size());
+    }
+    
+    public void testRow() throws Exception {
+        Workbook wb = getReaderWorkbook();
+        Table table = wb.getWorksheet("Tom Poes").getTable();
+        
+        assertTrue(!table.hasRowAt(1));
+        assertTrue(table.hasRowAt(3));
+        
+        Row row3 = table.getRowAt(3);
+        assertEquals("s31", row3.getStyleID());
+        assertEquals(27.0D, row3.getHeight(), 0.0D);
+        assertTrue(row3.isHidden());
+        assertEquals(0, row3.getSpan());
+        
+        assertTrue(table.hasRowAt(8));
+        assertTrue(table.hasRowAt(9));
+        assertTrue(table.hasRowAt(20));
+        assertTrue(table.hasRowAt(22));
+        
+        assertEquals(8, table.getRows().size());
     }
     
     

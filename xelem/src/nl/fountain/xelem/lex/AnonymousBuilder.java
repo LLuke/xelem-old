@@ -5,7 +5,6 @@
 package nl.fountain.xelem.lex;
 
 import java.io.CharArrayWriter;
-import java.lang.reflect.Method;
 
 import nl.fountain.xelem.excel.XLElement;
 
@@ -53,18 +52,18 @@ public class AnonymousBuilder implements Builder {
         return occupied;
     }
     
-    protected void invokeMethod(Object obj, String localName, Object value) {
-        Class[] types = new Class[] {value.getClass()};
-        Method method = null;
-        try {
-            method = obj.getClass().getMethod("set" + localName, types);
-            method.invoke(obj, new Object[]{value});
-        } catch (NoSuchMethodException e) {
-            // no big deal
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+//    protected void invokeMethod(Object obj, String localName, Object value) {
+//        Class[] types = new Class[] {value.getClass()};
+//        Method method = null;
+//        try {
+//            method = obj.getClass().getMethod("set" + localName, types);
+//            method.invoke(obj, new Object[]{value});
+//        } catch (NoSuchMethodException e) {
+//            // no big deal
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
 
     public void setDocumentLocator(Locator locator) {
     }
@@ -95,7 +94,8 @@ public class AnonymousBuilder implements Builder {
                 occupied = false;
                 return;
             }
-            invokeMethod(current, localName, contents.toString());
+            //invokeMethod(current, localName, contents.toString());
+            current.setChildElement(localName, contents.toString());
         }
     }
 
