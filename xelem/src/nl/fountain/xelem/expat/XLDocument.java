@@ -85,7 +85,7 @@ import org.xml.sax.SAXException;
  * to add header information to a bunch of data appended with
  * appendRow/appendRows.
  * <P>&nbsp;<P>
- * <H2>The PivotTable Cook-book</H2>
+ * <H2>The PivotTable Cookbook</H2>
  * If you want to include PivotTables in your template, it is recommended to
  * read this cook-book before endeavouring on such a quest.<br>
  * In this recipe we'll create a template with a PivotTable. After that we

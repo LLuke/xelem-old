@@ -1,10 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jardesc>
-    <jar path="D:/eclipse_jar/xelem/xelem_src.1.0.jar"/>
-    <options overwrite="false" compress="true" exportErrors="true" exportWarnings="true" saveDescription="true" descriptionLocation="/xelem/xelem_src.jardesc" useSourceFolders="false" buildIfNeeded="true"/>
-    <selectedElements exportClassFiles="false" exportOutputFolder="false" exportJavaFiles="true">
-        <file path="/xelem/overview.html"/>
-        <folder path="/xelem/config"/>
-        <javaElement handleIdentifier="=xelem/src"/>
-    </selectedElements>
+<jar path="D:/eclipse_jar/xelem/xelem_src.1.0.1.jar"/>
+<options buildIfNeeded="true" compress="true" descriptionLocation="/xelem/xelem_src.jardesc" exportErrors="true" exportWarnings="true" overwrite="false" saveDescription="true" useSourceFolders="false"/>
+<selectedElements exportClassFiles="false" exportJavaFiles="true" exportOutputFolder="false">
+<javaElement handleIdentifier="=xelem/src&lt;nl.fountain.xelem.expat"/>
+<javaElement handleIdentifier="=xelem/src&lt;nl.fountain.xelem"/>
+<javaElement handleIdentifier="=xelem/src&lt;nl.fountain.xelem.excel.ss"/>
+<folder path="/xelem/config"/>
+<file path="/xelem/testoutput/CreateDocumentTest/readme.txt"/>
+<folder path="/xelem/testsuitefiles"/>
+<javaElement handleIdentifier="=xelem/src&lt;nl.fountain.xelem.excel.x"/>
+<javaElement handleIdentifier="=xelem/src&lt;nl.fountain.xelem.excel"/>
+<javaElement handleIdentifier="=xelem/src&lt;nl.fountain.xelem.excel.o"/>
+<file path="/xelem/overview.html"/>
+<file path="/xelem/testoutput/XLDocumentTest/readme.txt"/>
+<javaElement handleIdentifier="=xelem/src&lt;nl.fountain.xelem.integration"/>
+</selectedElements>
 </jardesc>
