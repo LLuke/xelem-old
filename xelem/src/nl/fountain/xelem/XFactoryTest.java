@@ -13,6 +13,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import nl.fountain.xelem.excel.XLElement;
 import nl.fountain.xelem.excel.XLElementTest;
 
+import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -159,6 +160,18 @@ public class XFactoryTest extends XLElementTest {
         
         assertTrue(xml.indexOf("<NumberFormat ss:Format=\"0.00\"/>") > 0);
         assertEquals(-1, xml.indexOf("<NumberFormat ss:Format=\"0.0\"/>"));
+    }
+    
+    public void testAddStyle() throws XelemException {
+        XFactory x = XFactory.newInstance();
+        Element style = x.getStyle("b_yellow");
+        assertTrue(!x.addStyle(style));
+        Element nStyle = style.getOwnerDocument().createElement("Style");
+        Attr attr = style.getOwnerDocument().createAttributeNS(XLElement.XMLNS_SS, "ID");
+        attr.setPrefix(XLElement.PREFIX_SS);
+        attr.setNodeValue("nieuw");
+        nStyle.setAttributeNodeNS(attr);
+        assertTrue(x.addStyle(nStyle));
     }
     
     public void testGetInfoSheet() throws XelemException {

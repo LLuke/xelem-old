@@ -255,6 +255,16 @@ public class XFactory {
         styles.put(newID, ne);
     }
     
+    public boolean addStyle(Element style) {
+        String id = style.getAttributes().getNamedItemNS(
+                XLElement.XMLNS_SS, "ID").getNodeValue();
+        if (styles.containsKey(id)) {
+            return false;
+        }
+        styles.put(id, style);
+        return true;
+    }
+    
     /**
      * Appends a Worksheet element with general information to the root element. 
      * Adds all used styles in the info sheet to the factory 
