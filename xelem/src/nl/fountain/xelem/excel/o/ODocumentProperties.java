@@ -45,6 +45,7 @@ public class ODocumentProperties extends AbstractXLElement implements DocumentPr
     private String lastAuthor;
     private String manager;
     private String created;
+    private Date createdDate;
     private String company;
     private String hyperlinkbase;
     private String appname;
@@ -101,7 +102,19 @@ public class ODocumentProperties extends AbstractXLElement implements DocumentPr
     }
 
     public void setCreated(Date created) {
+        createdDate = created;
         this.created = XLUtil.format(created).substring(0, 16) + "Z";
+    }
+    
+    /**
+     * Method called by 
+     * {@link nl.fountain.xelem.lex.ExcelReader}.
+     * 
+     * @param created the node value of the tag <code>%gt;Created&lt;</code>
+     */
+    public void setCreated(String created) {
+        this.created = created;
+        createdDate = XLUtil.parse(created);
     }
 
     public String getTagName() {
@@ -147,6 +160,54 @@ public class ODocumentProperties extends AbstractXLElement implements DocumentPr
         
         parent.appendChild(dpe);
         return dpe;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getSubject() {
+        return subject;
+    }
+
+    public String getKeywords() {
+        return keywords;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public String getLastAuthor() {
+        return lastAuthor;
+    }
+
+    public String getManager() {
+        return manager;
+    }
+
+    public String getCompany() {
+        return company;
+    }
+
+    public String getHyperlinkBase() {
+        return hyperlinkbase;
+    }
+
+    public String getAppName() {
+        return appname;
+    }
+
+    public Date getCreated() {
+        return createdDate;
     }
 
 }

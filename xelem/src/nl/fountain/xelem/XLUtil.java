@@ -22,6 +22,7 @@
 package nl.fountain.xelem;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -30,8 +31,7 @@ import java.util.Date;
  */
 public class XLUtil {
        
-    private static DateFormat xldfD;
-    private static DateFormat xldfT;
+    private static SimpleDateFormat xldf;
     
     // this class has only static methods.
     private XLUtil() {}
@@ -78,18 +78,40 @@ public class XLUtil {
         return sb.toString();
     }
     
-    private static DateFormat getDateFormat() {
-        if (xldfD == null) {
-            xldfD = new SimpleDateFormat("yyyy-MM-dd");
+    public static Date parse(String dateString) {
+        String datum = dateString.substring(0, 10);
+        String tijd = dateString.substring(11, 19);
+        Date date = null;
+        try {
+            date = getExcelFormat().parse(datum + " " + tijd);
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
-        return xldfD;
+        return date;
+    }
+    
+    private static DateFormat getDateFormat() {
+        if (xldf == null) {
+            xldf = new SimpleDateFormat();
+        }
+        xldf.applyPattern("yyyy-MM-dd");
+        return xldf;
     }
     
     private static DateFormat getTimeFormat() {
-        if (xldfT == null) {
-           xldfT = new SimpleDateFormat("HH:mm:ss.SSS"); 
+        if (xldf == null) {
+           xldf = new SimpleDateFormat(); 
         }
-        return xldfT;
+        xldf.applyPattern("HH:mm:ss.SSS");
+        return xldf;
+    }
+    
+    private static DateFormat getExcelFormat() {
+        if (xldf == null) {
+           xldf = new SimpleDateFormat(); 
+        }
+        xldf.applyPattern("yyyy-MM-dd HH:mm:ss");
+        return xldf;
     }
 
 }
