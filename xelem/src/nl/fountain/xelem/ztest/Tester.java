@@ -10,19 +10,16 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
-import java.util.Properties;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.FactoryConfigurationError;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.OutputKeys;
 
+import nl.fountain.xelem.XSerializer;
 import nl.fountain.xelem.excel.Row;
 import nl.fountain.xelem.excel.ss.SSRow;
 
-import org.apache.xalan.serialize.SerializerToXML;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -34,13 +31,13 @@ import org.xml.sax.SAXException;
  */
 public class Tester {
 
-    public static void main(String[] args) throws IOException {     
+    public static void main(String[] args) throws Exception {     
         Tester tester = new Tester();
         tester.appendRow();
         //tester.changeCellData();
     }
     
-    public void changeCellData() throws FileNotFoundException, UnsupportedEncodingException, IOException {
+    public void changeCellData() throws Exception {
         Document doc = getDocument("D:/eclipse_file/Aviso.xml");
         NodeList nodelist = doc.getElementsByTagName("Row");
         Node row2 = nodelist.item(1);
@@ -62,7 +59,7 @@ public class Tester {
         serialize(doc, "D:/eclipse_file/Aviso3.xml");
     }
     
-    public void appendRow() throws IOException {
+    public void appendRow() throws Exception {
         Document doc = getDocument("D:/eclipse_file/Aviso.xml");
 
         Row row = new SSRow();
@@ -85,15 +82,10 @@ public class Tester {
         serialize(doc, "D:/eclipse_file/Aviso2.xml");
     }
     
-    public void serialize(Document doc, String fileName) throws FileNotFoundException, UnsupportedEncodingException, IOException {
-        Properties props = new Properties();
-        props.setProperty(OutputKeys.INDENT, "yes");
-        props.setProperty(OutputKeys.ENCODING, "US-ASCII");
-        SerializerToXML s = new SerializerToXML();
-        
+    public void serialize(Document doc, String fileName) throws Exception {
+        XSerializer xs = new XSerializer(XSerializer.US_ASCII);
         OutputStream out = new FileOutputStream(fileName);
-        s.init(out, props);
-        s.serialize(doc);
+        xs.serialize(doc, out);
         out.close();
     }
 

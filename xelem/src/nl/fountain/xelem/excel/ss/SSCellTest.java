@@ -186,11 +186,10 @@ public class SSCellTest extends XLElementTest {
         cell.setStyleID("foo");
         GIO gio = new GIO();
         String xml = xmlToString(cell, gio);
+        //System.out.println(xml);
         assertTrue(xml.indexOf("<ss:Cell ss:StyleID=\"foo\"/>") > 0);
         assertEquals(1, gio.getStyleIDSet().size());
         assertEquals("foo", gio.getStyleIDSet().iterator().next());
-        
-        //System.out.println(xml);
     }
     
     public void testAssembleData() {

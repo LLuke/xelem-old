@@ -131,7 +131,9 @@ public class XFactoryTest extends XLElementTest {
         //System.out.println(xml);
         
         assertTrue(xml.indexOf("<Style ss:ID=\"nieuw\">") > 0);
-        assertTrue(xml.indexOf("<Font x:Family=\"Swiss\" ss:Bold=\"1\"/>") > 0);
+        assertTrue(xml.indexOf("x:Family=\"Swiss\"") > 0);
+        assertTrue(xml.indexOf("ss:Bold=\"1\"") > 0);
+        
         assertTrue(xml.indexOf("<Interior ss:Color=\"#FFFF00\" " +
         		"ss:Pattern=\"Solid\"/>") > 0);
         
@@ -143,7 +145,8 @@ public class XFactoryTest extends XLElementTest {
         //System.out.println(xml);
         
         assertTrue(xml.indexOf("<Style ss:ID=\"nieuwer\">") > 0);
-        assertTrue(xml.indexOf("<Font x:Family=\"Swiss\" ss:Bold=\"1\"/>") > 0);
+        assertTrue(xml.indexOf("x:Family=\"Swiss\"") > 0);
+        assertTrue(xml.indexOf("ss:Bold=\"1\"") > 0);
         assertTrue(xml.indexOf("<Interior ss:Color=\"#FFFF00\" " +
         		"ss:Pattern=\"Solid\"/>") > 0);
         assertTrue(xml.indexOf("<NumberFormat ss:Format=\"0.00\"/>") > 0);

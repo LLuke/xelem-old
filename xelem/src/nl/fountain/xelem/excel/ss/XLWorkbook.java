@@ -350,7 +350,7 @@ public class XLWorkbook extends AbstractXLElement implements Workbook {
         factory.setNamespaceAware(true);
         DocumentBuilder builder = factory.newDocumentBuilder();
         DOMImplementation domImpl = builder.getDOMImplementation();
-        return domImpl.createDocument(null, getTagName(), null);
+        return domImpl.createDocument(XMLNS, getTagName(), null);
     }
     
     private void appendDefaultStyle(Document doc, Element styles) {

@@ -130,13 +130,12 @@ public class XLWorkbookTest extends XLElementTest {
         wb.addSheet().addCell().setStyleID("wbNieuwer");
         
         String xml = xmlToString(wb, new GIO());
+        //System.out.println(xml);
         assertTrue(xml.indexOf("<Style ss:ID=\"wbNieuwer\">") > 0);
         assertTrue(xml.indexOf("<Interior ss:Color=\"#FFFF00\" " +
         		"ss:Pattern=\"Solid\"/>") > 0);
-        assertTrue(xml.indexOf("<Font x:Family=\"Swiss\" ss:Bold=\"1\"/>") > 0);
-        assertTrue(xml.indexOf("<NumberFormat ss:Format=\"0.00\"/>") > 0);
-        
-        //System.out.println(xml);
+        assertTrue(xml.indexOf("x:Family=\"Swiss\"") > 0);
+        assertTrue(xml.indexOf("<NumberFormat ss:Format=\"0.00\"/>") > 0);       
     }
     
 

@@ -39,7 +39,14 @@ public abstract class XLElementTest extends TestCase {
         factory.setNamespaceAware(true);
         DocumentBuilder builder = factory.newDocumentBuilder();
         DOMImplementation domImpl = builder.getDOMImplementation();
-        return domImpl.createDocument(null, "Test", null);
+        Document doc = domImpl.createDocument(XLElement.XMLNS, "Test", null);
+        Element root = doc.getDocumentElement();
+        root.setAttribute("xmlns", XLElement.XMLNS);
+        root.setAttribute("xmlns:o", XLElement.XMLNS_O);
+        root.setAttribute("xmlns:x", XLElement.XMLNS_X);
+        root.setAttribute("xmlns:ss", XLElement.XMLNS_SS);
+        root.setAttribute("xmlns:html", XLElement.XMLNS_HTML);
+        return doc;
     }
     
     private void transform(Document doc, Result result) throws TransformerFactoryConfigurationError, TransformerConfigurationException, TransformerException {       

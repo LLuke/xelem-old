@@ -41,12 +41,12 @@ public class SSColumnTest extends XLElementTest {
         column.setWidth(2.3);
         GIO gio = new GIO();
         String xml = xmlToString(column, gio);
-        
-        assertTrue(xml.indexOf(
-        	"<ss:Column ss:StyleID=\"foo\" ss:Span=\"5\" " +
-        	"ss:Width=\"2.3\" ss:Hidden=\"1\"") > 0);
-        
         //System.out.println(xml);
+        assertTrue(xml.indexOf("<ss:Column") > 0);
+        assertTrue(xml.indexOf("ss:StyleID=\"foo\"") > 0);
+        assertTrue(xml.indexOf("ss:Span=\"5\"") > 0);
+        assertTrue(xml.indexOf("ss:Width=\"2.3\"") > 0);
+        assertTrue(xml.indexOf("ss:Hidden=\"1\"") > 0);       
     }
 
 }
