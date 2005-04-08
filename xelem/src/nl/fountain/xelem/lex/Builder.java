@@ -15,6 +15,6 @@ import org.xml.sax.XMLReader;
 public interface Builder extends ContentHandler {
     
     void build(XMLReader reader, ContentHandler parent, 
-            BuilderFactory factory, XLElement xle);
+            Director director, XLElement xle);
 
 }

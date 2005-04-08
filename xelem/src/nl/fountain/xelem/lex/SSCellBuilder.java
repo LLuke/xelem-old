@@ -21,8 +21,8 @@ public class SSCellBuilder extends AnonymousBuilder {
     private SSCell current;
     
     public void build(XMLReader reader, ContentHandler parent,
-            BuilderFactory factory, XLElement xle) {
-        setUpBuilder(reader, parent, factory);
+            Director director, XLElement xle) {
+        setUpBuilder(reader, parent, director);
         current = (SSCell) xle;
     }
     
@@ -36,8 +36,8 @@ public class SSCellBuilder extends AnonymousBuilder {
             } else if ("Comment".equals(localName)) {
                 Comment comment = current.addComment();
                 comment.setAttributes(atts);
-                Builder builder = factory.getAnonymousBuilder();
-                builder.build(reader, this, factory, comment);
+                Builder builder = director.getAnonymousBuilder();
+                builder.build(reader, this, director, comment);
             }
         }
     }

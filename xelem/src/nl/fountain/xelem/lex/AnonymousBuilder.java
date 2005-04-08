@@ -25,11 +25,11 @@ import org.xml.sax.XMLReader;
  */
 public class AnonymousBuilder implements Builder {
     
-    private Map methodMap;
+    private static Map methodMap;
     private boolean occupied;
     protected XMLReader reader;
     protected ContentHandler parent;
-    protected BuilderFactory factory;
+    protected Director director;
     protected CharArrayWriter contents;
     protected XLElement current;
     
@@ -38,16 +38,16 @@ public class AnonymousBuilder implements Builder {
     }
     
     public void build(XMLReader reader, ContentHandler parent, 
-            BuilderFactory factory, XLElement xle) {
-        setUpBuilder(reader, parent, factory);
+            Director director, XLElement xle) {
+        setUpBuilder(reader, parent, director);
         current = xle;
     }
     
     protected void setUpBuilder(XMLReader reader, ContentHandler parent, 
-            BuilderFactory factory) {
+            Director director) {
         this.reader = reader;
         this.parent = parent;
-        this.factory = factory;
+        this.director = director;
         reader.setContentHandler(this);
     }
     
@@ -69,27 +69,27 @@ public class AnonymousBuilder implements Builder {
             Object[][] methods = null;
             try {
                 methods = new Object[][]{
-                       {"DocumentProperties",  ExcelReaderListener.class.getMethod("setDocumentProperties", new Class[]{DocumentProperties.class})},
-                       {"ExcelWorkbook", ExcelReaderListener.class.getMethod("setExcelWorkbook", new Class[]{ExcelWorkbook.class})}
+                   {"DocumentProperties",  ExcelReaderListener.class.getMethod("setDocumentProperties", new Class[]{DocumentProperties.class})},
+                   {"ExcelWorkbook", ExcelReaderListener.class.getMethod("setExcelWorkbook", new Class[]{ExcelWorkbook.class})}
                 };
+                for (int i = 0; i < methods.length; i++) {
+                    methodMap.put(methods[i][0], methods[i][1]);
+                }
             } catch (SecurityException e) {
                 e.printStackTrace();
             } catch (NoSuchMethodException e) {
                 e.printStackTrace();
-            }
-            for (int i = 0; i < methods.length; i++) {
-                methodMap.put(methods[i][0], methods[i][1]);
             }
         }
         return methodMap;
     }
     
     private void informListeners() {
-        if (factory.getListeners().size() > 0) {
+        if (director.getListeners().size() > 0) {
             Method m = getMethod(current.getTagName());
             if (m != null) {
 	            try {
-	                for (Iterator iter = factory.getListeners().iterator(); iter.hasNext();) {
+	                for (Iterator iter = director.getListeners().iterator(); iter.hasNext();) {
 	                    ExcelReaderListener listener = (ExcelReaderListener) iter.next();
 	                    m.invoke(listener, new Object[] { current });
 	                }

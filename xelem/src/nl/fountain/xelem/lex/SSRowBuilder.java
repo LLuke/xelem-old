@@ -4,6 +4,8 @@
  */
 package nl.fountain.xelem.lex;
 
+import java.util.Iterator;
+
 import nl.fountain.xelem.excel.Cell;
 import nl.fountain.xelem.excel.Row;
 import nl.fountain.xelem.excel.XLElement;
@@ -23,8 +25,8 @@ public class SSRowBuilder extends AnonymousBuilder {
     private int currentCellIndex;
     
     public void build(XMLReader reader, ContentHandler parent,
-            BuilderFactory factory, XLElement xle) {
-        setUpBuilder(reader, parent, factory);
+            Director director, XLElement xle) {
+        setUpBuilder(reader, parent, director);
         currentRow = (SSRow) xle;
         currentCellIndex = 0;
     }
@@ -39,11 +41,11 @@ public class SSRowBuilder extends AnonymousBuilder {
                 } else {
                     currentCellIndex++;
                 }
-                if (factory.getBuildArea().isColumnPartOfArea(currentCellIndex)) {
+                if (director.getBuildArea().isColumnPartOfArea(currentCellIndex)) {
 	                Cell cell = currentRow.addCellAt(currentCellIndex);
 	                cell.setAttributes(atts);
-	                Builder builder = factory.getSSCellBuilder();
-	                builder.build(reader, this, factory, cell);
+	                Builder builder = director.getSSCellBuilder();
+	                builder.build(reader, this, director, cell);
                 }
             }
         }
@@ -52,6 +54,11 @@ public class SSRowBuilder extends AnonymousBuilder {
     public void endElement(String uri, String localName, String qName) throws SAXException {
         if (currentRow.getTagName().equals(localName)) {
             if (currentRow.getNameSpace().equals(uri)) {
+                for (Iterator iter = director.getListeners().iterator(); iter.hasNext();) {
+                    ExcelReaderListener listener = (ExcelReaderListener) iter.next();
+                    listener.setRow(director.getCurrentSheetName(),
+                            director.getCurrentRowIndex(), currentRow);
+                }
                 reader.setContentHandler(parent);
                 return;
             }

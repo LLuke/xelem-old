@@ -37,7 +37,7 @@ public class ExcelReader {
     XMLReader reader;
     
     Workbook currentWorkbook;
-    private BuilderFactory factory;
+    private Director director;
     private Handler handler;
     private Map uris;
     
@@ -52,47 +52,47 @@ public class ExcelReader {
     }
     
     public void setBuildArea(Area area) {
-        getFactory().setBuildArea(area);
+        getDirector().setBuildArea(area);
     }
     
     public void clearBuildArea() {
-        getFactory().setBuildArea(null);
+        getDirector().setBuildArea(null);
     }
     
     public Area getBuildArea() {
-        if (getFactory().hasBuildArea()) {
-            return getFactory().getBuildArea();
+        if (getDirector().hasBuildArea()) {
+            return getDirector().getBuildArea();
         } else {
             return null;
         }
     }
     
     public boolean hasBuildArea() {
-        return getFactory().hasBuildArea();
+        return getDirector().hasBuildArea();
     }
     
     public List getListeners() {
-        return getFactory().getListeners();
+        return getDirector().getListeners();
     }
     
     public void addExcelReaderListener(ExcelReaderListener l) {
-        getFactory().addExcelReaderListener(l);
+        getDirector().addExcelReaderListener(l);
     }
     
     public boolean removeExcelReaderListener(ExcelReaderListener l) {
-        return getFactory().removeExcelReaderListener(l);
+        return getDirector().removeExcelReaderListener(l);
     }
     
     public void clearExcelReaderListeners() {
-        getFactory().clearExcelReaderListeners();
+        getDirector().clearExcelReaderListeners();
     }
     
     public void setListenOnly(boolean listen) {
-        getFactory().setListenOnly(listen);
+        getDirector().setListenOnly(listen);
     }
     
     public boolean isListeningOnly() {
-        return getFactory().isListeningOnly();
+        return getDirector().isListeningOnly();
     }
     
     public Workbook read(String filename) throws IOException, SAXException {
@@ -111,18 +111,6 @@ public class ExcelReader {
         reader.parse(in);
         return currentWorkbook;
     }
-    
-    
-    private void readWB(InputSource in) throws SAXException, IOException {
-        currentWorkbook = null;
-        getPrefixMap().clear();
-        reader = parser.getXMLReader();
-        
-        reader.setContentHandler(getHandler());
-        reader.setErrorHandler(getHandler());
-        //reader.setDTDHandler(this);
-        reader.parse(in);
-    }
 
     public Map getPrefixMap() {
         if (uris == null) {
@@ -131,11 +119,11 @@ public class ExcelReader {
         return uris;
     }
     
-    protected BuilderFactory getFactory() {
-        if (factory == null) {
-            factory = new BuilderFactory();
+    protected Director getDirector() {
+        if (director == null) {
+            director = new Director();
         }
-        return factory;
+        return director;
     }
     
     private Handler getHandler() {
@@ -176,16 +164,16 @@ public class ExcelReader {
             if (XLElement.XMLNS_SS.equals(uri) && "Workbook".equals(localName)) {
                 String systemId = getSystemId();
                 String wbName = getWorkbookName(systemId);
-                BuilderFactory bfac = getFactory();
+                Director bfac = getDirector();
                 Builder builder = bfac.getXLWorkbookBuilder(); 
                 
-                //if (!bfac.isListeningOnly()) {                   
+                if (!bfac.isListeningOnly()) {                   
 	                currentWorkbook = new XLWorkbook(wbName);
 	                currentWorkbook.setFileName(systemId);
-                //}
+                }
                 for (Iterator iter = bfac.getListeners().iterator(); iter.hasNext();) {
-                    ExcelReaderListener l = (ExcelReaderListener) iter.next();
-                    l.setWorkbook(systemId, wbName);
+                    ExcelReaderListener listener = (ExcelReaderListener) iter.next();
+                    listener.startWorkbook(systemId, wbName);
                 }
                 
                 builder.build(reader, this, bfac, currentWorkbook);               

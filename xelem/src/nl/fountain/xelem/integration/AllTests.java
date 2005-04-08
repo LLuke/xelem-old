@@ -23,7 +23,7 @@ import nl.fountain.xelem.excel.ss.XLWorkbookTest;
 import nl.fountain.xelem.excel.x.XPaneTest;
 import nl.fountain.xelem.excel.x.XWorksheetOptionsTest;
 import nl.fountain.xelem.expat.XLDocumentTest;
-import nl.fountain.xelem.lex.BuilderFactoryTest;
+import nl.fountain.xelem.lex.DirectorTest;
 import nl.fountain.xelem.lex.ExcelReaderTest;
 
 /**
@@ -63,7 +63,7 @@ public class AllTests extends TestCase {
         suite.addTestSuite(XLDocumentTest.class);
         
         suite.addTestSuite(ExcelReaderTest.class);
-        suite.addTestSuite(BuilderFactoryTest.class);
+        suite.addTestSuite(DirectorTest.class);
         
         return suite;
     }

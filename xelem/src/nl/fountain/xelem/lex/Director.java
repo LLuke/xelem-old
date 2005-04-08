@@ -14,9 +14,11 @@ import nl.fountain.xelem.excel.Worksheet;
 
 
 /**
- *
+ * Supervises the process of reading Excel workbooks.
+ * 
+ * @since xelem.2.0
  */
-public class BuilderFactory {
+public class Director {
     
     private XLWorkbookBuilder xlworkbookbuilder;
     private SSWorksheetBuilder ssworksheetbuilder;
@@ -26,6 +28,9 @@ public class BuilderFactory {
     private Area buildArea;
     private List listeners;
     private boolean listeningOnly;
+    
+    private String currentSheetName;
+    private int currentRowIndex;
     
     public void setBuildArea(Area area) {
         buildArea = area;
@@ -115,6 +120,19 @@ public class BuilderFactory {
         }
         aBuilder.setOccupied(true);
         return aBuilder;
+    }
+    
+    protected void setCurrentRowInfo(String sheetName, int rowIndex) {
+        currentSheetName = sheetName;
+        currentRowIndex = rowIndex;
+    }
+    
+    protected String getCurrentSheetName() {
+        return currentSheetName;
+    }
+    
+    protected int getCurrentRowIndex() {
+        return currentRowIndex;
     }
     
     private List getBuilders() {
