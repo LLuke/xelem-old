@@ -51,7 +51,7 @@ public class ExcelReaderTest extends TestCase {
         ExcelReader xlr = new ExcelReader();
         
         try {
-            xlr.read("testsuitefiles/ReaderTest/excel.xls");
+            xlr.getWorkbook("testsuitefiles/ReaderTest/excel.xls");
             fail("should have thrown Exception");
         } catch (SAXParseException e) {
             assertEquals(1, e.getLineNumber());
@@ -69,7 +69,7 @@ public class ExcelReaderTest extends TestCase {
     public void testReadInvalidXML() throws Exception {
         ExcelReader xlr = new ExcelReader();
         try {
-            xlr.read("testsuitefiles/ReaderTest/invalid.xml");
+            xlr.getWorkbook("testsuitefiles/ReaderTest/invalid.xml");
             fail("should have thrown Exception");
         } catch (SAXParseException e) {
             //System.out.println(e.getMessage());
@@ -87,7 +87,7 @@ public class ExcelReaderTest extends TestCase {
     private Workbook getReaderWorkbook() throws Exception {
         if (readerwb == null) {
 	        ExcelReader xlr = new ExcelReader();
-	        readerwb = xlr.read("testsuitefiles/ReaderTest/reader.xml");
+	        readerwb = xlr.getWorkbook("testsuitefiles/ReaderTest/reader.xml");
 	        
         }
         return readerwb;
@@ -95,13 +95,13 @@ public class ExcelReaderTest extends TestCase {
     
     public void testReWrite() throws Exception {
         ExcelReader xlr = new ExcelReader();
-        Workbook wb = xlr.read("testsuitefiles/ReaderTest/reader.xml");
+        Workbook wb = xlr.getWorkbook("testsuitefiles/ReaderTest/reader.xml");
         File out = new File("testoutput/ReaderTest/rewrite.xls");
         XSerializer xs = new XSerializer();
         xs.serialize(wb, out);
         
         // try read another
-        wb = xlr.read("testsuitefiles/ReaderTest/docprops.xml");
+        wb = xlr.getWorkbook("testsuitefiles/ReaderTest/docprops.xml");
         out = new File("testoutput/ReaderTest/docprops_r.xls");
         xs.serialize(wb, out);
     }
@@ -110,7 +110,7 @@ public class ExcelReaderTest extends TestCase {
 
     public void testDocumentProperties() throws Exception {
         ExcelReader xlr = new ExcelReader();
-        Workbook wb = xlr.read("testsuitefiles/ReaderTest/docprops.xml");
+        Workbook wb = xlr.getWorkbook("testsuitefiles/ReaderTest/docprops.xml");
         DocumentProperties props = wb.getDocumentProperties();
         
         assertEquals(1110888086000L, props.getCreated().getTime());
@@ -136,7 +136,7 @@ public class ExcelReaderTest extends TestCase {
     
     public void testExcelWorkbook() throws Exception {
         ExcelReader xlr = new ExcelReader();
-        Workbook wb = xlr.read("testsuitefiles/ReaderTest/excelworkbook.xml");
+        Workbook wb = xlr.getWorkbook("testsuitefiles/ReaderTest/excelworkbook.xml");
         ExcelWorkbook exw = wb.getExcelWorkbook();
         
         assertEquals(0, exw.getActiveSheet());
@@ -150,7 +150,7 @@ public class ExcelReaderTest extends TestCase {
     
     public void testExcelWorkbook2() throws Exception {
         ExcelReader xlr = new ExcelReader();
-        Workbook wb = xlr.read("testsuitefiles/ReaderTest/excelworkbook2.xml");
+        Workbook wb = xlr.getWorkbook("testsuitefiles/ReaderTest/excelworkbook2.xml");
         
         assertTrue(wb.hasExcelWorkbook());
         assertTrue(!wb.hasDocumentProperties());
@@ -406,7 +406,7 @@ public class ExcelReaderTest extends TestCase {
         ExcelReader xlr = new ExcelReader();
         Area area = new Area("E11:M16");
         xlr.setBuildArea(area);
-        Workbook wb = xlr.read("testsuitefiles/ReaderTest/reader.xml");        
+        Workbook wb = xlr.getWorkbook("testsuitefiles/ReaderTest/reader.xml");        
         Worksheet sheet = wb.getWorksheetAt(0);
         assertFalse(sheet.hasColumnAt("A"));
         assertTrue(sheet.hasColumnAt("G"));

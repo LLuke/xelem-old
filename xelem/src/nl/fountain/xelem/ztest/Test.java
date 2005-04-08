@@ -27,7 +27,7 @@ public class Test {
         ExcelReader xlReader = new ExcelReader();
         Area area = new Area("A1:AZ100");
         xlReader.setBuildArea(area);
-        Workbook wb = xlReader.read("D:/test/VT1869.xml");
+        Workbook wb = xlReader.getWorkbook("D:/test/VT1869.xml");
         wb.setFileName("D:/test/VT_1869.xml");
         new XSerializer().serialize(wb);
        

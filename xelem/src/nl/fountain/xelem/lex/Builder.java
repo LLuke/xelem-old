@@ -12,9 +12,11 @@ import org.xml.sax.XMLReader;
 /**
  *
  */
-public interface Builder extends ContentHandler {
+interface Builder extends ContentHandler {
     
-    void build(XMLReader reader, ContentHandler parent, 
-            Director director, XLElement xle);
+    
+    void build(XMLReader reader, ContentHandler parent, XLElement xle);
+    
+    void build(XMLReader reader, ContentHandler parent);
 
 }

@@ -428,4 +428,7 @@ public interface Cell extends XLElement {
     boolean booleanValue();
     
     Element getDataElement(Document doc);
+    
+    void setIndex(int index);
+    int getIndex();
 }

@@ -4,34 +4,52 @@
  */
 package nl.fountain.xelem.lex;
 
+import java.util.Map;
+
+import nl.fountain.xelem.excel.AutoFilter;
+import nl.fountain.xelem.excel.Cell;
 import nl.fountain.xelem.excel.Column;
 import nl.fountain.xelem.excel.DocumentProperties;
 import nl.fountain.xelem.excel.ExcelWorkbook;
 import nl.fountain.xelem.excel.NamedRange;
 import nl.fountain.xelem.excel.Row;
+import nl.fountain.xelem.excel.Table;
+import nl.fountain.xelem.excel.Worksheet;
+import nl.fountain.xelem.excel.WorksheetOptions;
 
 /**
  *
  */
 public interface ExcelReaderListener {
     
-    public void startWorkbook(String systemID, String workbookName);
+    void startDocument();
     
-    public void setDocumentProperties(DocumentProperties docprops);
+    void processingInstruction(String target, String data);
     
-    public void setExcelWorkbook(ExcelWorkbook xlwb);
+    void startWorkbook(String systemID, String workbookName);
     
-    public void setNamedRange(NamedRange nr);
+    void setDocumentProperties(DocumentProperties docProps);
     
-    public void startWorksheet(int index, String sheetName);
+    void setExcelWorkbook(ExcelWorkbook excelWb);
     
-    public void setNamedRange(String sheetName, NamedRange nr);
+    void setNamedRange(NamedRange namedRange);
     
-    public void startTable(String sheetName, 
-            int expandedRowCount, int expandedColumnCount);
+    void startWorksheet(int sheetIndex, Worksheet sheet);
     
-    public void setColumn(String sheetName, int columnIndex, Column column);
+    void setNamedRange(int sheetIndex, String sheetName, NamedRange namedRange);
     
-    public void setRow(String sheetName, int rowIndex, Row row);
+    void startTable(int sheetIndex, String sheetName, Table table);
+    
+    void setColumn(int sheetIndex, String sheetName, Column column);
+    
+    void setRow(int sheetIndex, String sheetName, Row row);
+    
+    void setCell(int sheetIndex, String sheetName, int rowIndex, Cell cell);
+    
+    void setWorksheetOptions(int sheetIndex, String sheetName, WorksheetOptions wsOptions);
+    
+    void setAutoFilter(int sheetIndex, String sheetName, AutoFilter autoFilter);
+    
+    void endDocument(Map prefixMap);
 
 }

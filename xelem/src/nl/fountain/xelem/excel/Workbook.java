@@ -125,6 +125,8 @@ public interface Workbook extends XLElement {
      */
     void appendInfoSheet();
     
+    void setDocumentProperties(DocumentProperties docProps);
+    
     /**
      * Gets the DocumentProperties of this workbook. 
      * 
@@ -136,6 +138,8 @@ public interface Workbook extends XLElement {
      * Specifies whether this workbook has DocumentProperties.
      */
     boolean hasDocumentProperties();
+    
+    void setExcelWorkbook(ExcelWorkbook excelWb);
     
     /**
      * Gets the ExcelWorkbook of this workbook. 
@@ -162,6 +166,8 @@ public interface Workbook extends XLElement {
      * @return New NamedRange.
      */
     NamedRange addNamedRange(String name, String refersTo);
+    
+    NamedRange addNamedRange(NamedRange namedRange);
     
     /**
      * Gets all the NamedRanges that were added to this workbook. The map-keys

@@ -6,6 +6,7 @@ package nl.fountain.xelem.lex;
 
 import java.util.Iterator;
 
+import nl.fountain.xelem.excel.AutoFilter;
 import nl.fountain.xelem.excel.Column;
 import nl.fountain.xelem.excel.NamedRange;
 import nl.fountain.xelem.excel.Row;
@@ -14,8 +15,10 @@ import nl.fountain.xelem.excel.WorksheetOptions;
 import nl.fountain.xelem.excel.XLElement;
 import nl.fountain.xelem.excel.ss.SSColumn;
 import nl.fountain.xelem.excel.ss.SSNamedRange;
+import nl.fountain.xelem.excel.ss.SSRow;
 import nl.fountain.xelem.excel.ss.SSTable;
-import nl.fountain.xelem.excel.ss.SSWorksheet;
+import nl.fountain.xelem.excel.x.XAutoFilter;
+import nl.fountain.xelem.excel.x.XWorksheetOptions;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.ContentHandler;
@@ -27,16 +30,15 @@ import org.xml.sax.XMLReader;
  */
 public class SSWorksheetBuilder extends AnonymousBuilder {
 
-    private SSWorksheet currentSheet;
-    private Table currentTable;
-    private Row currentRow;
     private int currentRowIndex;
     private int currentColumnIndex;
+    
+    SSWorksheetBuilder(Director director) {
+        super(director);
+    }
 
-    public void build(XMLReader reader, ContentHandler parent,
-            Director director, XLElement xle) {
-        setUpBuilder(reader, parent, director);
-        currentSheet = (SSWorksheet) xle;
+    public void build(XMLReader reader, ContentHandler parent) {
+        setUpBuilder(reader, parent);
         currentRowIndex = 0;
         currentColumnIndex = 0;
     }
@@ -47,11 +49,17 @@ public class SSWorksheetBuilder extends AnonymousBuilder {
 	        startSSElement(localName, atts);
         } else if (XLElement.XMLNS_X.equals(uri)) {
             if ("WorksheetOptions".equals(localName)) {
-                WorksheetOptions wso = currentSheet.getWorksheetOptions();
+                WorksheetOptions wso = new XWorksheetOptions();
                 Builder builder = director.getAnonymousBuilder();
-                builder.build(reader, this, director, wso);
+                builder.build(reader, this, wso);
             } else if ("AutoFilter".equals(localName)) {
-                currentSheet.setAutoFilter(atts.getValue(XLElement.XMLNS_X, "Range"));
+                AutoFilter autoF = new XAutoFilter();
+                autoF.setRange(atts.getValue(XLElement.XMLNS_X, "Range"));
+                for (Iterator iter = director.getListeners().iterator(); iter.hasNext();) {
+                    ExcelReaderListener listener = (ExcelReaderListener) iter.next();
+                    listener.setAutoFilter(director.getCurrentSheetIndex(),
+                            director.getCurrentSheetName(), autoF);
+                }
             }
         }        
     }
@@ -65,11 +73,12 @@ public class SSWorksheetBuilder extends AnonymousBuilder {
                 currentRowIndex++;
             }
             if (director.getBuildArea().isRowPartOfArea(currentRowIndex)) {
-	            currentRow = currentTable.addRowAt(currentRowIndex);
-	            currentRow.setAttributes(atts);
-	            director.setCurrentRowInfo(currentSheet.getName(), currentRowIndex);
+	            Row row = new SSRow();
+	            row.setIndex(currentRowIndex);
+	            row.setAttributes(atts);
+	            director.setCurrentRowIndex(currentRowIndex);
 	            Builder builder = director.getSSRowBuilder();
-	            builder.build(reader, this, director, currentRow);
+	            builder.build(reader, this, row);
             }
         } else if ("Column".equals(localName)) {
             String index = atts.getValue(XLElement.XMLNS_SS, "Index");
@@ -79,52 +88,39 @@ public class SSWorksheetBuilder extends AnonymousBuilder {
                 currentColumnIndex++;
             }
             if (director.getBuildArea().isColumnPartOfArea(currentColumnIndex)) {
-                Column column;
-                if (director.isListeningOnly()) {
-                    column = new SSColumn();
-                } else {
-                    column = currentTable.addColumnAt(currentColumnIndex);
-                }
+                Column column = new SSColumn();
+                column.setIndex(currentColumnIndex);
 	            column.setAttributes(atts);
 	            for (Iterator iter = director.getListeners().iterator(); iter.hasNext();) {
 	                ExcelReaderListener listener = (ExcelReaderListener) iter.next();
-	                listener.setColumn(currentSheet.getName(), currentColumnIndex,
-	                        column);
+	                listener.setColumn(director.getCurrentSheetIndex(), 
+	                        director.getCurrentSheetName(), column);
 	            }
             }
         } else if ("Table".equals(localName)) {
-            if (director.isListeningOnly()) {
-                currentTable = new SSTable();
-            } else {
-                currentTable = currentSheet.getTable();
-            }
-            currentTable.setAttributes(atts);
+            Table table = new SSTable();
+            table.setAttributes(atts);
             for (Iterator iter = director.getListeners().iterator(); iter.hasNext();) {
                 ExcelReaderListener listener = (ExcelReaderListener) iter.next();
-                listener.startTable(currentSheet.getName(), 
-                        currentTable.getExpandedRowCount(), 
-                        currentTable.getExpandedColumnCount());
+                listener.startTable(director.getCurrentSheetIndex(),
+                        director.getCurrentSheetName(), table);
             }
         } else if ("NamedRange". equals(localName)) {
-            NamedRange nr;
             String name = atts.getValue(XLElement.XMLNS_SS, "Name");
-            if (director.isListeningOnly()) {
-                nr = new SSNamedRange(name, null);
-            } else {
-                nr = currentSheet.addNamedRange(name, null);
-            }
+            NamedRange nr = new SSNamedRange(name, null);
             nr.setAttributes(atts);
             for (Iterator iter = director.getListeners().iterator(); iter.hasNext();) {
                 ExcelReaderListener listener = (ExcelReaderListener) iter.next();
-                listener.setNamedRange(currentSheet.getName(), nr);
+                listener.setNamedRange(director.getCurrentSheetIndex(),
+                        director.getCurrentSheetName(), nr);
             }
         } 
     }
     
 
     public void endElement(String uri, String localName, String qName) throws SAXException {
-        if (currentSheet.getTagName().equals(localName)) {
-            if (currentSheet.getNameSpace().equals(uri)) {
+        if ("Worksheet".equals(localName)) {
+            if (XLElement.XMLNS_SS.equals(uri)) {
                 reader.setContentHandler(parent);
                 return;
             }

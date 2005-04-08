@@ -138,6 +138,10 @@ public class XLWorkbook extends AbstractXLElement implements Workbook {
     public void appendInfoSheet() {
         appendInfoSheet = true;
     }
+    
+    public void setDocumentProperties(DocumentProperties docProps) {
+        documentProperties = docProps;
+    }
 
     public DocumentProperties getDocumentProperties() {
         if (documentProperties == null) {
@@ -148,6 +152,10 @@ public class XLWorkbook extends AbstractXLElement implements Workbook {
 
     public boolean hasDocumentProperties() {
         return documentProperties != null;
+    }
+    
+    public void setExcelWorkbook(ExcelWorkbook excelWb) {
+        excelWorkbook = excelWb;
     }
     
     public ExcelWorkbook getExcelWorkbook() {
@@ -161,14 +169,19 @@ public class XLWorkbook extends AbstractXLElement implements Workbook {
         return excelWorkbook != null;
     }
     
-    public NamedRange addNamedRange(String name, String refersTo) {
-        NamedRange nr = new SSNamedRange(name, refersTo);
+    public NamedRange addNamedRange(NamedRange nr) {
         if (namedRanges == null) {
             namedRanges = new HashMap();
         }
-        namedRanges.put(name, nr);
+        namedRanges.put(nr.getName(), nr);
         return nr;
     }
+    
+    public NamedRange addNamedRange(String name, String refersTo) {
+        return addNamedRange(new SSNamedRange(name, refersTo));
+    }
+        
+    
     
     public Map getNamedRanges() {
         if (namedRanges == null) {

@@ -18,7 +18,6 @@ import javax.xml.parsers.SAXParserFactory;
 import nl.fountain.xelem.Area;
 import nl.fountain.xelem.excel.Workbook;
 import nl.fountain.xelem.excel.XLElement;
-import nl.fountain.xelem.excel.ss.XLWorkbook;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
@@ -87,20 +86,25 @@ public class ExcelReader {
         getDirector().clearExcelReaderListeners();
     }
     
-    public void setListenOnly(boolean listen) {
-        getDirector().setListenOnly(listen);
+    public Workbook getWorkbook(String fileName) throws IOException, SAXException {
+        InputSource in = new InputSource(fileName);
+        return getWorkbook(in);
     }
     
-    public boolean isListeningOnly() {
-        return getDirector().isListeningOnly();
+    public Workbook getWorkbook(InputSource in) throws IOException, SAXException {
+        WorkbookListener wbl = new WorkbookListener();
+        addExcelReaderListener(wbl);
+        read(in);
+        removeExcelReaderListener(wbl);
+        return wbl.getWorkbook();
     }
     
-    public Workbook read(String filename) throws IOException, SAXException {
-        InputSource in = new InputSource(filename);
-        return read(in);
+    public void read(String fileName) throws IOException, SAXException {
+        InputSource in = new InputSource(fileName);
+        read(in);
     }
     
-    public Workbook read(InputSource in) throws IOException, SAXException {
+    public void read(InputSource in) throws IOException, SAXException {
         currentWorkbook = null;
         getPrefixMap().clear();
         reader = parser.getXMLReader();
@@ -109,7 +113,6 @@ public class ExcelReader {
         reader.setErrorHandler(getHandler());
         //reader.setDTDHandler(this);
         reader.parse(in);
-        return currentWorkbook;
     }
 
     public Map getPrefixMap() {
@@ -140,23 +143,19 @@ public class ExcelReader {
         
         private Locator locator;
         
+        public void setDocumentLocator(Locator locator) {
+            this.locator = locator;
+        }
+        
+        public void processingInstruction(String target, String data) throws SAXException {
+            for (Iterator iter = getDirector().getListeners().iterator(); iter.hasNext();) {
+                ExcelReaderListener listener = (ExcelReaderListener) iter.next();
+                listener.processingInstruction(target, data);
+            }
+        }
+        
         public void startPrefixMapping(String prefix, String uri) throws SAXException {
             getPrefixMap().put(prefix, uri);
-        }
-        
-        public void notationDecl(String name, String publicId, String systemId)
-                throws SAXException {
-            System.out.println("notation decl: " + "\n\tname=" + name
-                    + "\n\tpublicId=" + publicId + "\n\tsystemId=" + systemId);
-        }
-        
-        public void unparsedEntityDecl(String name, String publicId,
-                String systemId, String notationName) throws SAXException {
-            System.out.println("unparsedEntityDecl:"
-                    + "\n\tname=" + name
-                    + "\n\tpublicId=" + publicId
-                    + "\n\tsystemId=" + systemId
-                    + "\n\tnotationName=" + notationName);
         }
         
         public void startElement(String uri, String localName, String qName,
@@ -164,37 +163,27 @@ public class ExcelReader {
             if (XLElement.XMLNS_SS.equals(uri) && "Workbook".equals(localName)) {
                 String systemId = getSystemId();
                 String wbName = getWorkbookName(systemId);
-                Director bfac = getDirector();
-                Builder builder = bfac.getXLWorkbookBuilder(); 
-                
-                if (!bfac.isListeningOnly()) {                   
-	                currentWorkbook = new XLWorkbook(wbName);
-	                currentWorkbook.setFileName(systemId);
-                }
-                for (Iterator iter = bfac.getListeners().iterator(); iter.hasNext();) {
+                Builder builder = getDirector().getXLWorkbookBuilder(); 
+                for (Iterator iter = getDirector().getListeners().iterator(); iter.hasNext();) {
                     ExcelReaderListener listener = (ExcelReaderListener) iter.next();
                     listener.startWorkbook(systemId, wbName);
-                }
-                
-                builder.build(reader, this, bfac, currentWorkbook);               
+                }               
+                builder.build(reader, this);               
             }       
         }
         
-        public void endElement(String uri, String localName, String qName)
-                throws SAXException {
-            System.out.println(qName);
-        }
-        
-        public void endPrefixMapping(String prefix) throws SAXException {
-            //System.out.println(prefix);
-        }
-        
         public void startDocument() throws SAXException {        
-            //System.out.println("doc started: ");
+            for (Iterator iter = getDirector().getListeners().iterator(); iter.hasNext();) {
+                ExcelReaderListener listener = (ExcelReaderListener) iter.next();
+                listener.startDocument();
+            }
         }
         
         public void endDocument() throws SAXException {
-            //System.out.println("doc ended: ");
+            for (Iterator iter = getDirector().getListeners().iterator(); iter.hasNext();) {
+                ExcelReaderListener listener = (ExcelReaderListener) iter.next();
+                listener.endDocument(getPrefixMap());
+            }
         }
         
         public void fatalError(SAXParseException e) throws SAXException {
@@ -210,10 +199,7 @@ public class ExcelReader {
             System.out.println("warning detected: " + e.getMessage());
         }
         
-        public void setDocumentLocator(Locator locator) {
-            //System.out.println("recieved locator");
-            this.locator = locator;
-        }
+        
         
         private String getSystemId() {
             String systemId = "source";

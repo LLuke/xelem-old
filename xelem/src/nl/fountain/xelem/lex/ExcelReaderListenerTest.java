@@ -5,20 +5,26 @@
 package nl.fountain.xelem.lex;
 
 import java.util.List;
+import java.util.Map;
 
 import junit.framework.TestCase;
+import nl.fountain.xelem.excel.AutoFilter;
+import nl.fountain.xelem.excel.Cell;
 import nl.fountain.xelem.excel.Column;
 import nl.fountain.xelem.excel.DocumentProperties;
 import nl.fountain.xelem.excel.ExcelWorkbook;
 import nl.fountain.xelem.excel.NamedRange;
 import nl.fountain.xelem.excel.Row;
-import nl.fountain.xelem.excel.Workbook;
+import nl.fountain.xelem.excel.Table;
+import nl.fountain.xelem.excel.Worksheet;
+import nl.fountain.xelem.excel.WorksheetOptions;
 
 /**
  *
  */
 public class ExcelReaderListenerTest extends TestCase {
     
+    protected boolean docStart;
     protected String sysId;
     protected String wbName;
     protected int wbCounter;
@@ -74,18 +80,9 @@ public class ExcelReaderListenerTest extends TestCase {
         ExcelReader xlReader = new ExcelReader();
         Listener listener = new Listener();
         xlReader.addExcelReaderListener(listener);
-        assertFalse(xlReader.isListeningOnly());
-        xlReader.setListenOnly(true);
-        assertTrue(xlReader.isListeningOnly());
+
+        xlReader.read("testsuitefiles/ReaderTest/reader.xml");
         
-        Workbook wb = null;
-        //try {
-            wb = xlReader.read("testsuitefiles/ReaderTest/reader.xml");
-        //} catch (NullPointerException e) {
-            //
-        //}
-        
-        assertNull(wb);
         assertEquals(1, wbCounter);
         assertTrue(sysId.endsWith("testsuitefiles/ReaderTest/reader.xml"));
         assertEquals("reader", wbName);
@@ -120,16 +117,25 @@ public class ExcelReaderListenerTest extends TestCase {
     
     
     private class Listener implements ExcelReaderListener {
-
+        
+        public void startDocument() {
+            docStart = true;
+        }
+        
+        public void processingInstruction(String target, String data) {
+            assertTrue(docStart);
+            //System.out.println("target=" + target + " data=" + data);
+        }
+        
         public void startWorkbook(String systemID, String workbookName) {
-            System.out.println("Workbook sytemID=" + systemID + " name=" + workbookName);
+            //System.out.println("Workbook sytemID=" + systemID + " name=" + workbookName);
             sysId = systemID;
             wbName = workbookName;
             wbCounter++;
         }
 
         public void setDocumentProperties(DocumentProperties docprops) {
-            System.out.println(docprops);
+            //System.out.println(docprops);
             assertTrue(sysId.endsWith("testsuitefiles/ReaderTest/reader.xml"));
             assertEquals("reader", wbName);
             props = docprops;
@@ -137,54 +143,79 @@ public class ExcelReaderListenerTest extends TestCase {
         }
 
         public void setExcelWorkbook(ExcelWorkbook xlwb) {
-            System.out.println(xlwb);
+            //System.out.println(xlwb);
             assertEquals("Asterix", props.getAuthor());
             excelWB = xlwb;
             excelWBCounter++;
         }
 
         public void setNamedRange(NamedRange nr) {
-            System.out.println(nr);
+            //System.out.println(nr);
             assertEquals(360, excelWB.getWindowTopX());
             workbookNamedRange = nr;
             workbookNamedRangeCounter++;
         }
 
-        public void startWorksheet(int index, String sheetName) {
-            System.out.println("Worksheet index=" + index + " name=" + sheetName);
-            lastWorksheetIndex = index;
-            lastWorksheetName = sheetName;
+        public void startWorksheet(int sheetIndex, Worksheet sheet) {
+//            System.out.println("Worksheet index=" + sheetIndex 
+//                    + " name=" + sheet.getName()
+//                    + " " + sheet);
+            lastWorksheetIndex = sheetIndex;
+            lastWorksheetName = sheet.getName();
             worksheetCounter++;
         }
 
-        public void setNamedRange(String sheetName, NamedRange nr) {
-            System.out.println("NamedRange sheetName=" + sheetName + " " + nr);
+        public void setNamedRange(int sheetIndex, String sheetName, NamedRange nr) {
+//            System.out.println("NamedRange sheetName=" + sheetName + " " + nr);
             lastWorksheetWithNamedRange = sheetName;
             worksheetNamedRange = nr;
             worksheetNamedRangeCounter++;
         }
 
-        public void startTable(String sheetName, 
-                int expandedRowCount, int expandedColumnCount) {
-            System.out.println("Table on " + sheetName 
-                    + ", rowCount=" + expandedRowCount 
-                    + " columnCount=" + expandedColumnCount);
+        public void startTable(int sheetIndex, String sheetName, Table table) {
+//            System.out.println("Table on " + sheetName 
+//                    + ", rowCount=" + table.getExpandedRowCount() 
+//                    + " columnCount=" + table.getExpandedColumnCount()
+//                    + " " + table);
             lastSheetWithTable = sheetName;
-            lastExpandedRowCount = expandedRowCount;
-            lastExpandedColumnCount = expandedColumnCount;
+            lastExpandedRowCount = table.getExpandedRowCount();
+            lastExpandedColumnCount = table.getExpandedColumnCount();
             tableCounter++;
         }
 
-        public void setColumn(String sheetName, int columnIndex, Column column) {
-            System.out.println("Column on " + sheetName
-                    + ", columnIndex=" + columnIndex + " " + column);
-            lastColumnIndex = columnIndex;
+        public void setColumn(int sheetIndex, String sheetName, Column column) {
+//            System.out.println("Column on " + sheetName
+//                    + ", columnIndex=" + column.getIndex() + " " + column);
+            lastColumnIndex = column.getIndex();
             columnCounter++;
         }
 
-        public void setRow(String sheetName, int rowIndex, Row row) {
-            System.out.println("Row on " + sheetName
-                    + ", rowIndex =" + rowIndex + " " + row);
+        public void setRow(int sheetIndex, String sheetName, Row row) {
+//            System.out.println("Row on " + sheetName
+//                    + ", rowIndex=" + row.getIndex() + " " + row);
+        }
+
+        public void setCell(int sheetIndex, String sheetName, int rowIndex, Cell cell) {
+//            System.out.println("Cell on " + sheetName
+//                    + ", rowIndex=" + rowIndex
+//                    + ", cellIndex=" + cell.getIndex()
+//                    + ", data=" + cell.getData());
+        }
+
+        public void setWorksheetOptions(int sheetIndex, String sheetName, WorksheetOptions wso) {
+//            System.out.println("WorksheetOptions on " + sheetName
+//                    + " sheetIndex=" + sheetIndex
+//                    + " " + wso);
+        }
+
+        public void setAutoFilter(int sheetIndex, String sheetName, AutoFilter autoFilter) {
+//            System.out.println("AutoFilter on " + sheetName
+//                    + " sheetIndex=" + sheetIndex
+//                    + " " + autoFilter);
+        }
+        
+        public void endDocument(Map prefixMap) {
+            assertEquals(9, prefixMap.size());
         }
         
     }

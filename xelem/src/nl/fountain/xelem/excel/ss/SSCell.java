@@ -502,8 +502,12 @@ public class SSCell extends AbstractXLElement implements Cell {
      * called by {@link nl.fountain.xelem.excel.Row#cellIterator()} to set the
      * index of this cell during assembly.
      */
-    protected void setIndex(int index) {
+    public void setIndex(int index) {
         idx = index;
+    }
+    
+    public int getIndex() {
+        return idx;
     }
 
 }

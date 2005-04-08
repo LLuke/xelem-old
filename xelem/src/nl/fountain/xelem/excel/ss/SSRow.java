@@ -290,8 +290,12 @@ public class SSRow extends AbstractXLElement implements Row {
      * called by {@link nl.fountain.xelem.excel.Table#rowIterator()} to set the
      * index of this row during assembly.
      */
-    protected void setIndex(int index) {
+    public void setIndex(int index) {
         idx = index;
+    }
+    
+    public int getIndex() {
+        return idx;
     }
     
     /////////////////////////////////////////////

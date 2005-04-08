@@ -104,6 +104,8 @@ public interface Worksheet extends XLElement {
      */
     NamedRange addNamedRange(String name, String refersTo);
     
+    NamedRange addNamedRange(NamedRange namedRange);
+    
     /**
      * Gets all the NamedRanges that were added to this worksheet. The map-keys
      * are equal to their names.
@@ -111,6 +113,8 @@ public interface Worksheet extends XLElement {
      * @return a map with NamedRanges
      */
     Map getNamedRanges();
+    
+    void setWorksheetOptions(WorksheetOptions wso);
     
     /**
      * Indicates whether WorksheetOptions was added to this worksheet.
@@ -125,6 +129,8 @@ public interface Worksheet extends XLElement {
      * @return The WorksheetOptions of this worksheet. Never <code>null</code>.
      */
     WorksheetOptions getWorksheetOptions();
+    
+    void setTable(Table table);
     
     /**
      * Gets the table of this worksheet.
@@ -776,6 +782,8 @@ public interface Worksheet extends XLElement {
      * @param rcString	A String of R1C1 reference style.
      */
     void setAutoFilter(String rcString);
+    
+    void setAutoFilter(AutoFilter af);
     
     /**
      * Specifies whether the {@link #setAutoFilter(String) setAutoFilter}-method 

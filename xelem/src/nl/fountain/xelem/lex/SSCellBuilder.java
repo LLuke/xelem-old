@@ -4,6 +4,8 @@
  */
 package nl.fountain.xelem.lex;
 
+import java.util.Iterator;
+
 import nl.fountain.xelem.excel.Comment;
 import nl.fountain.xelem.excel.XLElement;
 import nl.fountain.xelem.excel.ss.SSCell;
@@ -20,9 +22,12 @@ public class SSCellBuilder extends AnonymousBuilder {
     
     private SSCell current;
     
-    public void build(XMLReader reader, ContentHandler parent,
-            Director director, XLElement xle) {
-        setUpBuilder(reader, parent, director);
+    SSCellBuilder(Director director) {
+        super(director);
+    }
+    
+    public void build(XMLReader reader, ContentHandler parent, XLElement xle) {
+        setUpBuilder(reader, parent);
         current = (SSCell) xle;
     }
     
@@ -37,7 +42,7 @@ public class SSCellBuilder extends AnonymousBuilder {
                 Comment comment = current.addComment();
                 comment.setAttributes(atts);
                 Builder builder = director.getAnonymousBuilder();
-                builder.build(reader, this, director, comment);
+                builder.build(reader, this, comment);
             }
         }
     }
@@ -45,6 +50,12 @@ public class SSCellBuilder extends AnonymousBuilder {
     public void endElement(String uri, String localName, String qName) throws SAXException {
         if (current.getNameSpace().equals(uri)) {
             if (current.getTagName().equals(localName)) {
+                for (Iterator iter = director.getListeners().iterator(); iter.hasNext();) {
+                    ExcelReaderListener listener = (ExcelReaderListener) iter.next();
+                    listener.setCell(director.getCurrentSheetIndex(),
+                            director.getCurrentSheetName(), 
+                            director.getCurrentRowIndex(), current);
+                }
                 reader.setContentHandler(parent);
                 return;
             }

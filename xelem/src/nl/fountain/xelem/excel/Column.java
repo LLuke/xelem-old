@@ -102,5 +102,6 @@ public interface Column extends XLElement {
      */
     void setHidden(boolean hide);
     
-
+    void setIndex(int index);
+    int getIndex();
 }

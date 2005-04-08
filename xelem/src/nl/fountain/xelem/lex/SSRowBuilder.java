@@ -24,9 +24,12 @@ public class SSRowBuilder extends AnonymousBuilder {
     private Row currentRow;
     private int currentCellIndex;
     
-    public void build(XMLReader reader, ContentHandler parent,
-            Director director, XLElement xle) {
-        setUpBuilder(reader, parent, director);
+    SSRowBuilder(Director director) {
+        super(director);
+    }
+    
+    public void build(XMLReader reader, ContentHandler parent, XLElement xle) {
+        setUpBuilder(reader, parent);
         currentRow = (SSRow) xle;
         currentCellIndex = 0;
     }
@@ -43,9 +46,10 @@ public class SSRowBuilder extends AnonymousBuilder {
                 }
                 if (director.getBuildArea().isColumnPartOfArea(currentCellIndex)) {
 	                Cell cell = currentRow.addCellAt(currentCellIndex);
+	                cell.setIndex(currentCellIndex);
 	                cell.setAttributes(atts);
 	                Builder builder = director.getSSCellBuilder();
-	                builder.build(reader, this, director, cell);
+	                builder.build(reader, this, cell);
                 }
             }
         }
@@ -56,8 +60,8 @@ public class SSRowBuilder extends AnonymousBuilder {
             if (currentRow.getNameSpace().equals(uri)) {
                 for (Iterator iter = director.getListeners().iterator(); iter.hasNext();) {
                     ExcelReaderListener listener = (ExcelReaderListener) iter.next();
-                    listener.setRow(director.getCurrentSheetName(),
-                            director.getCurrentRowIndex(), currentRow);
+                    listener.setRow(director.getCurrentSheetIndex(),
+                            director.getCurrentSheetName(), currentRow);
                 }
                 reader.setContentHandler(parent);
                 return;

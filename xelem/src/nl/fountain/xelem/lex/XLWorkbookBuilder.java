@@ -14,7 +14,6 @@ import nl.fountain.xelem.excel.XLElement;
 import nl.fountain.xelem.excel.o.ODocumentProperties;
 import nl.fountain.xelem.excel.ss.SSNamedRange;
 import nl.fountain.xelem.excel.ss.SSWorksheet;
-import nl.fountain.xelem.excel.ss.XLWorkbook;
 import nl.fountain.xelem.excel.x.XExcelWorkbook;
 
 import org.xml.sax.Attributes;
@@ -27,52 +26,38 @@ import org.xml.sax.XMLReader;
  */
 public class XLWorkbookBuilder extends AnonymousBuilder {
     
-    private XLWorkbook currentWB;
     private int sheetCounter;
-        
-    public void build(XMLReader reader, ContentHandler parent, 
-            Director director, XLElement xle) {
-        setUpBuilder(reader, parent, director);
-        currentWB = (XLWorkbook) xle;
-        sheetCounter = 0;
+    
+    XLWorkbookBuilder(Director director) {
+        super(director);
     }
     
+    public void build(XMLReader reader, ContentHandler parent) {
+        super.build(reader, parent);
+        sheetCounter = 0;
+    }
+            
     public void startElement(String uri, String localName, String qName,
             Attributes atts) throws SAXException {
         
         // DocumentProperties
         if (XLElement.XMLNS_O.equals(uri) && "DocumentProperties".equals(localName)) {            
-            DocumentProperties docprops;
-            if (director.isListeningOnly()) {
-                docprops = new ODocumentProperties();
-            } else {
-                docprops = currentWB.getDocumentProperties();
-            }
+            DocumentProperties docprops = new ODocumentProperties();
             Builder builder = director.getAnonymousBuilder();
-            builder.build(reader, this, director, docprops);
+            builder.build(reader, this, docprops);
         
         // ExcelWorkbook
         } else if (XLElement.XMLNS_X.equals(uri) && "ExcelWorkbook".equals(localName)) {
-            ExcelWorkbook xlwb;
-            if (director.isListeningOnly()) {
-                xlwb = new XExcelWorkbook();
-            } else {
-                xlwb = currentWB.getExcelWorkbook();
-            }
+            ExcelWorkbook xlwb = new XExcelWorkbook();
             Builder builder = director.getAnonymousBuilder();
-            builder.build(reader, this, director, xlwb);
+            builder.build(reader, this, xlwb);
                        
         // Styles
+            
         // NamedRange
         } else if (XLElement.XMLNS_SS.equals(uri) && "NamedRange". equals(localName)) {
-            NamedRange nr;
-            if (director.isListeningOnly()) {
-                nr = new SSNamedRange(atts.getValue(XLElement.XMLNS_SS, "Name"), null);
-            } else {
-                nr = currentWB.addNamedRange(
-                    atts.getValue(XLElement.XMLNS_SS, "Name"), 
-                    null);
-            }
+            NamedRange nr = new SSNamedRange(
+                    atts.getValue(XLElement.XMLNS_SS, "Name"), null);
             nr.setAttributes(atts);
             for (Iterator iter = director.getListeners().iterator(); iter.hasNext();) {
                 ExcelReaderListener listener = (ExcelReaderListener) iter.next();
@@ -81,22 +66,19 @@ public class XLWorkbookBuilder extends AnonymousBuilder {
             
         // Worksheet
         } else if (XLElement.XMLNS_SS.equals(uri) && "Worksheet". equals(localName)) {
-            Worksheet sheet;
             String sheetName = atts.getValue(XLElement.XMLNS_SS, "Name");
-            if (director.isListeningOnly()) {
-                sheet = new SSWorksheet(sheetName);
-            } else {
-                sheet = currentWB.addSheet(sheetName);
-            }
+            Worksheet sheet = new SSWorksheet(sheetName);
+            director.setCurrentSheetIndex(sheetCounter);
+            director.setCurrentSheetName(sheetName);
             sheet.setAttributes(atts);
             for (Iterator iter = director.getListeners().iterator(); iter.hasNext();) {
                 ExcelReaderListener listener = (ExcelReaderListener) iter.next();
-                listener.startWorksheet(sheetCounter, sheetName);
+                listener.startWorksheet(sheetCounter, sheet);
             }
             
             sheetCounter++;
             Builder builder = director.getSSWorksheetBuilder();
-            builder.build(reader, this, director, sheet);
+            builder.build(reader, this);
         }
     }
     

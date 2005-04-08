@@ -31,16 +31,16 @@ public class DirectorTest extends TestCase {
         assertTrue(builder2.isOccupied());
         assertNotSame(builder1, builder2);
         XLElement xle = new XExcelWorkbook();
-        builder2.build(new MockReader(), null, director, xle);
+        builder2.build(new MockReader(), null, xle);
         builder2.endElement(XLElement.XMLNS_X, "ExcelWorkbook", null);
         assertTrue(!builder2.isOccupied());
         AnonymousBuilder builder3 = (AnonymousBuilder) director.getAnonymousBuilder();
         assertTrue(builder3.isOccupied());
         assertSame(builder2, builder3);
-        builder3.build(new MockReader(), null, director, xle);
+        builder3.build(new MockReader(), null, xle);
         builder3.endElement(XLElement.XMLNS_X, "ExcelWorkbook", null);
         assertTrue(!builder3.isOccupied());
-        builder1.build(new MockReader(), null, director, xle);
+        builder1.build(new MockReader(), null, xle);
         builder1.endElement(XLElement.XMLNS_X, "ExcelWorkbook", null);
         assertTrue(!builder1.isOccupied());
     }

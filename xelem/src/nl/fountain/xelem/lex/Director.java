@@ -27,8 +27,8 @@ public class Director {
     private List anonymousBuilders;
     private Area buildArea;
     private List listeners;
-    private boolean listeningOnly;
     
+    private int currentSheetIndex;
     private String currentSheetName;
     private int currentRowIndex;
     
@@ -69,38 +69,30 @@ public class Director {
         getListeners().clear();
     }
     
-    public void setListenOnly(boolean listen) {
-        listeningOnly = listen;
-    }
-    
-    public boolean isListeningOnly() {
-        return listeningOnly;
-    }
-    
     public XLWorkbookBuilder getXLWorkbookBuilder() {
         if (xlworkbookbuilder == null) {
-            xlworkbookbuilder = new XLWorkbookBuilder();
+            xlworkbookbuilder = new XLWorkbookBuilder(this);
         }
         return xlworkbookbuilder;
     }
     
     public SSWorksheetBuilder getSSWorksheetBuilder() {
         if (ssworksheetbuilder == null) {
-            ssworksheetbuilder = new SSWorksheetBuilder();
+            ssworksheetbuilder = new SSWorksheetBuilder(this);
         }
         return ssworksheetbuilder;
     }
     
     public SSRowBuilder getSSRowBuilder() {
         if (ssrowbuilder == null) {
-            ssrowbuilder = new SSRowBuilder();
+            ssrowbuilder = new SSRowBuilder(this);
         }
         return ssrowbuilder;
     }
     
     public SSCellBuilder getSSCellBuilder() {
         if (sscellbuilder == null) {
-            sscellbuilder = new SSCellBuilder();
+            sscellbuilder = new SSCellBuilder(this);
         }
         return sscellbuilder; 
     }
@@ -115,23 +107,34 @@ public class Director {
             }
         }
         if (aBuilder == null) {
-            aBuilder = new AnonymousBuilder();
+            aBuilder = new AnonymousBuilder(this);
             getBuilders().add(aBuilder);
         }
         aBuilder.setOccupied(true);
         return aBuilder;
     }
     
-    protected void setCurrentRowInfo(String sheetName, int rowIndex) {
-        currentSheetName = sheetName;
-        currentRowIndex = rowIndex;
+    void setCurrentSheetIndex(int index) {
+        currentSheetIndex = index;
     }
     
-    protected String getCurrentSheetName() {
+    int getCurrentSheetIndex() {
+        return currentSheetIndex;
+    }
+    
+    void setCurrentSheetName(String name) {
+        currentSheetName = name;
+    }
+    
+    String getCurrentSheetName() {
         return currentSheetName;
     }
     
-    protected int getCurrentRowIndex() {
+    void setCurrentRowIndex(int index) {
+        currentRowIndex = index; 
+    }
+    
+    int getCurrentRowIndex() {
         return currentRowIndex;
     }
     

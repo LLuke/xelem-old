@@ -335,4 +335,7 @@ public interface Row extends XLElement {
      */
     Element createElement(Document doc);
     
+    void setIndex(int index);
+    int getIndex();
+    
 }

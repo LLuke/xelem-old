@@ -161,8 +161,12 @@ public class SSColumn extends AbstractXLElement implements Column {
      * called by {@link nl.fountain.xelem.excel.Table#columnIterator()} to set the
      * index of this column during assembly.
      */
-    protected void setIndex(int index) {
+    public void setIndex(int index) {
         idx = index;
+    }
+    
+    public int getIndex() {
+        return idx;
     }
 
 }

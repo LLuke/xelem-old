@@ -12,6 +12,7 @@ import java.util.Map;
 
 import nl.fountain.xelem.excel.DocumentProperties;
 import nl.fountain.xelem.excel.ExcelWorkbook;
+import nl.fountain.xelem.excel.WorksheetOptions;
 import nl.fountain.xelem.excel.XLElement;
 
 import org.xml.sax.Attributes;
@@ -23,7 +24,7 @@ import org.xml.sax.XMLReader;
 /**
  *
  */
-public class AnonymousBuilder implements Builder {
+class AnonymousBuilder implements Builder {
     
     private static Map methodMap;
     private boolean occupied;
@@ -33,21 +34,23 @@ public class AnonymousBuilder implements Builder {
     protected CharArrayWriter contents;
     protected XLElement current;
     
-    protected AnonymousBuilder() {
+    protected AnonymousBuilder(Director director) {
+        this.director = director;
         contents = new CharArrayWriter();
     }
     
-    public void build(XMLReader reader, ContentHandler parent, 
-            Director director, XLElement xle) {
-        setUpBuilder(reader, parent, director);
+    public void build(XMLReader reader, ContentHandler parent, XLElement xle) {
+        setUpBuilder(reader, parent);
         current = xle;
     }
     
-    protected void setUpBuilder(XMLReader reader, ContentHandler parent, 
-            Director director) {
+    public void build(XMLReader reader, ContentHandler parent) {
+        setUpBuilder(reader, parent);
+    }
+    
+    protected void setUpBuilder(XMLReader reader, ContentHandler parent) {
         this.reader = reader;
         this.parent = parent;
-        this.director = director;
         reader.setContentHandler(this);
     }
     
@@ -70,7 +73,8 @@ public class AnonymousBuilder implements Builder {
             try {
                 methods = new Object[][]{
                    {"DocumentProperties",  ExcelReaderListener.class.getMethod("setDocumentProperties", new Class[]{DocumentProperties.class})},
-                   {"ExcelWorkbook", ExcelReaderListener.class.getMethod("setExcelWorkbook", new Class[]{ExcelWorkbook.class})}
+                   {"ExcelWorkbook", ExcelReaderListener.class.getMethod("setExcelWorkbook", new Class[]{ExcelWorkbook.class})},
+                   {"WorksheetOptions", ExcelReaderListener.class.getMethod("setWorksheetOptions", new Class[]{int.class, String.class, WorksheetOptions.class})}
                 };
                 for (int i = 0; i < methods.length; i++) {
                     methodMap.put(methods[i][0], methods[i][1]);
@@ -91,7 +95,11 @@ public class AnonymousBuilder implements Builder {
 	            try {
 	                for (Iterator iter = director.getListeners().iterator(); iter.hasNext();) {
 	                    ExcelReaderListener listener = (ExcelReaderListener) iter.next();
-	                    m.invoke(listener, new Object[] { current });
+	                    if (m.getParameterTypes()[0].equals(int.class)) {
+	                        m.invoke(listener, new Object[] {new Integer(director.getCurrentSheetIndex()), director.getCurrentSheetName(), current});
+	                    } else {
+	                        m.invoke(listener, new Object[] { current });
+	                    }
 	                }
 	            } catch (Exception e) {
 	                e.printStackTrace();

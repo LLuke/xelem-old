@@ -123,13 +123,16 @@ public class SSWorksheet extends AbstractXLElement implements Worksheet {
         return righttoleft;
     }
     
-    public NamedRange addNamedRange(String name, String refersTo) {
-        NamedRange nr = new SSNamedRange(name, refersTo);
+    public NamedRange addNamedRange(NamedRange nr) {
         if (namedRanges == null) {
             namedRanges = new HashMap();
         }
-        namedRanges.put(name, nr);
+        namedRanges.put(nr.getName(), nr);
         return nr;
+    }
+    
+    public NamedRange addNamedRange(String name, String refersTo) {
+        return addNamedRange(new SSNamedRange(name, refersTo));
     }
     
     public Map getNamedRanges() {
@@ -138,6 +141,10 @@ public class SSWorksheet extends AbstractXLElement implements Worksheet {
         } else {
             return namedRanges;
         }
+    }
+    
+    public void setWorksheetOptions(WorksheetOptions wso) {
+        options = wso;
     }
     
     public boolean hasWorksheetOptions() {
@@ -150,7 +157,11 @@ public class SSWorksheet extends AbstractXLElement implements Worksheet {
         }
         return options;
     }
-
+    
+    public void setTable(Table table) {
+        this.table = table;
+    }
+    
     public Table getTable() {
         if (table == null) {
             table = new SSTable();
@@ -382,6 +393,10 @@ public class SSWorksheet extends AbstractXLElement implements Worksheet {
     
     public String getPrefix() {
         return PREFIX_SS;
+    }
+    
+    public void setAutoFilter(AutoFilter af) {
+        autoFilter = af;
     }
     
     public void setAutoFilter(String rcString) {
