@@ -5,13 +5,14 @@
 package nl.fountain.xelem.ztest;
 
 import java.io.IOException;
+import java.util.Iterator;
 
 import javax.xml.parsers.ParserConfigurationException;
 
-import nl.fountain.xelem.Area;
-import nl.fountain.xelem.XSerializer;
 import nl.fountain.xelem.XelemException;
-import nl.fountain.xelem.excel.Workbook;
+import nl.fountain.xelem.excel.Cell;
+import nl.fountain.xelem.excel.Row;
+import nl.fountain.xelem.lex.DefaultExcelReaderListener;
 import nl.fountain.xelem.lex.ExcelReader;
 
 import org.xml.sax.SAXException;
@@ -24,13 +25,20 @@ import org.xml.sax.SAXException;
 public class Test {
 
     public static void main(String[] args) throws ParserConfigurationException, IOException, SAXException, XelemException {
-        ExcelReader xlReader = new ExcelReader();
-        Area area = new Area("A1:AZ100");
-        xlReader.setBuildArea(area);
-        Workbook wb = xlReader.getWorkbook("D:/test/VT1869.xml");
-        wb.setFileName("D:/test/VT_1869.xml");
-        new XSerializer().serialize(wb);
-       
+        ExcelReader reader = new ExcelReader();
+        reader.addExcelReaderListener(new DefaultExcelReaderListener() {
+            public void setRow(int sheetIndex, String sheetName, Row row) {
+                System.out.println(row.getIndex());
+                for (Iterator iter = row.getCells().iterator(); iter.hasNext();) {
+                    Cell cell = (Cell) iter.next();
+                    System.out.println(cell.getIndex() + " " + cell.getData());
+                }
+//                for (int i = 0; i < 1000000000; i++) {
+//                    
+//                }
+            }
+        });
+       reader.read("testsuitefiles/ReaderTest/reader.xml");
     }
     
 }

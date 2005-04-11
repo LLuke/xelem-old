@@ -28,7 +28,7 @@ import org.xml.sax.XMLReader;
 /**
  *  
  */
-public class SSWorksheetBuilder extends AnonymousBuilder {
+class SSWorksheetBuilder extends AnonymousBuilder {
 
     private int currentRowIndex;
     private int currentColumnIndex;

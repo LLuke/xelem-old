@@ -19,7 +19,7 @@ import org.xml.sax.XMLReader;
 /**
  *
  */
-public class SSRowBuilder extends AnonymousBuilder {
+class SSRowBuilder extends AnonymousBuilder {
     
     private Row currentRow;
     private int currentCellIndex;

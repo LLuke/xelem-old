@@ -18,7 +18,7 @@ import org.xml.sax.XMLReader;
 /**
  *
  */
-public class SSCellBuilder extends AnonymousBuilder {
+class SSCellBuilder extends AnonymousBuilder {
     
     private SSCell current;
     

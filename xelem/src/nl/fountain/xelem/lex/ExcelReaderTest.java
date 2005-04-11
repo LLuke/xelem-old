@@ -81,7 +81,6 @@ public class ExcelReaderTest extends TestCase {
         Workbook wb = getReaderWorkbook();
         assertNotNull(wb);
         assertEquals("reader", wb.getName());
-        
     }
     
     private Workbook getReaderWorkbook() throws Exception {
@@ -405,7 +404,7 @@ public class ExcelReaderTest extends TestCase {
     public void testPartialRead() throws Exception {
         ExcelReader xlr = new ExcelReader();
         Area area = new Area("E11:M16");
-        xlr.setBuildArea(area);
+        xlr.setReadArea(area);
         Workbook wb = xlr.getWorkbook("testsuitefiles/ReaderTest/reader.xml");        
         Worksheet sheet = wb.getWorksheetAt(0);
         assertFalse(sheet.hasColumnAt("A"));

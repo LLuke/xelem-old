@@ -24,7 +24,7 @@ import org.xml.sax.XMLReader;
 /**
  *
  */
-public class XLWorkbookBuilder extends AnonymousBuilder {
+class XLWorkbookBuilder extends AnonymousBuilder {
     
     private int sheetCounter;
     

@@ -17,14 +17,14 @@ import nl.fountain.xelem.excel.XLElement;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.ContentHandler;
-import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
+import org.xml.sax.helpers.DefaultHandler;
 
 /**
  *
  */
-class AnonymousBuilder implements Builder {
+class AnonymousBuilder extends DefaultHandler implements Builder {
     
     private static Map methodMap;
     private boolean occupied;
@@ -135,34 +135,4 @@ class AnonymousBuilder implements Builder {
         contents.write(ch, start, length);
     }
     
-    public void setDocumentLocator(Locator locator) {
-    }
-
-    public void startDocument() throws SAXException {
-    }
-
-    public void endDocument() throws SAXException {
-    }
-
-    public void startPrefixMapping(String prefix, String uri)
-            throws SAXException {
-    }
-
-    public void endPrefixMapping(String prefix) throws SAXException {
-    }
-
-    public void ignorableWhitespace(char[] ch, int start, int length)
-            throws SAXException {
-    }
-
-    public void processingInstruction(String target, String data)
-            throws SAXException {
-    }
-
-    public void skippedEntity(String name) throws SAXException {
-    }
-
-
-    
-
 }

@@ -28,15 +28,14 @@ import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
 
 /**
- *
+ * Basic class for reading xml-spreadsheets of type spreadsheetML.
  */
 public class ExcelReader {
     
     private SAXParser parser;
     XMLReader reader;
     
-    Workbook currentWorkbook;
-    private Director director;
+    Director director;
     private Handler handler;
     private Map uris;
     
@@ -44,46 +43,47 @@ public class ExcelReader {
         SAXParserFactory spf = SAXParserFactory.newInstance();
         spf.setNamespaceAware(true);
         parser = spf.newSAXParser();
+        director = new Director();
     }
     
-    protected SAXParser getSaxParser() {
+    SAXParser getSaxParser() {
         return parser;
     }
     
-    public void setBuildArea(Area area) {
-        getDirector().setBuildArea(area);
+    public void setReadArea(Area area) {
+        director.setBuildArea(area);
     }
     
-    public void clearBuildArea() {
-        getDirector().setBuildArea(null);
+    public void clearReadArea() {
+        director.setBuildArea(null);
     }
     
-    public Area getBuildArea() {
-        if (getDirector().hasBuildArea()) {
-            return getDirector().getBuildArea();
+    public Area getReadArea() {
+        if (director.hasBuildArea()) {
+            return director.getBuildArea();
         } else {
             return null;
         }
     }
     
-    public boolean hasBuildArea() {
-        return getDirector().hasBuildArea();
+    public boolean hasReadArea() {
+        return director.hasBuildArea();
     }
     
     public List getListeners() {
-        return getDirector().getListeners();
+        return director.getListeners();
     }
     
     public void addExcelReaderListener(ExcelReaderListener l) {
-        getDirector().addExcelReaderListener(l);
+        director.addExcelReaderListener(l);
     }
     
     public boolean removeExcelReaderListener(ExcelReaderListener l) {
-        return getDirector().removeExcelReaderListener(l);
+        return director.removeExcelReaderListener(l);
     }
     
     public void clearExcelReaderListeners() {
-        getDirector().clearExcelReaderListeners();
+        director.clearExcelReaderListeners();
     }
     
     public Workbook getWorkbook(String fileName) throws IOException, SAXException {
@@ -105,7 +105,6 @@ public class ExcelReader {
     }
     
     public void read(InputSource in) throws IOException, SAXException {
-        currentWorkbook = null;
         getPrefixMap().clear();
         reader = parser.getXMLReader();
         
@@ -120,13 +119,6 @@ public class ExcelReader {
             uris = new HashMap();
         }
         return uris;
-    }
-    
-    protected Director getDirector() {
-        if (director == null) {
-            director = new Director();
-        }
-        return director;
     }
     
     private Handler getHandler() {
@@ -148,7 +140,7 @@ public class ExcelReader {
         }
         
         public void processingInstruction(String target, String data) throws SAXException {
-            for (Iterator iter = getDirector().getListeners().iterator(); iter.hasNext();) {
+            for (Iterator iter = director.getListeners().iterator(); iter.hasNext();) {
                 ExcelReaderListener listener = (ExcelReaderListener) iter.next();
                 listener.processingInstruction(target, data);
             }
@@ -163,8 +155,8 @@ public class ExcelReader {
             if (XLElement.XMLNS_SS.equals(uri) && "Workbook".equals(localName)) {
                 String systemId = getSystemId();
                 String wbName = getWorkbookName(systemId);
-                Builder builder = getDirector().getXLWorkbookBuilder(); 
-                for (Iterator iter = getDirector().getListeners().iterator(); iter.hasNext();) {
+                Builder builder = director.getXLWorkbookBuilder(); 
+                for (Iterator iter = director.getListeners().iterator(); iter.hasNext();) {
                     ExcelReaderListener listener = (ExcelReaderListener) iter.next();
                     listener.startWorkbook(systemId, wbName);
                 }               
@@ -173,14 +165,14 @@ public class ExcelReader {
         }
         
         public void startDocument() throws SAXException {        
-            for (Iterator iter = getDirector().getListeners().iterator(); iter.hasNext();) {
+            for (Iterator iter = director.getListeners().iterator(); iter.hasNext();) {
                 ExcelReaderListener listener = (ExcelReaderListener) iter.next();
                 listener.startDocument();
             }
         }
         
         public void endDocument() throws SAXException {
-            for (Iterator iter = getDirector().getListeners().iterator(); iter.hasNext();) {
+            for (Iterator iter = director.getListeners().iterator(); iter.hasNext();) {
                 ExcelReaderListener listener = (ExcelReaderListener) iter.next();
                 listener.endDocument(getPrefixMap());
             }

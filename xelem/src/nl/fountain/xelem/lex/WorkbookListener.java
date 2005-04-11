@@ -1,6 +1,22 @@
 /*
  * Created on 8-apr-2005
+ * Copyright (C) 2005  Henk van den Berg
  *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ * 
+ * see license.txt
  */
 package nl.fountain.xelem.lex;
 
@@ -16,13 +32,31 @@ import nl.fountain.xelem.excel.Worksheet;
 import nl.fountain.xelem.excel.WorksheetOptions;
 import nl.fountain.xelem.excel.ss.XLWorkbook;
 
-
+/**
+ * An implementation of {@link ExcelReaderListener}.
+ * 
+ * @since xelem.2.0
+ */
 public class WorkbookListener extends DefaultExcelReaderListener {
     
     private Workbook currentWorkbook;
     private Worksheet currentWorksheet;
     private Table currentTable;
 
+    /**
+     * Recieve notification of the start of the Workbook tag.
+     * Creates a new {@link nl.fountain.xelem.excel.ss.XLWorkbook}.
+     * The name of the workbook is set to <code>workbookName</code>.
+     * The fileName of the workbook is set to <code>systemID</code>.
+     * After the ExcelReader has finished reading, the workbook is populated
+     * with all the {@link nl.fountain.xelem.excel.XLElement XLElements}
+     * encountered during the read and can be obtained by
+     * {@link #getWorkbook()}
+     * 
+     * @param systemID the systemID or "source" if no systemID was encountered
+     * @param workbookName	the name of the workbook or "source" 
+     * 	if no systemID was encountered
+     */
     public void startWorkbook(String systemID, String workbookName) {
         currentWorkbook = new XLWorkbook(workbookName);
         currentWorkbook.setFileName(systemID);

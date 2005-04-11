@@ -18,7 +18,7 @@ import nl.fountain.xelem.excel.Worksheet;
  * 
  * @since xelem.2.0
  */
-public class Director {
+class Director {
     
     private XLWorkbookBuilder xlworkbookbuilder;
     private SSWorksheetBuilder ssworksheetbuilder;
