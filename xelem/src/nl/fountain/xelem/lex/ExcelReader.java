@@ -4,7 +4,6 @@
  */
 package nl.fountain.xelem.lex;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -154,11 +153,10 @@ public class ExcelReader {
                 Attributes attributes) throws SAXException {
             if (XLElement.XMLNS_SS.equals(uri) && "Workbook".equals(localName)) {
                 String systemId = getSystemId();
-                String wbName = getWorkbookName(systemId);
                 Builder builder = director.getXLWorkbookBuilder(); 
                 for (Iterator iter = director.getListeners().iterator(); iter.hasNext();) {
                     ExcelReaderListener listener = (ExcelReaderListener) iter.next();
-                    listener.startWorkbook(systemId, wbName);
+                    listener.startWorkbook(systemId);
                 }               
                 builder.build(reader, this);               
             }       
@@ -194,25 +192,17 @@ public class ExcelReader {
         
         
         private String getSystemId() {
-            String systemId = "source";
+            String systemId = null;
             if (locator != null) {
-                String temp = locator.getSystemId();
-                if (temp != null) {
-                    systemId = temp;
-                }
+                systemId = locator.getSystemId();
+            }
+            if (systemId == null) {
+                systemId = "source";
             }
             return systemId;
         }
         
-        private String getWorkbookName(String systemId) {
-            File file = new File(systemId);
-            String[] s = file.getName().split("\\.");
-            if (s.length > 0) {
-                return s[0];
-            } else {
-                return "";
-            }
-        }
+
         
 
     }

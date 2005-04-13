@@ -26,7 +26,6 @@ public class ExcelReaderListenerTest extends TestCase {
     
     protected boolean docStart;
     protected String sysId;
-    protected String wbName;
     protected int wbCounter;
     protected DocumentProperties props;
     protected int propsCounter;
@@ -85,7 +84,6 @@ public class ExcelReaderListenerTest extends TestCase {
         
         assertEquals(1, wbCounter);
         assertTrue(sysId.endsWith("testsuitefiles/ReaderTest/reader.xml"));
-        assertEquals("reader", wbName);
         
         assertEquals(1, propsCounter);
         assertEquals("Asterix", props.getAuthor());
@@ -127,17 +125,16 @@ public class ExcelReaderListenerTest extends TestCase {
             //System.out.println("target=" + target + " data=" + data);
         }
         
-        public void startWorkbook(String systemID, String workbookName) {
+        public void startWorkbook(String systemID) {
             //System.out.println("Workbook sytemID=" + systemID + " name=" + workbookName);
             sysId = systemID;
-            wbName = workbookName;
+            assertTrue(sysId.endsWith("testsuitefiles/ReaderTest/reader.xml"));
             wbCounter++;
         }
 
         public void setDocumentProperties(DocumentProperties docprops) {
             //System.out.println(docprops);
-            assertTrue(sysId.endsWith("testsuitefiles/ReaderTest/reader.xml"));
-            assertEquals("reader", wbName);
+            
             props = docprops;
             propsCounter++;
         }

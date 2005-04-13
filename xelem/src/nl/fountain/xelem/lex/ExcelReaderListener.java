@@ -60,10 +60,8 @@ public interface ExcelReaderListener {
      * Recieve notification of the start of the Workbook tag.
      * 
      * @param systemID the systemID or "source" if no systemID was encountered
-     * @param workbookName	the name of the workbook or "source" 
-     * 	if no systemID was encountered
      */
-    void startWorkbook(String systemID, String workbookName);
+    void startWorkbook(String systemID);
     
     /**
      * Recieve notification of the the construction of DocumentProperties.

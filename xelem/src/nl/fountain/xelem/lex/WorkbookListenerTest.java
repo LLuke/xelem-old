@@ -14,16 +14,18 @@ public class WorkbookListenerTest extends TestCase {
         junit.textui.TestRunner.run(WorkbookListenerTest.class);
     }
     
-    public void testWorkbookFileNam() {
+    public void testWorkbookFileName() {
         WorkbookListener l = new WorkbookListener();
         //l.startWorkbook("file:/G:/eclipse_ws/xelem/testsuitefiles/ReaderTest/reader.xml", "reader");
-        l.startWorkbook("source", "source");
+        l.startWorkbook("source");
         Workbook wb = l.getWorkbook();
         assertEquals("source", wb.getFileName());
+        assertEquals("source", wb.getName());
         
-        l.startWorkbook("file:/G:/eclipse_ws/xelem/testsuitefiles/ReaderTest/reader.xml", "reader");
+        l.startWorkbook("file:/G:/eclipse_ws/xelem/testsuitefiles/ReaderTest/reader.xml");
         wb = l.getWorkbook();
-        assertEquals("source", wb.getFileName());
+        assertEquals("file:/G:/eclipse_ws/xelem/testsuitefiles/ReaderTest/reader.xml", wb.getFileName());
+        assertEquals("reader", wb.getName());
     }
 
 }

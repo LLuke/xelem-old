@@ -20,6 +20,8 @@
  */
 package nl.fountain.xelem.lex;
 
+import java.io.File;
+
 import nl.fountain.xelem.excel.AutoFilter;
 import nl.fountain.xelem.excel.Column;
 import nl.fountain.xelem.excel.DocumentProperties;
@@ -57,8 +59,8 @@ public class WorkbookListener extends DefaultExcelReaderListener {
      * @param workbookName	the name of the workbook or "source" 
      * 	if no systemID was encountered
      */
-    public void startWorkbook(String systemID, String workbookName) {
-        currentWorkbook = new XLWorkbook(workbookName);
+    public void startWorkbook(String systemID) {
+        currentWorkbook = new XLWorkbook(getWorkbookName(systemID));
         currentWorkbook.setFileName(systemID);
     }
 
@@ -108,6 +110,16 @@ public class WorkbookListener extends DefaultExcelReaderListener {
     
     public Workbook getWorkbook() {
         return currentWorkbook;
+    }
+    
+    private String getWorkbookName(String systemId) {
+        File file = new File(systemId);
+        String[] s = file.getName().split("\\.");
+        if (s.length > 0) {
+            return s[0];
+        } else {
+            return "";
+        }
     }
 
 }

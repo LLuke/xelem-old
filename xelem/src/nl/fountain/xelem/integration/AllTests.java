@@ -26,6 +26,7 @@ import nl.fountain.xelem.expat.XLDocumentTest;
 import nl.fountain.xelem.lex.DirectorTest;
 import nl.fountain.xelem.lex.ExcelReaderListenerTest;
 import nl.fountain.xelem.lex.ExcelReaderTest;
+import nl.fountain.xelem.lex.WorkbookListenerTest;
 
 /**
  *
@@ -66,6 +67,7 @@ public class AllTests extends TestCase {
         suite.addTestSuite(ExcelReaderTest.class);
         suite.addTestSuite(DirectorTest.class);
         suite.addTestSuite(ExcelReaderListenerTest.class);
+        suite.addTestSuite(WorkbookListenerTest.class);
         
         return suite;
     }

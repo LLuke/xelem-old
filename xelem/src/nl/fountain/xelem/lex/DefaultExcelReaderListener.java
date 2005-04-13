@@ -71,7 +71,7 @@ public class DefaultExcelReaderListener implements ExcelReaderListener {
      * Does effectively nothing. Subclasses can implement this method
      * to do effectively something.
      */
-    public void startWorkbook(String systemID, String workbookName) {
+    public void startWorkbook(String systemID) {
     }
     /**
      * Does effectively nothing. Subclasses can implement this method

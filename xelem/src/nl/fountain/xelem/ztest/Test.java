@@ -9,7 +9,6 @@ import java.util.Iterator;
 
 import javax.xml.parsers.ParserConfigurationException;
 
-import nl.fountain.xelem.XelemException;
 import nl.fountain.xelem.excel.Cell;
 import nl.fountain.xelem.excel.Row;
 import nl.fountain.xelem.lex.DefaultExcelReaderListener;
@@ -24,7 +23,7 @@ import org.xml.sax.SAXException;
  */
 public class Test {
 
-    public static void main(String[] args) throws ParserConfigurationException, IOException, SAXException, XelemException {
+    public static void main(String[] args) throws ParserConfigurationException, IOException, SAXException {
         ExcelReader reader = new ExcelReader();
         reader.addExcelReaderListener(new DefaultExcelReaderListener() {
             public void setRow(int sheetIndex, String sheetName, Row row) {
