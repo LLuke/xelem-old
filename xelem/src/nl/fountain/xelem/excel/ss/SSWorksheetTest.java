@@ -8,6 +8,7 @@ import nl.fountain.xelem.CellPointer;
 import nl.fountain.xelem.GIO;
 import nl.fountain.xelem.excel.Cell;
 import nl.fountain.xelem.excel.Column;
+import nl.fountain.xelem.excel.Row;
 import nl.fountain.xelem.excel.Table;
 import nl.fountain.xelem.excel.Worksheet;
 import nl.fountain.xelem.excel.WorksheetOptions;
@@ -185,6 +186,33 @@ public class SSWorksheetTest extends XLElementTest {
         } catch (IndexOutOfBoundsException e) {
             assertEquals("rowIndex = 66666666", e.getMessage());
         }
+    }
+    
+    public void testAddGetHasColumn() {
+        assertFalse(ws.hasColumnAt(7));
+        assertFalse(ws.hasTable());
+        Column col1 = ws.getColumnAt(7);
+        assertNotNull(col1);
+        Column col2 = ws.addColumnAt(7);
+        assertNotSame(col1, col2);
+    }
+    
+    public void testAddGetHasRow() {
+        assertFalse(ws.hasRowAt(7));
+        assertFalse(ws.hasTable());
+        Row row1 = ws.getRowAt(7);
+        assertNotNull(row1);
+        Row row2 = ws.addRowAt(7);
+        assertNotSame(row1, row2);
+    }
+    
+    public void testAddGetHasCell() {
+        assertFalse(ws.hasCellAt(7, 3));
+        assertFalse(ws.hasTable());
+        Cell cell1 = ws.getCellAt(7, 3);
+        assertNotNull(cell1);
+        Cell cell2 = ws.addCellAt(7, 3);
+        assertNotSame(cell1, cell2);
     }
 
     public void testAssemble() {

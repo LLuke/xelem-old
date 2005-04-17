@@ -87,7 +87,8 @@ public interface Worksheet extends XLElement {
     
     /**
      * Adds a new NamedRange to this worksheet. Named ranges are usefull when
-     * working with formulas.
+     * working with formulas. If this workbook allready contained a NamedRange
+     * with the same name, replaces that NamedRange.
      * <P>
      * If the workbook has a named range with the same name, the named range
      * on the worksheet level has precedence over the one defined on the
@@ -104,6 +105,18 @@ public interface Worksheet extends XLElement {
      */
     NamedRange addNamedRange(String name, String refersTo);
     
+    /**
+     * Adds a new NamedRange to this worksheet.
+     * If this workbook allready contained a NamedRange
+     * with the same name, replaces that NamedRange.
+     * <P>
+     * If the workbook has a named range with the same name, the named range
+     * on the worksheet level has precedence over the one defined on the
+     * workbook level. 
+     * 
+     * @param namedRange	the NamedRange to be added to this worksheet
+     * @return the given NamedRange
+     */
     NamedRange addNamedRange(NamedRange namedRange);
     
     /**
@@ -473,8 +486,7 @@ public interface Worksheet extends XLElement {
      * Gets the cell at the given address.
      * 
      * @param address		The position of the cell.
-     * @return The cell at the given address or <code>null</code> 
-     * 			if no cell was at that position.
+     * @return The cell at the given address. Never <code>null</code> 
      */
     Cell getCellAt(Address address);
     
@@ -484,8 +496,7 @@ public interface Worksheet extends XLElement {
      * @param rowIndex		The row index (row number).
      * @param columnIndex	The column index (column number).
      * 
-     * @return The cell at the given coordinates or <code>null</code> 
-     * 			if no cell was at that position.
+     * @return The cell at the given coordinates. Never <code>null</code> 
      */
     Cell getCellAt(int rowIndex, int columnIndex);
     
@@ -494,8 +505,7 @@ public interface Worksheet extends XLElement {
      * 
      * @param a1_ref	a string of A1-reference style
      * 
-     * @return The cell at the given coordinates or <code>null</code> 
-     * 			if no cell was at that position.
+     * @return The cell at the given coordinates. Never <code>null</code>
      */
     Cell getCellAt(String a1_ref);
     
@@ -783,6 +793,10 @@ public interface Worksheet extends XLElement {
      */
     void setAutoFilter(String rcString);
     
+    /**
+     * Sets the AutoFilter on this worksheet.
+     * @param af the AutoFilter to be set on this worksheet.
+     */
     void setAutoFilter(AutoFilter af);
     
     /**

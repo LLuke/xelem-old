@@ -179,9 +179,7 @@ public class XLWorkbook extends AbstractXLElement implements Workbook {
     
     public NamedRange addNamedRange(String name, String refersTo) {
         return addNamedRange(new SSNamedRange(name, refersTo));
-    }
-        
-    
+    }  
     
     public Map getNamedRanges() {
         if (namedRanges == null) {

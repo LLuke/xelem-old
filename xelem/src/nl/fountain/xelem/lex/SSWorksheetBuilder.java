@@ -73,7 +73,7 @@ class SSWorksheetBuilder extends AnonymousBuilder {
                 currentRowIndex++;
             }
             if (director.getBuildArea().isRowPartOfArea(currentRowIndex)) {
-	            Row row = new SSRow();
+                Row row = new SSRow();
 	            row.setIndex(currentRowIndex);
 	            row.setAttributes(atts);
 	            director.setCurrentRowIndex(currentRowIndex);

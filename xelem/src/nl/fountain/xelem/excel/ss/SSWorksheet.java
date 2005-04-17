@@ -259,7 +259,6 @@ public class SSWorksheet extends AbstractXLElement implements Worksheet {
     
     public Cell getCellAt(int rowIndex, int columnIndex) {
         Row row = getTable().getRowAt(rowIndex);
-        if (row == null) return null;
         return row.getCellAt(columnIndex);
     }
     
@@ -288,7 +287,9 @@ public class SSWorksheet extends AbstractXLElement implements Worksheet {
     }
     
     public boolean hasCellAt(int rowIndex, int columnIndex) {
-        if (!getTable().hasRowAt(rowIndex)) {
+        if (!hasTable()) {
+            return false;
+        } else if (!getTable().hasRowAt(rowIndex)) {
             return false;
         }
         return getTable().getRowAt(rowIndex).getCellAt(columnIndex) != null;
@@ -328,7 +329,11 @@ public class SSWorksheet extends AbstractXLElement implements Worksheet {
     }
     
     public boolean hasRowAt(int rowIndex) {
-        return getTable().hasRowAt(rowIndex);
+        if (!hasTable()) {
+            return false;
+        } else {
+            return getTable().hasRowAt(rowIndex);
+        }
     }
     
     public Column addColumn() {
@@ -376,7 +381,11 @@ public class SSWorksheet extends AbstractXLElement implements Worksheet {
     }
     
     public boolean hasColumnAt(int columnIndex) {
-        return getTable().hasColumnAt(columnIndex);
+        if (!hasTable()) {
+            return false;
+        } else {
+            return getTable().hasColumnAt(columnIndex);
+        }
     }
     
     public boolean hasColumnAt(String label) {

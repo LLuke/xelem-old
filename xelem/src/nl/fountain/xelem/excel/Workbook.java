@@ -125,6 +125,12 @@ public interface Workbook extends XLElement {
      */
     void appendInfoSheet();
     
+    /**
+     * Set the DocumentProperties of this workbook or, if this workbook
+     * allready had DocumentProperties, replace it.
+     * 
+     * @param docProps	the DocumentProperties for this workbook
+     */
     void setDocumentProperties(DocumentProperties docProps);
     
     /**
@@ -139,6 +145,12 @@ public interface Workbook extends XLElement {
      */
     boolean hasDocumentProperties();
     
+    /**
+     * Set the ExcelWorkbook of this workbook or, if this workbook allready had
+     * an ExcelWorkbook, replace it.
+     * 
+     * @param excelWb	The ExcelWorkbook for this workbook
+     */
     void setExcelWorkbook(ExcelWorkbook excelWb);
     
     /**
@@ -159,6 +171,8 @@ public interface Workbook extends XLElement {
      * <P>
      * The string <code>refersTo</code> should be of format
      * <code>[worksheet name]!R1C1:R1C1</code>.
+     * If this workbook allready contained a NamedRange with the given name,
+     * replaces it.
      * 
      * @param name		The name to apply to the range.
      * @param refersTo	A String of R1C1 reference style, including worksheet name.
@@ -167,11 +181,20 @@ public interface Workbook extends XLElement {
      */
     NamedRange addNamedRange(String name, String refersTo);
     
+    /**
+     * Adds a new NamedRange to this workbook. 
+     * If this workbook allready contained a NamedRange with an equal name,
+     * replaces it.
+     * 
+     * @param namedRange	the NamedRange to be added to this workbook
+     * @return	the given NamedRange
+     */
     NamedRange addNamedRange(NamedRange namedRange);
     
     /**
      * Gets all the NamedRanges that were added to this workbook. The map-keys
      * are equal to their names.
+     * @return 	a map with NamedRanges
      */
     Map getNamedRanges();
     

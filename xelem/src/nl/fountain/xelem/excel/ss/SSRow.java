@@ -176,7 +176,11 @@ public class SSRow extends AbstractXLElement implements Row {
     }
 
     public Cell getCellAt(int index) {
-        return (Cell) cells.get(new Integer(index));
+        if (!hasCellAt(index)) {
+            return addCellAt(index);
+        } else {
+            return (Cell) cells.get(new Integer(index));
+        }
     }
     
     public boolean hasCellAt(int index) {

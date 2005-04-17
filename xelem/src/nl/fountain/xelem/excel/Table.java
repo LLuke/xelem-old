@@ -218,7 +218,7 @@ public interface Table extends XLElement {
      * returns a new row at that index.
      * 
      * @param index The index (row number) of the row.
-     * @return The row at the given index.
+     * @return The row at the given index. Never <code>null</code>
      * @throws IndexOutOfBoundsException If the calculated index is less then
      * 			{@link nl.fountain.xelem.excel.Worksheet#firstRow} or greater
      * 			then {@link nl.fountain.xelem.excel.Worksheet#lastRow}.
