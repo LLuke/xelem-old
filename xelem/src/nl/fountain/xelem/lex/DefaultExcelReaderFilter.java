@@ -147,6 +147,13 @@ public class DefaultExcelReaderFilter implements ExcelReaderFilter {
             listener.setAutoFilter(sheetIndex, sheetName, autoFilter);
         }
     }
+    
+    public void endWorksheet(int sheetIndex, String sheetName) {
+        for (Iterator iter = getListeners().iterator(); iter.hasNext();) {
+            ExcelReaderListener listener = (ExcelReaderListener) iter.next();
+            listener.endWorksheet(sheetIndex, sheetName);
+        } 
+    }
 
     public void endDocument(Map prefixMap) {
         for (Iterator iter = getListeners().iterator(); iter.hasNext();) {
