@@ -211,6 +211,13 @@ public class ExcelReaderListenerTest extends TestCase {
 //                    + " " + autoFilter);
         }
         
+        public void endWorksheet(int sheetIndex, String sheetName) {
+//          System.out.println("End of Worksheet. index=" + sheetIndex 
+//                  + " name=" + sheetName);  
+          assertEquals(lastWorksheetIndex, sheetIndex);
+          assertEquals(lastWorksheetName, sheetName);
+        }
+        
         public void endDocument(Map prefixMap) {
             assertEquals(9, prefixMap.size());
         }

@@ -111,6 +111,7 @@ public interface ExcelReaderListener {
     
     void setAutoFilter(int sheetIndex, String sheetName, AutoFilter autoFilter);
     
+    void endWorksheet(int sheetIndex, String sheetName);
     /**
      * Recieve notification of the end of the document.
      * 

@@ -147,6 +147,12 @@ public class DefaultExcelReaderListener implements ExcelReaderListener {
      * Does effectively nothing. Subclasses can implement this method
      * to do effectively something.
      */
+    public void endWorksheet(int sheetIndex, String sheetName) {
+    }
+    /**
+     * Does effectively nothing. Subclasses can implement this method
+     * to do effectively something.
+     */
     public void endDocument(Map prefixMap) {
     }
 

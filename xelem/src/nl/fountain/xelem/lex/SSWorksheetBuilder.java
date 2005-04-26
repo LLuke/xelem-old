@@ -73,7 +73,7 @@ class SSWorksheetBuilder extends AnonymousBuilder {
                 currentRowIndex++;
             }
             if (director.getBuildArea().isRowPartOfArea(currentRowIndex)) {
-                Row row = new SSRow();
+	            Row row = new SSRow();
 	            row.setIndex(currentRowIndex);
 	            row.setAttributes(atts);
 	            director.setCurrentRowIndex(currentRowIndex);
@@ -121,6 +121,11 @@ class SSWorksheetBuilder extends AnonymousBuilder {
     public void endElement(String uri, String localName, String qName) throws SAXException {
         if ("Worksheet".equals(localName)) {
             if (XLElement.XMLNS_SS.equals(uri)) {
+                for (Iterator iter = director.getListeners().iterator(); iter.hasNext();) {
+                    ExcelReaderListener listener = (ExcelReaderListener) iter.next();
+                    listener.endWorksheet(director.getCurrentSheetIndex(),
+                            director.getCurrentSheetName());
+                }
                 reader.setContentHandler(parent);
                 return;
             }
