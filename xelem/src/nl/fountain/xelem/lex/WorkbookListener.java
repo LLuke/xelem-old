@@ -56,8 +56,6 @@ public class WorkbookListener extends DefaultExcelReaderListener {
      * {@link #getWorkbook()}
      * 
      * @param systemID the systemID or "source" if no systemID was encountered
-     * @param workbookName	the name of the workbook or "source" 
-     * 	if no systemID was encountered
      */
     public void startWorkbook(String systemID) {
         currentWorkbook = new XLWorkbook(getWorkbookName(systemID));
