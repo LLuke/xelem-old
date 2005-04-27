@@ -21,8 +21,10 @@
 package nl.fountain.xelem.lex;
 
 import java.io.File;
+import java.util.Map;
 
 import nl.fountain.xelem.excel.AutoFilter;
+import nl.fountain.xelem.excel.Cell;
 import nl.fountain.xelem.excel.Column;
 import nl.fountain.xelem.excel.DocumentProperties;
 import nl.fountain.xelem.excel.ExcelWorkbook;
@@ -35,7 +37,8 @@ import nl.fountain.xelem.excel.WorksheetOptions;
 import nl.fountain.xelem.excel.ss.XLWorkbook;
 
 /**
- * An implementation of {@link ExcelReaderListener}.
+ * A concrete implementation of {@link ExcelReaderListener}.
+ * 
  * 
  * @since xelem.2.0
  */
@@ -48,7 +51,8 @@ public class WorkbookListener extends DefaultExcelReaderListener {
     /**
      * Recieve notification of the start of the Workbook tag.
      * Creates a new {@link nl.fountain.xelem.excel.ss.XLWorkbook}.
-     * The name of the workbook is set to <code>workbookName</code>.
+     * The workbookName may be set to a relevant portion of the passed 
+     * <code>systemID</code>.
      * The fileName of the workbook is set to <code>systemID</code>.
      * After the ExcelReader has finished reading, the workbook is populated
      * with all the {@link nl.fountain.xelem.excel.XLElement XLElements}
@@ -61,15 +65,31 @@ public class WorkbookListener extends DefaultExcelReaderListener {
         currentWorkbook = new XLWorkbook(getWorkbookName(systemID));
         currentWorkbook.setFileName(systemID);
     }
-
+    
+    /**
+     * Recieve notification of the the construction of DocumentProperties.
+     * The passed docProps is added to the current workbook.
+     * @param docProps	fully populated instance of DocumentProperties
+     */
     public void setDocumentProperties(DocumentProperties docProps) {
         currentWorkbook.setDocumentProperties(docProps);
     }
 
+    /**
+     * Recieve notification of the the construction of ExcelWorkbook.
+     * The passed excelWb is added to the current workbook.
+     * @param excelWb	fully populated instance of ExcelWorkbook
+     */
     public void setExcelWorkbook(ExcelWorkbook excelWb) {
         currentWorkbook.setExcelWorkbook(excelWb);
     }
 
+    /**
+     * Recieve notification of the the construction of a NamedRange on the 
+     * workbook level.
+     * The passed namedRange is added to the current workbook.
+     * @param namedRange	fully populated instance of NamedRange
+     */
     public void setNamedRange(NamedRange namedRange) {
         currentWorkbook.addNamedRange(namedRange);
     }
@@ -106,6 +126,12 @@ public class WorkbookListener extends DefaultExcelReaderListener {
         currentWorksheet.setAutoFilter(autoFilter);
     }
     
+    /**
+     * Gets the workbook that was read.
+     * 
+     * @return the workbook that was read
+     * 
+     */
     public Workbook getWorkbook() {
         return currentWorkbook;
     }

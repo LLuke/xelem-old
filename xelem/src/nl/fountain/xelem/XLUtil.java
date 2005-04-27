@@ -78,6 +78,15 @@ public class XLUtil {
         return sb.toString();
     }
     
+    /**
+     * Parses a string in the DateTime format used by SpreadsheetML 
+     * to a Date.
+     * 
+     * @param dateString	the string to be parsed
+     * @return				the corresponding Date
+     * @throws				java.text.ParseException 
+     * 						if the string could not be parsed
+     */
     public static Date parse(String dateString) {
         String datum = dateString.substring(0, 10);
         String tijd = dateString.substring(11, 19);

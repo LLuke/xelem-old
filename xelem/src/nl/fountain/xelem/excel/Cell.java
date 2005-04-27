@@ -34,6 +34,7 @@ import org.w3c.dom.Element;
  * places in the worksheet. Only at the time of
  * assembly the cell-index and the attribute ss:Index are automatically set, 
  * if necessary. See also: {@link nl.fountain.xelem.excel.Row#cellIterator()}.
+ * (Also a Cell that is read by the nl.fountain.xelem.lex-API has it's index set.)
  * 
  * <P>
  * <h3>The setData-methods</h3>
@@ -54,6 +55,13 @@ import org.w3c.dom.Element;
  * of these objects and the method {@link java.lang.Double#isInfinite() isInfinite}
  * results to <code>true</code> the xml will have a datatype set to
  * "String" and the cell will display "Infinite" when the spreadsheet is opened.
+ * 
+ * <P id="nanvalues">
+ * <b>NaN values</b><br>
+ * If the passed parameter is of type Double, Float or the primitive representation 
+ * of these objects and the method {@link java.lang.Double#isNaN() isNaN}
+ * results to <code>true</code> the resulting xml will have a datatype set to
+ * "String" and the cell will display "NaN" when the spreadsheet is opened.
  */
 public interface Cell extends XLElement {
     
@@ -176,10 +184,52 @@ public interface Cell extends XLElement {
      */
     String getHRef();
     
+    /**
+     * Adds a comment to this cell. Initially the comment has no text
+     * (no data and no author) and is not showing. If this cell allready
+     * had a comment, replaces this comment.
+     * 
+     * @return the comment added to this cell
+     * @since xelem.2.0
+     */
     Comment addComment();
+    
+    /**
+     * Adds the given comment to this cell. If this cell allready had a comment,
+     * replaces this comment.
+     * 
+     * @param comment	the comment to be added to this cell
+     * @return the newly added comment
+     * @since xelem.2.0
+     */
     Comment addComment(Comment comment);
+    
+    /**
+     * Adds a comment to this cell and sets the data-attribute of the comment
+     * to the given text. Initially the comment will have no author 
+     * and is not showing. If this cell allready
+     * had a comment, replaces this comment.
+     * 
+     * @param text the string to be displayed in the newly added comment
+     * @return the newly added comment
+     * @since xelem.2.0
+     */
     Comment addComment(String text);
+    
+    /**
+     * Specifies whether this cell has a comment.
+     * 
+     * @return <code>true</code> if this cell has a comment, false otherwise.
+     * @since xelem.2.0
+     */
     boolean hasComment();
+    
+    /**
+     * Gets the comment of this cell.
+     * 
+     * @return the comment of this cell. May be <code>null</code>.
+     * @since xelem.2.0
+     */
     Comment getComment();
     
     /**
@@ -203,6 +253,14 @@ public interface Cell extends XLElement {
      */
     void setMergeAcross(int m);
     
+    /**
+     * Gets the number of cells over which this cell has been merged horizontally.
+     * A return value of <code>0</code> indicates no horizontal merge 
+     * was applied on this cell.
+     * 
+     * @return the number of cells that partake in the horizontal merge of this cell
+     * @since xelem.2.0
+     */
     int getMergeAcross();
     
     /**
@@ -224,6 +282,14 @@ public interface Cell extends XLElement {
      */
     void setMergeDown(int m);
     
+    /**
+     * Gets the number of cells over which this cell has been merged vertically.
+     * A return value of <code>0</code> indicates no vertical merge 
+     * was applied on this cell.
+     * 
+     * @return the number of cells that partake in the vertical merge of this cell
+     * @since xelem.2.0
+     */
     int getMergeDown();
     
     /**
@@ -254,6 +320,7 @@ public interface Cell extends XLElement {
      * 
      * @see <a href="#nullvalues">Null values</a>
      * @see <a href="#infinitevalues">Infinite values</a>
+     * @see <a href="#nanvalues">NaN values</a>
      */
     void setData(Double data);
     
@@ -275,6 +342,7 @@ public interface Cell extends XLElement {
      * 
      * @see <a href="#nullvalues">Null values</a>
      * @see <a href="#infinitevalues">Infinite values</a>
+     * @see <a href="#nanvalues">NaN values</a>
      */
     void setData(Float data);
     
@@ -370,6 +438,7 @@ public interface Cell extends XLElement {
      * @param 	data The data to be displayed in this cell. 
      * 
      * @see <a href="#infinitevalues">Infinite values</a>
+     * @see <a href="#nanvalues">NaN values</a>
      */
     void setData(float data);
     
@@ -380,6 +449,7 @@ public interface Cell extends XLElement {
      * @param 	data The data to be displayed in this cell. 
      * 
      * @see <a href="#infinitevalues">Infinite values</a>
+     * @see <a href="#nanvalues">NaN values</a>
      */
     void setData(double data);
     
@@ -415,20 +485,105 @@ public interface Cell extends XLElement {
      */
     String getXLDataType();
     
+    /**
+     * Specifies whether this cell has data.
+     * 
+     * @return <code>true</code> if this cell has a data element,
+     * 		<code>false</code> otherwise
+     * @since xelem.2.0
+     */
     boolean hasData();
     
+    /**
+     * Specifies whether this cell has an error.
+     * 
+     * @return <code>true</code> if the 'Type' attribute of this cells
+     * 	data element equals DATATYPE_ERROR, <code>false</code> otherwise
+     */
     boolean hasError();
     
+    /**
+     * Gets the value of the data element of this cell as an object.
+     * The type of the returned object is determined by the value of the
+     * 'Type' attribute of this cells data element.
+     * <P>
+     * <TABLE border="1" cellpadding="5" cellspacing="4">
+     * <TR><TH>xlDataType</TH><TH>returned type</TH></TR>
+     * <TR><TD>Number</TD><TD>{@link java.lang.Double}</TD></TR>
+     * <TR><TD>DateTime</TD><TD>{@link java.util.Date}</TD></TR>
+     * <TR><TD>Boolean</TD><TD>{@link java.lang.Boolean}</TD></TR>
+     * <TR><TD>String</TD><TD>{@link java.lang.String}</TD></TR>
+     * <TR><TD>Error</TD><TD>{@link java.lang.String}</TD></TR>
+     * <TR><TD>(not specified)</TD><TD>{@link java.lang.String}</TD></TR>
+     * </TABLE>
+     * 
+     * @return	the value of the data element of this cell as an object
+     * @since xelem.2.0
+     */
     Object getData();
     
+    /**
+     * Convenience method for reading the value of the data element 
+     * of this cell as an <code>int</code>. Returns <code>0</code>
+     * if the value could not be converted.
+     * 
+     * @return the value of the data element
+     * @since xelem.2.0
+     */
     int intValue();
     
+    /**
+     * Convenience method for reading the value of the data element 
+     * of this cell as a <code>double</code>. Returns <code>0.0</code>
+     * if the value could not be converted.
+     * 
+     * @return the value of the data element
+     * @since xelem.2.0
+     */
     double doubleValue();
     
+    /**
+     * Convenience method for reading the value of the data element 
+     * of this cell as a <code>boolean</code>. Returns <code>false</code>
+     * if the value is not equal to "1".
+     * 
+     * @return the value of the data element
+     * @since xelem.2.0
+     */
     boolean booleanValue();
     
+    /**
+     * Gets the Data-element.
+     * @param doc the document in which the returned element may be appended
+     * @return the Data-element
+     */
     Element getDataElement(Document doc);
     
+    /**
+     * Sets the value of the ss:Index-attribute of this Cell-element. 
+     * Any value set may be overruled  
+     * by {@link nl.fountain.xelem.excel.Row#cellIterator()}, which sets the
+     * index of cells during assembly. 
+     * <P>
+     * <em>
+     * If you want to place a cell in any particular place, use the
+     * addCellAt-methods of Row, Table or Worksheet, or use Worksheets
+     * CellPointer.
+     * </em>
+     * <P>
+     * 
+     * @param index the index of this cell
+     */
     void setIndex(int index);
+    
+    /**
+     * Gets the value of the ss:Index-attribute of this Cell-element.
+     * The returned value only makes sence if this cell was read with the
+     * reader-API in the nl.fountain.xelem.lex-package and before
+     * any manipulation of this cell or the workbook took place.
+     * 
+     * @return the value of the ss:Index-attribute of this Cell-element
+     * @since xelem.2.0
+     */
     int getIndex();
 }

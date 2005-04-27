@@ -67,8 +67,14 @@ public abstract class AbstractXLElement implements XLElement {
         return comments;
     }
     
+    /**
+     * Does effectively nothing.
+     */
     public void setAttributes(Attributes attrs) {}
     
+    /**
+     * Does effectively nothing.
+     */
     public void setChildElement(String localName, String content) {}
     
     /**

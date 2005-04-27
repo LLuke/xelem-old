@@ -33,6 +33,8 @@ package nl.fountain.xelem.excel;
  * places in the worksheet. Only at the time of
  * assembly the column-index and the attribute ss:Index are automatically set, 
  * if necessary. See also: {@link nl.fountain.xelem.excel.Table#columnIterator()}.
+ * (Also a Column that is read by the nl.fountain.xelem.lex-API has it's index set.)
+ * 
  */
 public interface Column extends XLElement {
     
@@ -63,6 +65,12 @@ public interface Column extends XLElement {
      */
     void setAutoFitWidth(boolean autoFit);
     
+    /**
+     * Specifies whether autofit was set on this column.
+     * 
+     * @return	<code>true</code> if column-width is set to autofit,
+     * 		<code>false</code> otherwise 
+     */
     boolean getAutoFitWith();
     
     /**
@@ -84,6 +92,11 @@ public interface Column extends XLElement {
      */
     void setSpan(int s);
     
+    /**
+     * Gets the number of extra columns this column spans.
+     * 
+     * @return	the number of extra columns this column spans
+     */
     int getSpan();
     
     /**
@@ -93,6 +106,12 @@ public interface Column extends XLElement {
      */
     void setWidth(double w);
     
+    /**
+     * Gets the width of this column. A return value of <code>0.0</code>
+     * may indicate this column has a default width.
+     * 
+     * @return	the width of this column
+     */
     double getWidth();
     
     /**
@@ -102,6 +121,35 @@ public interface Column extends XLElement {
      */
     void setHidden(boolean hide);
     
+    /**
+     * Specifies whether this column is hidden.
+     */
+    boolean isHidden();
+    
+    /**
+     * Sets the value of the ss:Index-attribute of this Column-element. 
+     * Any value set may be overruled  
+     * by {@link nl.fountain.xelem.excel.Table#columnIterator()}, which sets the
+     * index of columns during assembly. 
+     * <P>
+     * <em>
+     * If you want to place a column in any particular place, use the
+     * addColumnAt-methods of Table or Worksheet.
+     * </em>
+     * <P>
+     * 
+     * @param index the index of this column
+     */
     void setIndex(int index);
+    
+    /**
+     * Gets the value of the ss:Index-attribute of this Column-element.
+     * The returned value only makes sence if this column was read with the
+     * reader-API in the nl.fountain.xelem.lex-package and before
+     * any manipulation of this column or the workbook took place.
+     * 
+     * @return the value of the ss:Index-attribute of this Column-element
+     * @since xelem.2.0
+     */
     int getIndex();
 }

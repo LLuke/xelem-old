@@ -20,7 +20,12 @@ import nl.fountain.xelem.excel.Table;
 import nl.fountain.xelem.excel.Worksheet;
 import nl.fountain.xelem.excel.WorksheetOptions;
 
-
+/**
+ * Passes all events, values and instances unfiltered. It's up to the subclasses
+ * of this class to take appropriate filtering action.
+ * 
+ * @since xelem.2.0
+ */
 public class DefaultExcelReaderFilter implements ExcelReaderFilter {
     
     private List listeners;
@@ -45,7 +50,11 @@ public class DefaultExcelReaderFilter implements ExcelReaderFilter {
     public void clearExcelReaderListeners() {
         getListeners().clear();
     }
-
+    
+    /**
+     * Passes the event unfiltered to it's listeners. 
+     * Subclasses can override this method and take appropriate action.
+     */
     public void startDocument() {
         for (Iterator iter = getListeners().iterator(); iter.hasNext();) {
             ExcelReaderListener listener = (ExcelReaderListener) iter.next();
@@ -53,6 +62,10 @@ public class DefaultExcelReaderFilter implements ExcelReaderFilter {
         }
     }
 
+    /**
+     * Passes the event unfiltered to it's listeners. 
+     * Subclasses can override this method and take appropriate action.
+     */
     public void processingInstruction(String target, String data) {
         for (Iterator iter = getListeners().iterator(); iter.hasNext();) {
             ExcelReaderListener listener = (ExcelReaderListener) iter.next();
@@ -60,6 +73,10 @@ public class DefaultExcelReaderFilter implements ExcelReaderFilter {
         }
     }
 
+    /**
+     * Passes the event unfiltered to it's listeners. 
+     * Subclasses can override this method and take appropriate action.
+     */
     public void startWorkbook(String systemID) {
         for (Iterator iter = getListeners().iterator(); iter.hasNext();) {
             ExcelReaderListener listener = (ExcelReaderListener) iter.next();
@@ -67,6 +84,10 @@ public class DefaultExcelReaderFilter implements ExcelReaderFilter {
         }
     }
 
+    /**
+     * Passes the event unfiltered to it's listeners. 
+     * Subclasses can override this method and take appropriate action.
+     */
     public void setDocumentProperties(DocumentProperties docProps) {
         for (Iterator iter = getListeners().iterator(); iter.hasNext();) {
             ExcelReaderListener listener = (ExcelReaderListener) iter.next();
@@ -74,6 +95,10 @@ public class DefaultExcelReaderFilter implements ExcelReaderFilter {
         }
     }
 
+    /**
+     * Passes the event unfiltered to it's listeners. 
+     * Subclasses can override this method and take appropriate action.
+     */
     public void setExcelWorkbook(ExcelWorkbook excelWb) {
         for (Iterator iter = getListeners().iterator(); iter.hasNext();) {
             ExcelReaderListener listener = (ExcelReaderListener) iter.next();
@@ -81,6 +106,10 @@ public class DefaultExcelReaderFilter implements ExcelReaderFilter {
         }
     }
 
+    /**
+     * Passes the event unfiltered to it's listeners. 
+     * Subclasses can override this method and take appropriate action.
+     */
     public void setNamedRange(NamedRange namedRange) {
         for (Iterator iter = getListeners().iterator(); iter.hasNext();) {
             ExcelReaderListener listener = (ExcelReaderListener) iter.next();
@@ -88,6 +117,10 @@ public class DefaultExcelReaderFilter implements ExcelReaderFilter {
         }
     }
 
+    /**
+     * Passes the event unfiltered to it's listeners. 
+     * Subclasses can override this method and take appropriate action.
+     */
     public void startWorksheet(int sheetIndex, Worksheet sheet) {
         for (Iterator iter = getListeners().iterator(); iter.hasNext();) {
             ExcelReaderListener listener = (ExcelReaderListener) iter.next();
@@ -95,6 +128,10 @@ public class DefaultExcelReaderFilter implements ExcelReaderFilter {
         }
     }
 
+    /**
+     * Passes the event unfiltered to it's listeners. 
+     * Subclasses can override this method and take appropriate action.
+     */
     public void setNamedRange(int sheetIndex, String sheetName,
             NamedRange namedRange) {
         for (Iterator iter = getListeners().iterator(); iter.hasNext();) {
@@ -103,6 +140,10 @@ public class DefaultExcelReaderFilter implements ExcelReaderFilter {
         }
     }
 
+    /**
+     * Passes the event unfiltered to it's listeners. 
+     * Subclasses can override this method and take appropriate action.
+     */
     public void startTable(int sheetIndex, String sheetName, Table table) {
         for (Iterator iter = getListeners().iterator(); iter.hasNext();) {
             ExcelReaderListener listener = (ExcelReaderListener) iter.next();
@@ -110,6 +151,10 @@ public class DefaultExcelReaderFilter implements ExcelReaderFilter {
         }
     }
 
+    /**
+     * Passes the event unfiltered to it's listeners. 
+     * Subclasses can override this method and take appropriate action.
+     */
     public void setColumn(int sheetIndex, String sheetName, Column column) {
         for (Iterator iter = getListeners().iterator(); iter.hasNext();) {
             ExcelReaderListener listener = (ExcelReaderListener) iter.next();
@@ -117,6 +162,10 @@ public class DefaultExcelReaderFilter implements ExcelReaderFilter {
         }
     }
 
+    /**
+     * Passes the event unfiltered to it's listeners. 
+     * Subclasses can override this method and take appropriate action.
+     */
     public void setRow(int sheetIndex, String sheetName, Row row) {
         for (Iterator iter = getListeners().iterator(); iter.hasNext();) {
             ExcelReaderListener listener = (ExcelReaderListener) iter.next();
@@ -124,6 +173,10 @@ public class DefaultExcelReaderFilter implements ExcelReaderFilter {
         }
     }
 
+    /**
+     * Passes the event unfiltered to it's listeners. 
+     * Subclasses can override this method and take appropriate action.
+     */
     public void setCell(int sheetIndex, String sheetName, int rowIndex,
             Cell cell) {
         for (Iterator iter = getListeners().iterator(); iter.hasNext();) {
@@ -132,6 +185,10 @@ public class DefaultExcelReaderFilter implements ExcelReaderFilter {
         }
     }
 
+    /**
+     * Passes the event unfiltered to it's listeners. 
+     * Subclasses can override this method and take appropriate action.
+     */
     public void setWorksheetOptions(int sheetIndex, String sheetName,
             WorksheetOptions wsOptions) {
         for (Iterator iter = getListeners().iterator(); iter.hasNext();) {
@@ -140,6 +197,10 @@ public class DefaultExcelReaderFilter implements ExcelReaderFilter {
         }
     }
 
+    /**
+     * Passes the event unfiltered to it's listeners. 
+     * Subclasses can override this method and take appropriate action.
+     */
     public void setAutoFilter(int sheetIndex, String sheetName,
             AutoFilter autoFilter) {
         for (Iterator iter = getListeners().iterator(); iter.hasNext();) {
@@ -148,6 +209,10 @@ public class DefaultExcelReaderFilter implements ExcelReaderFilter {
         }
     }
     
+    /**
+     * Passes the event unfiltered to it's listeners. 
+     * Subclasses can override this method and take appropriate action.
+     */
     public void endWorksheet(int sheetIndex, String sheetName) {
         for (Iterator iter = getListeners().iterator(); iter.hasNext();) {
             ExcelReaderListener listener = (ExcelReaderListener) iter.next();
@@ -155,6 +220,10 @@ public class DefaultExcelReaderFilter implements ExcelReaderFilter {
         } 
     }
 
+    /**
+     * Passes the event unfiltered to it's listeners. 
+     * Subclasses can override this method and take appropriate action.
+     */
     public void endDocument(Map prefixMap) {
         for (Iterator iter = getListeners().iterator(); iter.hasNext();) {
             ExcelReaderListener listener = (ExcelReaderListener) iter.next();

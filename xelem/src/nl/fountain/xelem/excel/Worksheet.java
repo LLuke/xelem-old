@@ -127,6 +127,10 @@ public interface Worksheet extends XLElement {
      */
     Map getNamedRanges();
     
+    /**
+     * Sets the given worksheetOptions as the worksheetOptions of this worksheet.
+     * @param wso the worksheetOptions to be set on this worksheet
+     */
     void setWorksheetOptions(WorksheetOptions wso);
     
     /**
@@ -143,6 +147,10 @@ public interface Worksheet extends XLElement {
      */
     WorksheetOptions getWorksheetOptions();
     
+    /**
+     * Sets the given table as the table of this worksheet.
+     * @param table the table to be set on this worksheet
+     */
     void setTable(Table table);
     
     /**

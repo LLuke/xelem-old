@@ -130,6 +130,9 @@ public interface Table extends XLElement {
      * @param index The index (column number) of the column.
      * 
      * @return The column at the given index. Never <code>null</code>. 
+     * @throws IndexOutOfBoundsException If the calculated index is less then
+     * 			{@link nl.fountain.xelem.excel.Worksheet#firstColumn} or greater
+     * 			then {@link nl.fountain.xelem.excel.Worksheet#lastColumn}.
      */
     Column getColumnAt(int index);
     
@@ -230,11 +233,6 @@ public interface Table extends XLElement {
      */
     boolean hasRowAt(int index);
     
-//    /**
-//     * Gets the row at the given index, or <code>null</code> if no row
-//     * was at that index.
-//     */
-//    Row getRow(int index);
     
     /**
      * Gets all the rows of this table in the order of their index.
@@ -298,8 +296,18 @@ public interface Table extends XLElement {
      */
     int maxColumnIndex();  
     
+    /**
+     * An indicator of the index of the right-most column on this table.
+     * May have been set when reading workbooks.
+     * @return an indicator of the index of the right-most column
+     */
     int getExpandedColumnCount();
     
+    /**
+     * An indicator of the index of the bottom row on this table.
+     * May have been set when reading workbooks.
+     * @return an indicator of the index of the bottom row
+     */
     int getExpandedRowCount();
     
 }

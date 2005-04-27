@@ -340,7 +340,7 @@ public class XFactory {
         loaded = true;
     }
 
-    protected Node loadInfoSheet() throws XelemException {
+    Node loadInfoSheet() throws XelemException {
         issStyles = new TreeSet();
         try {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();

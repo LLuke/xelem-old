@@ -133,7 +133,22 @@ public interface XLElement {
      */
     Element assemble(Element parent, GIO gio);
     
+    /**
+     * Sets the (xml-)attributes found on the (xml-)element during a read
+     * by the nl.fountain.xelem.lex API.
+     * 
+     * @param attrs the attributes found on the element
+     * @since xelem.2.0
+     */
     void setAttributes(Attributes attrs);
     
+    /**
+     * Sets a child element found on the (xml-)element during a read
+     * by the nl.fountain.xelem.lex API.
+     * 
+     * @param localName	the local name of the child
+     * @param content the content of the child
+     * @since xelem.2.0
+     */
     void setChildElement(String localName, String content);
 }

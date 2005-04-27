@@ -109,8 +109,8 @@ public class ExcelReaderListenerTest extends TestCase {
         assertEquals(7, lastExpandedRowCount);
         assertEquals(4, lastExpandedColumnCount);
         
-        assertEquals(5, columnCounter);
-        assertEquals(14, lastColumnIndex);
+        assertEquals(6, columnCounter);
+        assertEquals(16, lastColumnIndex);
     }
     
     

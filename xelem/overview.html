@@ -1,27 +1,21 @@
-<body>With classes and interfaces in this library an Excel XML spreadsheet
-can easily be created. 
+<body>Classes and interfaces for reading and writing SpreadsheetML.
 <UL>
-<LI><a href="#spreadsheetml"><b>SpreadsheetML</b></a>
 <LI><a href="#xelem"><b>xelem</b></a>
-<UL>
-<LI><a href="#creatingaworkbook">creating a workbook</a>
-<LI><a href="#xlelements">XLElements</a>
-<LI><a href="#xfactory">configuration: the XFactory</a>
-<LI><a href="#styles">formatting the workbook: Styles</a>
-<LI><a href="#webapplications">xelem and webApplications</a>
-
+	<UL>
+	<LI><a href="#creatingaworkbook">creating a workbook</a>
+	<LI><a href="#xlelements">XLElements</a>
+	<LI><a href="#xfactory">configuration: the XFactory</a>
+	<LI><a href="#styles">formatting the workbook: Styles</a>
+	</UL>	
+<LI><a href="#xelemlex"><b>reading SpreadsheetML</b></a>
+	<UL>
+	<LI><a href="#blbl">bla bla</a>
+	</UL>
+<LI><a href="#fbla"><b>some advice</b></a>
+	<UL>
+	<LI><a href="#webapplications">xelem and webApplications</a>
+	</UL>
 </UL>
-</UL>
-<H2 id="spreadsheetml">SpreadsheetML</H2>
-Understanding the global structure of SpreadsheetML is critical in
-using some of the methods of xelem's classes. These methods are often
-not documented in this javadoc; a notion of their working should be obtained
-by looking up the corresponding documentation on the xml-element.
-<br>
-An overview of SpreadsheetML, the xml-dialect for Excel, can be obtained
-at:
-<a href="http://www.microsoft.com/downloads/details.aspx?familyid=fe118952-3547-420a-a412-00a2662442d9&amp;displaylang=en"
-   target="_blank">Office 2003 XML Schemas</a>
 
 <H2 id="xelem">xelem</H2>
 The architecture of xelem stays close to the architecture of SpreadsheetML. 
@@ -34,6 +28,14 @@ and don't have to bother about the settings of 'Pane'-elements that go with the 
 Xelem takes care of that.
 The root of the XML spreadsheet is the Workbook-element, the hub and starting point
 of xelem is the {@link nl.fountain.xelem.excel.ss.XLWorkbook XLWorkbook.class}.
+<P>
+Understanding the global structure of SpreadsheetML is critical in
+using some of the methods of xelem's classes. These methods are often
+not documented in this javadoc; a notion of their working should be obtained
+by looking up the corresponding documentation on the xml-element.
+An overview of SpreadsheetML, the xml-dialect for Excel, can be obtained at:
+<a href="http://www.microsoft.com/downloads/details.aspx?familyid=fe118952-3547-420a-a412-00a2662442d9&amp;displaylang=en"
+   target="_blank">Office 2003 XML Schemas</a>
 
 <HR>
 <H3 id="creatingaworkbook">creating a workbook</H3>

@@ -37,6 +37,7 @@ import org.w3c.dom.Element;
  * places in the worksheet. Only at the time of
  * assembly the row-index and the attribute ss:Index are automatically set, 
  * if necessary. See also: {@link nl.fountain.xelem.excel.Table#rowIterator()}.
+ * (Also a Row that is read by the nl.fountain.xelem.lex-API has it's index set.)
  * 
  * @see nl.fountain.xelem.excel.Worksheet#addRow()
  * @see nl.fountain.xelem.excel.Table#addRow()
@@ -79,6 +80,11 @@ public interface Row extends XLElement {
      */
     void setSpan(int s);
     
+    /**
+     * Gets the number of extra rows this row spans.
+     * 
+     * @return	the number of extra rows this row spans
+     */
     int getSpan();
     
     /**
@@ -88,6 +94,12 @@ public interface Row extends XLElement {
      */
     void setHeight(double h);
     
+    /**
+     * Gets the height of this row. A return value of <code>0.0</code>
+     * may indicate this row has a default height.
+     * 
+     * @return the height of the row (in points).
+     */
     double getHeight();
     
     /**
@@ -97,6 +109,9 @@ public interface Row extends XLElement {
      */
     void setHidden(boolean hide);
     
+    /**
+     * Specifies whether this row is hidden.
+     */
     boolean isHidden();
     
     //void setAutoFitHeight(boolean autoFit);
@@ -280,11 +295,13 @@ public interface Row extends XLElement {
      * 
      * @param index The index (column number) of the cell.
      * 
-     * @return The cell at the given index or <code>null</code> 
-     * 			if there was no cell at the given index.
+     * @return The cell at the given index. Never <code>null</code> 
      */
     Cell getCellAt(int index);
     
+    /**
+     * Specifies whether this row has a cell at the given index
+     */
     boolean hasCellAt(int index);
     
     /**
@@ -335,7 +352,31 @@ public interface Row extends XLElement {
      */
     Element createElement(Document doc);
     
+    /**
+     * Sets the value of the ss:Index-attribute of this Row-element. 
+     * Any value set may be overruled  
+     * by {@link nl.fountain.xelem.excel.Table#rowIterator()}, which sets the
+     * index of rows during assembly. 
+     * <P>
+     * <em>
+     * If you want to place a row in any particular place, use the
+     * addRowAt-methods of Table or Worksheet.
+     * </em>
+     * <P>
+     * 
+     * @param index the index of this row
+     */
     void setIndex(int index);
+    
+    /**
+     * Gets the value of the ss:Index-attribute of this Row-element.
+     * The returned value only makes sence if this row was read with the
+     * reader-API in the nl.fountain.xelem.lex-package and before
+     * any manipulation of this row or the workbook took place.
+     * 
+     * @return the value of the ss:Index-attribute of this Row-element
+     * @since xelem.2.0
+     */
     int getIndex();
     
 }

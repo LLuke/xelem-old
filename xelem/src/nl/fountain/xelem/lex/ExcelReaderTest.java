@@ -215,7 +215,7 @@ public class ExcelReaderTest extends TestCase {
         Workbook wb = getReaderWorkbook();
         Table table = wb.getWorksheet("Tom Poes").getTable();
         
-        assertEquals(14, table.getExpandedColumnCount());
+        assertEquals(16, table.getExpandedColumnCount());
         assertEquals(25, table.getExpandedRowCount());
         assertEquals("s22", table.getStyleID());
     }
@@ -239,7 +239,9 @@ public class ExcelReaderTest extends TestCase {
         Column c9 = wb.getWorksheet("Tom Poes").getColumnAt("i");
         assertSame(column9, c9);
         
-        assertEquals(5, table.getColumns().size());
+        assertTrue(table.getColumnAt(16).isHidden());
+        
+        assertEquals(6, table.getColumns().size());
     }
     
     public void testRow() throws Exception {

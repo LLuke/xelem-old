@@ -43,6 +43,7 @@ import org.w3c.dom.Document;
 
 /**
  * A conveniance class for serializing Workbooks.
+ * 
  */
 public class XSerializer {
     

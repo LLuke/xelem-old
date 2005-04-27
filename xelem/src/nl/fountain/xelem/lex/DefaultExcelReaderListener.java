@@ -36,121 +36,107 @@ import nl.fountain.xelem.excel.WorksheetOptions;
 /**
  * Does effectively nothing. It's up to the subclasses of this class to do
  * effectively something.
- * <P>
- * Register an ExcelReaderListener with 
- * {@link ExcelReader} and call <code>read</code> on the ExcelReader.
- * An anonymous implementation might look like this:
- * <PRE>
- *   ExcelReader reader = new ExcelReader();
- *   reader.addExcelReaderListener(new DefaultExcelReaderListener() {
- *     public void setRow(int sheetIndex, String sheetName, Row row) {
- *       // do things with row, sheetindex and sheetName
- *       // ...
- *     }
- *   });
- *   reader.read("foo/bar.xml");
- * </PRE>
  * 
  * @since xelem.2.0
  */
 public class DefaultExcelReaderListener implements ExcelReaderListener {
     
     /**
-     * Does effectively nothing. Subclasses can implement this method
+     * Does effectively nothing. Subclasses can override this method
      * to do effectively something.
      */
     public void startDocument() {
     }
     /**
-     * Does effectively nothing. Subclasses can implement this method
+     * Does effectively nothing. Subclasses can override this method
      * to do effectively something.
      */
     public void processingInstruction(String target, String data) {
     }
     /**
-     * Does effectively nothing. Subclasses can implement this method
+     * Does effectively nothing. Subclasses can override this method
      * to do effectively something.
      */
     public void startWorkbook(String systemID) {
     }
     /**
-     * Does effectively nothing. Subclasses can implement this method
+     * Does effectively nothing. Subclasses can override this method
      * to do effectively something.
      */
     public void setDocumentProperties(DocumentProperties docProps) {
     }
     /**
-     * Does effectively nothing. Subclasses can implement this method
+     * Does effectively nothing. Subclasses can override this method
      * to do effectively something.
      */
     public void setExcelWorkbook(ExcelWorkbook excelWb) {
     }
     /**
-     * Does effectively nothing. Subclasses can implement this method
+     * Does effectively nothing. Subclasses can override this method
      * to do effectively something.
      */
     public void setNamedRange(NamedRange namedRange) {
     }
     /**
-     * Does effectively nothing. Subclasses can implement this method
+     * Does effectively nothing. Subclasses can override this method
      * to do effectively something.
      */
     public void startWorksheet(int sheetIndex, Worksheet sheet) {
     }
     /**
-     * Does effectively nothing. Subclasses can implement this method
+     * Does effectively nothing. Subclasses can override this method
      * to do effectively something.
      */
     public void setNamedRange(int sheetIndex, String sheetName,
             NamedRange namedRange) {
     }
     /**
-     * Does effectively nothing. Subclasses can implement this method
+     * Does effectively nothing. Subclasses can override this method
      * to do effectively something.
      */
     public void startTable(int sheetIndex, String sheetName, Table table) {
     }
     /**
-     * Does effectively nothing. Subclasses can implement this method
+     * Does effectively nothing. Subclasses can override this method
      * to do effectively something.
      */
     public void setColumn(int sheetIndex, String sheetName, Column column) {
     }
     /**
-     * Does effectively nothing. Subclasses can implement this method
+     * Does effectively nothing. Subclasses can override this method
      * to do effectively something.
      */
     public void setRow(int sheetIndex, String sheetName, Row row) {
     }
     /**
-     * Does effectively nothing. Subclasses can implement this method
+     * Does effectively nothing. Subclasses can override this method
      * to do effectively something.
      */
     public void setCell(int sheetIndex, String sheetName, int rowIndex,
             Cell cell) {
     }
     /**
-     * Does effectively nothing. Subclasses can implement this method
+     * Does effectively nothing. Subclasses can override this method
      * to do effectively something.
      */
     public void setWorksheetOptions(int sheetIndex, String sheetName,
             WorksheetOptions wsOptions) {
     }
     /**
-     * Does effectively nothing. Subclasses can implement this method
+     * Does effectively nothing. Subclasses can override this method
      * to do effectively something.
      */
     public void setAutoFilter(int sheetIndex, String sheetName,
             AutoFilter autoFilter) {
     }
     /**
-     * Does effectively nothing. Subclasses can implement this method
+     * Does effectively nothing. Subclasses can override this method
      * to do effectively something.
      */
     public void endWorksheet(int sheetIndex, String sheetName) {
     }
     /**
-     * Does effectively nothing. Subclasses can implement this method
+     * Does effectively nothing. Subclasses can override this method
      * to do effectively something.
      */
     public void endDocument(Map prefixMap) {

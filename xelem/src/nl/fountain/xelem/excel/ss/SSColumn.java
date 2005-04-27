@@ -101,6 +101,14 @@ public class SSColumn extends AbstractXLElement implements Column {
         hidden = hide;
     }
     
+    public boolean isHidden() {
+        return hidden;
+    }
+    
+    private void setHidden(String s) {
+        hidden = "1".equals(s);
+    }
+    
     public String getTagName() {
         return "Column";
     }
