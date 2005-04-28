@@ -134,8 +134,8 @@ public interface XLElement {
     Element assemble(Element parent, GIO gio);
     
     /**
-     * Sets the (xml-)attributes found on the (xml-)element during a read
-     * by the nl.fountain.xelem.lex API.
+     * Called by a builder during a read by {@link nl.fountain.xelem.lex.ExcelReader}.
+     * Sets the (xml-)attributes found on the (xml-)element.
      * 
      * @param attrs the attributes found on the element
      * @since xelem.2.0
@@ -143,8 +143,8 @@ public interface XLElement {
     void setAttributes(Attributes attrs);
     
     /**
-     * Sets a child element found on the (xml-)element during a read
-     * by the nl.fountain.xelem.lex API.
+     * Called by a builder during a read by {@link nl.fountain.xelem.lex.ExcelReader}.
+     * Sets a child element found on the (xml-)element.
      * 
      * @param localName	the local name of the child
      * @param content the content of the child

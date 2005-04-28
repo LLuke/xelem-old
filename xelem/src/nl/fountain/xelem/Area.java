@@ -71,7 +71,15 @@ public class Area {
      * Constructs a new Area. This constructor takes an A1-reference string 
      * as a parameter. For instance "B4:E6" will construct an area delimmited
      * by rows 4 and 6 and columns 2 and 5. Treats the passed string case-insensitive.
+     * <P>
+     * Splits the string in the parameter on ":" and calculates row and
+     * column numbers with the 2 resulting strings.
+     * 
      * @param a1_ref a string of A1-reference style
+     * @throws IllegalArgumentException if a1_ref cannot be split in two strings
+     * 		using ":" as breakpoint.
+     * @see Address#calculateColumn(String)
+     * @see Address#calculateRow(String)
      */
     public Area(String a1_ref) {
         String[] ar = a1_ref.split(":");

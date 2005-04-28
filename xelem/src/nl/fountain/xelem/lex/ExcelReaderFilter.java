@@ -55,7 +55,7 @@ public interface ExcelReaderFilter extends ExcelReaderListener {
     boolean removeExcelReaderListener(ExcelReaderListener listener);
     
     /**
-     * Remove all the registered listeners.
+     * Remove all registered listeners.
      *
      */
     void clearExcelReaderListeners();

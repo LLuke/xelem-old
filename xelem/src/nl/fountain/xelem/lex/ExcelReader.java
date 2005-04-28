@@ -27,7 +27,20 @@ import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
 
 /**
- * Basic class for reading xml-spreadsheets of type spreadsheetML.
+ * Basic class for reading xml-spreadsheets of type spreadsheetML. 
+ * <P>
+ * An ExcelReader
+ * can deliver the contents of an xml-file or an xml-InputSource as a
+ * fully populated {@link nl.fountain.xelem.excel.Workbook}.
+ * <P>
+ * Furthermore, it can dispatch events, values and instances of 
+ * {@link nl.fountain.xelem.excel.XLElement XLElements} to listeners
+ * registered at this ExcelReader while parsing an xml-file or
+ * xml-InputSource.
+ * 
+ * @see <a href=package-summary.html#package_description">package overview</a>
+ * 
+ * @since xelem.2.0
  */
 public class ExcelReader {
     
@@ -38,6 +51,16 @@ public class ExcelReader {
     private Handler handler;
     private Map uris;
     
+    /**
+     * Constructs a new ExcelReader.
+     * Obtains a {@link javax.xml.parsers.SAXParser} from an instance of
+     * {@link javax.xml.parsers.SAXParserFactory} to do the parsing.
+     * There is no need to configure factory parameters.
+     * 
+     * @throws ParserConfigurationException if a parser cannot be created
+     * 		 which satisfies the current configuration
+     * @throws SAXException	for SAX errors
+     */
     public ExcelReader() throws ParserConfigurationException, SAXException {
         SAXParserFactory spf = SAXParserFactory.newInstance();
         spf.setNamespaceAware(true);
@@ -45,18 +68,46 @@ public class ExcelReader {
         director = new Director();
     }
     
-    SAXParser getSaxParser() {
+    /**
+     * Returns the SAXParser that is used by this ExcelReader. (Just to see
+     * what we've got under the hood.)
+     * <P>
+     * Under Java 1.4 we might see a org.apache.crimson.jaxp.SAXParserImpl,
+     * it could be a com.sun.org.apache.xerces.internal.jaxp.SAXParserImpl
+     * under Java 1.5. 
+     * 
+     * @return	the SAXParser that is used by this ExcelReader
+     */
+    public SAXParser getSaxParser() {
         return parser;
     }
     
+    /**
+     * Sets the area that is to be read. 
+     * Reading will be restricted to the specified area until another
+     * area is set or until the read area has been cleared.
+     * 
+     * @param area the area to read
+     */
     public void setReadArea(Area area) {
         director.setBuildArea(area);
     }
     
+    /**
+     * Clears the read area. Reading will not be rerstricted after a call
+     * to this method.
+     *
+     */
     public void clearReadArea() {
         director.setBuildArea(null);
     }
     
+    /**
+     * Gets the area that restricts reading on this ExcelReader. May be null if
+     * no read area was set or the read area was cleared.
+     * 
+     * @return  the read area
+     */
     public Area getReadArea() {
         if (director.hasBuildArea()) {
             return director.getBuildArea();
@@ -65,26 +116,63 @@ public class ExcelReader {
         }
     }
     
+    /**
+     * Specifies whether reading is restricted on this ExcelReader.
+     * 
+     */
     public boolean hasReadArea() {
         return director.hasBuildArea();
     }
     
+    /**
+     * Gets a list of registered listeners on this ExcelReader.
+     * 
+     * @return a list of registered listeners
+     */
     public List getListeners() {
         return director.getListeners();
     }
     
-    public void addExcelReaderListener(ExcelReaderListener l) {
-        director.addExcelReaderListener(l);
+    /**
+     * Registers the given listener on this ExcelReader.
+     * 
+     * @param listener the ExcelReaderListener to be registered
+     */
+    public void addExcelReaderListener(ExcelReaderListener listener) {
+        director.addExcelReaderListener(listener);
     }
     
-    public boolean removeExcelReaderListener(ExcelReaderListener l) {
-        return director.removeExcelReaderListener(l);
+    /**
+     * Removes the passed listener on this ExcelReader.
+     * 
+     * @param listener the ExcelReaderListener to be removed
+     * @return <code>true</code> if the passed listener was registered,
+     * 		<code>false</code> otherwise
+     */
+    public boolean removeExcelReaderListener(ExcelReaderListener listener) {
+        return director.removeExcelReaderListener(listener);
     }
     
+    /**
+     * Remove all listeners on this ExcelReader
+     *
+     */
     public void clearExcelReaderListeners() {
         director.clearExcelReaderListeners();
     }
     
+    /**
+     * Delivers the contents of the specified file as a fully populated Workbook.
+     * If a read area was set on this ExcelReader the workbook and its worksheets
+     * are only populated in the specified area. If listeners are registered
+     * on this ExcelReader dispatches events to these listeners during the read.
+     * Performs a read.
+     * 
+     * @param fileName 		the name of the file to be read
+     * @return				a fully populated Workbook
+     * @throws IOException 	signals a failed or interrupted I/O operation
+     * @throws SAXException	signals a general SAX error or warning
+     */
     public Workbook getWorkbook(String fileName) throws IOException, SAXException {
         InputSource in = new InputSource(fileName);
         return getWorkbook(in);

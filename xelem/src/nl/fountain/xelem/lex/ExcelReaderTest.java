@@ -5,13 +5,23 @@
 package nl.fountain.xelem.lex;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.PipedReader;
+import java.io.PipedWriter;
+import java.io.PrintWriter;
+import java.io.Reader;
+import java.io.Writer;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.NoSuchElementException;
+
+import javax.xml.parsers.ParserConfigurationException;
 
 import junit.framework.TestCase;
 import nl.fountain.xelem.Area;
 import nl.fountain.xelem.XSerializer;
+import nl.fountain.xelem.XelemException;
 import nl.fountain.xelem.excel.Cell;
 import nl.fountain.xelem.excel.Column;
 import nl.fountain.xelem.excel.Comment;
@@ -23,7 +33,10 @@ import nl.fountain.xelem.excel.Table;
 import nl.fountain.xelem.excel.Workbook;
 import nl.fountain.xelem.excel.Worksheet;
 import nl.fountain.xelem.excel.WorksheetOptions;
+import nl.fountain.xelem.excel.ss.XLWorkbook;
 
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
 /**
@@ -64,6 +77,9 @@ public class ExcelReaderTest extends TestCase {
             //System.out.println(e2.getClass());
             //assertEquals(MalformedByteSequenceException.class, e2.getClass());
         }
+        // is it still working?
+        Workbook wb = xlr.getWorkbook("testsuitefiles/ReaderTest/reader.xml");
+        doTestSheets(wb);
     }
     
     public void testReadInvalidXML() throws Exception {
@@ -174,19 +190,31 @@ public class ExcelReaderTest extends TestCase {
     
     public void testWorksheet() throws Exception {
         Workbook wb = getReaderWorkbook();
+        doTestSheets(wb);
+    }
+    
+    private void doTestSheets(Workbook wb) {
         Iterator iter = wb.getSheetNames().iterator();
         
         assertEquals("Tom Poes", iter.next());
         assertEquals("Donald Duck", iter.next());
         assertEquals("Asterix", iter.next());
         assertEquals("Sponge Bob", iter.next());
+        assertEquals("window", iter.next());
+        try {
+            iter.next();
+            fail("should be no next");
+        } catch (NoSuchElementException e) {
+            //
+        }
         
         Worksheet sheet = wb.getWorksheet("Donald Duck");
         assertTrue(sheet.isProtected());
         sheet = wb.getWorksheet("Asterix");
         assertTrue(sheet.isRightToLeft());
+        assertEquals(5, wb.getSheetNames().size());
     }
-    
+
     public void testGetWorksheetAt() throws Exception {
         String[] sheetNames = { "Tom Poes", "Donald Duck", "Asterix",
                 "Sponge Bob", "window" };
@@ -434,5 +462,95 @@ public class ExcelReaderTest extends TestCase {
         File out = new File("testoutput/ReaderTest/partial.xls");
         new XSerializer().serialize(wb, out);
     }
+    
+    
+    public void testStream() throws Exception{
+        PipedReader inSnk = new PipedReader();
+        PipedWriter out = new PipedWriter(inSnk);
+        
+        PipedReader srcIn = new PipedReader();
+        PipedWriter srcOut = new PipedWriter(srcIn);
+        PrintWriter pOut = new PrintWriter(srcOut);
+        
+        Transmittor transmittor = new Transmittor(srcIn, out);
+        transmittor.start();
+        
+        Reciever reciever = new Reciever(inSnk);
+        reciever.start();
+        
+        Workbook wb = new XLWorkbook("foo");
+        Worksheet sheet = wb.addSheet("bar");
+        sheet.setAutoFilter(new Area("C5:F5").getAbsoluteRange());
+        sheet.addCell("transmitted");
+        new XSerializer().serialize(wb, pOut);
+        pOut.flush();
+        pOut.close();
+        
+        while (reciever.isAlive());
+        while (transmittor.isAlive());
+        assertEquals("TERMINATED", reciever.getState().toString());
+        assertEquals("TERMINATED", transmittor.getState().toString());
+    }
+    
+    private class Transmittor extends Thread {
+        
+        private Reader in;
+        private Writer out;
+        
+        public Transmittor(Reader in, Writer out) {
+            this.in = in;
+            this.out = out;
+            this.setName("transmittorThread");
+        }
+        
+        public void run() {
+            int i;
+            try {
+                while ((i = in.read()) > -1) {
+                    out.write(i);
+                    out.flush();
+                }
+                in.close();
+                out.close();
+                //System.out.println("terminating " + this.getName());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    
+    private class Reciever extends Thread {
+        
+        private Reader in;
+        
+        public Reciever(Reader in) {
+            this.in = in;
+            this.setName("recieverThread");
+        }
+        
+        public void run() {
+            try {
+                InputSource source = new InputSource(in);
+                ExcelReader reader = new ExcelReader();
+                Workbook wb = reader.getWorkbook(source);
+                in.close();
+                assertEquals("source", wb.getFileName());
+                assertEquals("source", wb.getName());
+                wb.setFileName("testoutput/ReaderTest/transmitted.xls");
+                new XSerializer().serialize(wb);
+                //System.out.println("terminating " + this.getName());
+            } catch (ParserConfigurationException e) {
+                e.printStackTrace();
+            } catch (SAXException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (XelemException e) {
+                e.printStackTrace();
+            }
+            
+        }
+    }
+    
 
 }
