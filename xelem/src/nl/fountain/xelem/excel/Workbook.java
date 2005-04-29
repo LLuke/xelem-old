@@ -33,12 +33,18 @@ import org.w3c.dom.Document;
 /**
  * Represents the Workbook element, the root of a SpreadsheetML document.
  * <P>
+ * Creating SpreadsheetML and Excel workbooks from within Java starts here.
  * Besides adding child XLElements and setting other features,
  * the Workbook can be used to merge Styles.
  * After finishing the Workbook you'll probably want to create the 
  * {@link org.w3c.dom.Document}, the structure that holds this Workbook
  * and all of it's children. This is done with the 
  * {@link #createDocument()}-method.
+ * <P>
+ * When you obtain a Workbook from an
+ * {@link nl.fountain.xelem.lex.ExcelReader}
+ * you can query and process it's contents.
+ * 
  * 
  * @see <a href="../../../../overview-summary.html#overview_description">overview</a>
  */

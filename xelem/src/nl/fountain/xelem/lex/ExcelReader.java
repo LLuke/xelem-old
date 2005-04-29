@@ -1,6 +1,22 @@
 /*
  * Created on 15-mrt-2005
+ * Copyright (C) 2005  Henk van den Berg
  *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ * 
+ * see license.txt
  */
 package nl.fountain.xelem.lex;
 
@@ -104,7 +120,7 @@ public class ExcelReader {
     
     /**
      * Gets the area that restricts reading on this ExcelReader. May be null if
-     * no read area was set or the read area was cleared.
+     * no read area was set or if the read area was cleared.
      * 
      * @return  the read area
      */
@@ -163,44 +179,101 @@ public class ExcelReader {
     
     /**
      * Delivers the contents of the specified file as a fully populated Workbook.
-     * If a read area was set on this ExcelReader the workbook and its worksheets
-     * are only populated in the specified area. If listeners are registered
-     * on this ExcelReader dispatches events to these listeners during the read.
-     * Performs a read.
+     * If a read area was set on this ExcelReader its worksheets
+     * are only populated in the specified area. If listeners are registered,
+     * this ExcelReader dispatches events to these listeners during the read.
+     * Performs a read. 
      * 
      * @param fileName 		the name of the file to be read
      * @return				a fully populated Workbook
      * @throws IOException 	signals a failed or interrupted I/O operation
      * @throws SAXException	signals a general SAX error or warning
+     * 
+     * @see #read(String)
      */
     public Workbook getWorkbook(String fileName) throws IOException, SAXException {
         InputSource in = new InputSource(fileName);
         return getWorkbook(in);
     }
     
-    public Workbook getWorkbook(InputSource in) throws IOException, SAXException {
+    /**
+     * Delivers the contents of the given InputSource as a fully populated Workbook.
+     * If a read area was set on this ExcelReader its worksheets
+     * are only populated in the specified area. If listeners are registered,
+     * this ExcelReader dispatches events to these listeners during the read.
+     * Performs a read. 
+     * 
+     * @param source		the Inputsource streaming spreadsheetML	
+     * @return				a fully populated Workbook
+     * @throws IOException	signals a failed or interrupted I/O operation
+     * @throws SAXException	signals a general SAX error or warning
+     * 
+     * @see	#read(InputSource)
+     */
+    public Workbook getWorkbook(InputSource source) throws IOException, SAXException {
         WorkbookListener wbl = new WorkbookListener();
         addExcelReaderListener(wbl);
-        read(in);
+        read(source);
         removeExcelReaderListener(wbl);
         return wbl.getWorkbook();
     }
     
+    /**
+     * Reads the file with the given name and dispatches events to registered
+     * {@link ExcelReaderListener ExcelReaderListeners}. If a read area was set
+     * on this ExcelReader, only events occuring within the limits of the
+     * area are dispatched.
+     * <P>
+     * When trying to read non-xml files, under java 1.5 a <code>
+     * com.sun.org.apache.xerces.internal.impl.io.MalformedByteSequenceException
+     * </code> might be thrown. The MalformedByteSequenceException is unknown
+     * under java 1.4 and previous releases. Releases prior to java 1.5
+     * will throw a <code>org.xml.sax.SAXParseException</code> under these
+     * adverse conditions.
+     * 
+     * @param fileName		the name of the file to be read
+     * @throws IOException	signals a failed or interrupted I/O operation
+     * @throws SAXException	signals a general SAX error or warning
+     */
     public void read(String fileName) throws IOException, SAXException {
         InputSource in = new InputSource(fileName);
         read(in);
     }
     
-    public void read(InputSource in) throws IOException, SAXException {
+    /**
+     * Reads the stream of the given InputSource and dispatches events to registered
+     * {@link ExcelReaderListener ExcelReaderListeners}. If a read area was set
+     * on this ExcelReader, only events occuring within the limits of the
+     * area are dispatched.
+     * <P>
+     * When trying to read non-xml streams, under java 1.5 a <code>
+     * com.sun.org.apache.xerces.internal.impl.io.MalformedByteSequenceException
+     * </code> might be thrown. The MalformedByteSequenceException is unknown
+     * under java 1.4 and previous releases. Releases prior to java 1.5
+     * will throw a <code>org.xml.sax.SAXParseException</code> under these
+     * adverse conditions.
+     * 
+     * @param source		the Inputsource streaming spreadsheetML
+     * @throws IOException	signals a failed or interrupted I/O operation
+     * @throws SAXException	signals a general SAX error or warning
+     */
+    public void read(InputSource source) throws IOException, SAXException {
         getPrefixMap().clear();
         reader = parser.getXMLReader();
         
         reader.setContentHandler(getHandler());
         reader.setErrorHandler(getHandler());
         //reader.setDTDHandler(this);
-        reader.parse(in);
+        reader.parse(source);
     }
 
+    /**
+     * Gets a map of prefixes (keys) and uri's recieved while reading. 
+     * May be obtained after a read. Performing
+     * a new read will clear any previously recorded entries from the map.
+     * 
+     * @return a map of prefixes (keys) and uri's recieved while reading
+     */
     public Map getPrefixMap() {
         if (uris == null) {
             uris = new HashMap();
@@ -270,11 +343,13 @@ public class ExcelReader {
         }
         
         public void error(SAXParseException e) throws SAXException {
-            System.out.println("error detected: " + e.getMessage());
+            //System.out.println("error detected: " + e.getMessage());
+            throw e;
         }
         
         public void warning(SAXParseException e) throws SAXException {
-            System.out.println("warning detected: " + e.getMessage());
+            //System.out.println("warning detected: " + e.getMessage());
+            throw e;
         }
         
         

@@ -4,6 +4,7 @@
  */
 package nl.fountain.xelem.lex;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.PipedReader;
@@ -20,6 +21,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import junit.framework.TestCase;
 import nl.fountain.xelem.Area;
+import nl.fountain.xelem.XFactory;
 import nl.fountain.xelem.XSerializer;
 import nl.fountain.xelem.XelemException;
 import nl.fountain.xelem.excel.Cell;
@@ -44,11 +46,26 @@ import org.xml.sax.SAXParseException;
  */
 public class ExcelReaderTest extends TestCase {
     
+//  the path to the directory for test files.
+    String testOutputDir = "testoutput/ReaderTest/";
+    
+    // when set to true, test files will be created.
+    // the path mentioned after 'testOutputDir' should exist.
+    boolean toFile = true;
+    
     private static Workbook readerwb;
 
     public static void main(String[] args) {
         junit.textui.TestRunner.run(ExcelReaderTest.class);
     }
+    
+    public void testAdvise() {
+        if (toFile) {
+            System.out.println();
+            System.out.println(this.getClass() + " is writing files to: "
+                    + testOutputDir);
+        }
+     }
     
     public void testConstructor() throws Exception {
         ExcelReader xlr = new ExcelReader();
@@ -68,6 +85,7 @@ public class ExcelReaderTest extends TestCase {
             fail("should have thrown Exception");
         } catch (SAXParseException e) {
             assertEquals(1, e.getLineNumber());
+            //System.out.println(e.getClass());
         } catch (Exception e2) {
             // under java 1.5 a 
             // com.sun.org.apache.xerces.internal.impl.io.MalformedByteSequenceException
@@ -103,22 +121,24 @@ public class ExcelReaderTest extends TestCase {
         if (readerwb == null) {
 	        ExcelReader xlr = new ExcelReader();
 	        readerwb = xlr.getWorkbook("testsuitefiles/ReaderTest/reader.xml");
-	        
+	        //System.out.println(readerwb);
         }
         return readerwb;
     }
     
     public void testReWrite() throws Exception {
-        ExcelReader xlr = new ExcelReader();
-        Workbook wb = xlr.getWorkbook("testsuitefiles/ReaderTest/reader.xml");
-        File out = new File("testoutput/ReaderTest/rewrite.xls");
-        XSerializer xs = new XSerializer();
-        xs.serialize(wb, out);
-        
-        // try read another
-        wb = xlr.getWorkbook("testsuitefiles/ReaderTest/docprops.xml");
-        out = new File("testoutput/ReaderTest/docprops_r.xls");
-        xs.serialize(wb, out);
+        if (toFile) {
+	        ExcelReader xlr = new ExcelReader();
+	        Workbook wb = xlr.getWorkbook("testsuitefiles/ReaderTest/reader.xml");
+	        File out = new File(testOutputDir + "rewrite.xls");
+	        XSerializer xs = new XSerializer();
+	        xs.serialize(wb, out);
+	        
+	        // try read another
+	        wb = xlr.getWorkbook("testsuitefiles/ReaderTest/docprops.xml");
+	        out = new File(testOutputDir + "docprops_r.xls");
+	        xs.serialize(wb, out);
+        }
     }
     
     
@@ -459,37 +479,48 @@ public class ExcelReaderTest extends TestCase {
                         "only " + area.getA1Reference() + " has been read");
             }
         }
-        File out = new File("testoutput/ReaderTest/partial.xls");
-        new XSerializer().serialize(wb, out);
+        if (toFile) {
+	        File out = new File(testOutputDir + "partial.xls");
+	        new XSerializer().serialize(wb, out);
+        }
     }
     
     
-    public void testStream() throws Exception{
-        PipedReader inSnk = new PipedReader();
-        PipedWriter out = new PipedWriter(inSnk);
+    public void testStream() throws Exception {       
+        PipedReader inA = new PipedReader();
+        PrintWriter outA = new PrintWriter(new PipedWriter(inA));
         
-        PipedReader srcIn = new PipedReader();
-        PipedWriter srcOut = new PipedWriter(srcIn);
-        PrintWriter pOut = new PrintWriter(srcOut);
-        
-        Transmittor transmittor = new Transmittor(srcIn, out);
+        PipedWriter outB = new PipedWriter();
+        BufferedReader inB = new BufferedReader(new PipedReader(outB));
+               
+        Transmittor transmittor = new Transmittor(inA, outB);
         transmittor.start();
         
-        Reciever reciever = new Reciever(inSnk);
+        Reciever reciever = new Reciever(inB);
         reciever.start();
         
         Workbook wb = new XLWorkbook("foo");
         Worksheet sheet = wb.addSheet("bar");
         sheet.setAutoFilter(new Area("C5:F5").getAbsoluteRange());
-        sheet.addCell("transmitted");
-        new XSerializer().serialize(wb, pOut);
-        pOut.flush();
-        pOut.close();
+        sheet.addCell("transmitted with «¸È‚‰‡ÂÁÍÎËÔÓÏƒ≈…Ê∆ÙˆÚ˚˘ˇ÷‹¢£•?É·");
+        //
+        wb.appendInfoSheet();
+        // notice that both this workbook and
+        // the transmitted workbook on the other end
+        // depend on the (same) static configuration of the XFactory
+        // and that this explains
+        // why appropriate styles are found and applied on the other end.
+        // That is if we do not reset the XFactory at the other end
+        // prior to serializing the workbook to file.
+        new XSerializer().serialize(wb, outA);
+        outA.flush();
+        outA.close();
         
         while (reciever.isAlive());
         while (transmittor.isAlive());
-        assertEquals("TERMINATED", reciever.getState().toString());
-        assertEquals("TERMINATED", transmittor.getState().toString());
+        // only under java 1.5
+//        assertEquals("TERMINATED", reciever.getState().toString());
+//        assertEquals("TERMINATED", transmittor.getState().toString());
     }
     
     private class Transmittor extends Thread {
@@ -534,10 +565,19 @@ public class ExcelReaderTest extends TestCase {
                 ExcelReader reader = new ExcelReader();
                 Workbook wb = reader.getWorkbook(source);
                 in.close();
+                // skip this line and styles will still be in the XFactory
+                XFactory.reset();
+                //
                 assertEquals("source", wb.getFileName());
                 assertEquals("source", wb.getName());
-                wb.setFileName("testoutput/ReaderTest/transmitted.xls");
-                new XSerializer().serialize(wb);
+                assertEquals("transmitted with «¸È‚‰‡ÂÁÍÎËÔÓÏƒ≈…Ê∆ÙˆÚ˚˘ˇ÷‹¢£•?É·",
+                        wb.getWorksheetAt(0).getCellAt(1, 1).getData());
+                if (toFile) {
+                    wb.addElementComment(" this workbook was recieved at "
+                            + new Date() + " ");
+	                wb.setFileName(testOutputDir + "transmitted.xls");
+	                new XSerializer().serialize(wb);
+                }
                 //System.out.println("terminating " + this.getName());
             } catch (ParserConfigurationException e) {
                 e.printStackTrace();

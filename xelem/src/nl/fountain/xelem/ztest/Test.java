@@ -24,6 +24,15 @@ import org.xml.sax.SAXException;
 public class Test {
 
     public static void main(String[] args) throws ParserConfigurationException, IOException, SAXException {
+        new Test().simple();
+    }
+    
+    private void simple() throws ParserConfigurationException, IOException, SAXException {
+        ExcelReader reader = new ExcelReader();
+        /*Workbook wb = */reader.getWorkbook("D:/test/big1879.xml");
+    }
+
+    private static void listen() throws ParserConfigurationException, SAXException, IOException {
         ExcelReader reader = new ExcelReader();
         reader.addExcelReaderListener(new DefaultExcelReaderListener() {
             public void setRow(int sheetIndex, String sheetName, Row row) {
