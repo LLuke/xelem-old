@@ -1,5 +1,6 @@
 <body>
 Provides classes that enable reading SpreadsheetML.
+<P>
 The basic class for reading xml-spreadsheets of type spreadsheetML is
 {@link nl.fountain.xelem.lex.ExcelReader}. 
 It can deliver the contents of an xml-file or an 
@@ -22,11 +23,11 @@ and you want to do something with it's contents and structure in Java. Here's
 what you got to do:
 <PRE>
    ExcelReader reader = new ExcelReader();
-   Workbook xlWorkbook = reader.getWorkbook("foo/bar.xml");
+   Workbook xlWorkbook = reader.getWorkbook("foo/bar/myFile.xml");
 </PRE>
 Now what you have is a fully populated 
 {@link nl.fountain.xelem.excel.ss.XLWorkbook}, that is, the complete representation
-of the Excel xml-file <code>bar.xml</code> in Java class-instances. Now you can
+of the Excel xml-file <code>myFile.xml</code> in Java class-instances. Now you can
 inspect it's structure, process it's contents, alter it or send it to the president.
 <P>
 OOoops! You got an <code><font color="red">

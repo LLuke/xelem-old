@@ -85,6 +85,22 @@ public class ExcelReader {
     }
     
     /**
+     * Constructs a new ExcelReader. Uses the given parser. The parser
+     * should be namespace aware.
+     * 
+     * @param parser a SAXParser that is namespace aware
+     * @throws ParserConfigurationException	if the parser is not namespace aware
+     */
+    public ExcelReader(SAXParser parser) throws ParserConfigurationException {
+        if (!parser.isNamespaceAware()) {
+            throw new ParserConfigurationException(
+                "cannot read with a parser that is unaware of namespaces.");
+        }
+        this.parser = parser;
+        director = new Director();
+    }
+    
+    /**
      * Returns the SAXParser that is used by this ExcelReader. (Just to see
      * what we've got under the hood.)
      * <P>
@@ -260,10 +276,8 @@ public class ExcelReader {
     public void read(InputSource source) throws IOException, SAXException {
         getPrefixMap().clear();
         reader = parser.getXMLReader();
-        
         reader.setContentHandler(getHandler());
         reader.setErrorHandler(getHandler());
-        //reader.setDTDHandler(this);
         reader.parse(source);
     }
 

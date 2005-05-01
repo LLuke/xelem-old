@@ -18,6 +18,8 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
 
 import junit.framework.TestCase;
 import nl.fountain.xelem.Area;
@@ -40,6 +42,7 @@ import nl.fountain.xelem.excel.ss.XLWorkbook;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
+import org.xml.sax.XMLReader;
 
 /**
  *
@@ -68,20 +71,32 @@ public class ExcelReaderTest extends TestCase {
      }
     
     public void testConstructor() throws Exception {
-        ExcelReader xlr = new ExcelReader();
+        ExcelReader reader = new ExcelReader();
         // leeds to different results depending on the JRE being used
         // 1.4: org.apache.crimson.jaxp.SAXParserImpl
         // 1.5: com.sun.org.apache.xerces.internal.jaxp.SAXParserImpl
         //System.out.println(xlr.getSaxParser().getClass());
-        assertNotNull(xlr.getSaxParser());
+        assertNotNull(reader.getSaxParser());
+        assertTrue(reader.getSaxParser().isNamespaceAware());
+    }
+    
+    public void testConstructorWithGivenParser() throws Exception {
+        SAXParser parser = SAXParserFactory.newInstance().newSAXParser();
+        try {
+            ExcelReader reader = new ExcelReader(parser);
+            fail("is this parser namespace aware?");
+        } catch (ParserConfigurationException e) {
+            assertEquals("cannot read with a parser that is unaware of namespaces.",
+                    e.getMessage());
+        }
     }
     
     
     public void testReadNoXML() throws Exception {
-        ExcelReader xlr = new ExcelReader();
-        
+        ExcelReader reader = new ExcelReader();
+        XMLReader xmlReader1 = reader.getSaxParser().getXMLReader();
         try {
-            xlr.getWorkbook("testsuitefiles/ReaderTest/excel.xls");
+            reader.getWorkbook("testsuitefiles/ReaderTest/excel.xls");
             fail("should have thrown Exception");
         } catch (SAXParseException e) {
             assertEquals(1, e.getLineNumber());
@@ -96,7 +111,10 @@ public class ExcelReaderTest extends TestCase {
             //assertEquals(MalformedByteSequenceException.class, e2.getClass());
         }
         // is it still working?
-        Workbook wb = xlr.getWorkbook("testsuitefiles/ReaderTest/reader.xml");
+        Workbook wb = reader.getWorkbook("testsuitefiles/ReaderTest/reader.xml");
+        XMLReader xmlReader2 = reader.getSaxParser().getXMLReader();
+        assertSame(xmlReader1, xmlReader2);
+        
         doTestSheets(wb);
     }
     
@@ -108,6 +126,7 @@ public class ExcelReaderTest extends TestCase {
         } catch (SAXParseException e) {
             //System.out.println(e.getMessage());
             assertEquals(11, e.getLineNumber());
+            assertEquals(-1, e.getColumnNumber());
         }
     }
     
@@ -119,9 +138,8 @@ public class ExcelReaderTest extends TestCase {
     
     private Workbook getReaderWorkbook() throws Exception {
         if (readerwb == null) {
-	        ExcelReader xlr = new ExcelReader();
-	        readerwb = xlr.getWorkbook("testsuitefiles/ReaderTest/reader.xml");
-	        //System.out.println(readerwb);
+	        ExcelReader reader = new ExcelReader();
+	        readerwb = reader.getWorkbook("testsuitefiles/ReaderTest/reader.xml");
         }
         return readerwb;
     }

@@ -41,9 +41,10 @@ import org.w3c.dom.Document;
  * and all of it's children. This is done with the 
  * {@link #createDocument()}-method.
  * <P>
- * When you obtain a Workbook from an
- * {@link nl.fountain.xelem.lex.ExcelReader}
- * you can query and process it's contents.
+ * A Workbook can be obtained from 
+ * {@link nl.fountain.xelem.lex.ExcelReader},
+ * that reads Excel xml-files or xml-InputSources.
+ * 
  * 
  * 
  * @see <a href="../../../../overview-summary.html#overview_description">overview</a>
