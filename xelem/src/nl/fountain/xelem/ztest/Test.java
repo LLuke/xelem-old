@@ -8,7 +8,6 @@ import java.io.IOException;
 
 import javax.xml.parsers.ParserConfigurationException;
 
-import nl.fountain.xelem.Area;
 import nl.fountain.xelem.excel.Row;
 import nl.fountain.xelem.lex.DefaultExcelReaderListener;
 import nl.fountain.xelem.lex.ExcelReader;
