@@ -16,6 +16,8 @@ that acts as a wrapper for listeners.
 <LI><a href="#areas">partial reading - setting the read area</a>
 <LI><a href="#eventbasedmodel">the event-based model</a>
 <LI><a href="#swapping">swapping read areas</a>
+<LI><a href="#filter">using filters</a>
+
 </UL>
 
 <P>&nbsp;
@@ -63,7 +65,7 @@ you only loop through all of the rows of
 the workbook once. Building an XLWorkbook first and then iterate through all of it's rows
 would take two loops.]
 
-<H3 id="areas">Partial reading - setting the read area</H3>
+<a name="areas"><H3>Partial reading - setting the read area</H3></a>
 When we know what part of the workbook we're interested in we can restrict reading
 to that particular part. More precise, we can tell ExcelReader
 which {@link nl.fountain.xelem.Area Area} of the worksheets to read.
@@ -82,7 +84,7 @@ columns, tables and worksheets, all other
 and fully populated. 
 Mark that the above code will treat all the worksheets in the workbook in the
 same way. If we want to set different read areas or clear the read area
-for individual worksheets we'll need other code. We'll come to that. First let's
+for individual worksheets we need other code. We'll come to that. First let's
 take a look at the event-based API. 
 
 <H3 id="eventbasedmodel">The event-based model</H3>
@@ -123,7 +125,7 @@ row only contains cells that were found within that area.
 <H3 id="swapping">Swapping read areas</H3>
 Up till this far we have used the setReadArea-method to set one area for
 all the worksheets we were reading. Maybe we want to read different areas on
-different worksheets. Using the event-model we could set different read areas
+different worksheets. Using the event-model we can set different read areas
 when different worksheets come along. (Or -for that matter- trigger what action
 so ever on any event.) Here's a SwappingAreaListener:
 <PRE>
@@ -134,7 +136,8 @@ class SwappingAreaListener extends DefaultExcelReaderListener {
    public SwappingAreaListener(ExcelReader reader) {
       this.reader = reader;
    }
-
+   
+   <font color="green">// override method in DefaultExcelReaderListener</font>
    public void startWorksheet(int sheetIndex, Worksheet sheet) {
       switch (sheetIndex) {
          case 1:
@@ -170,6 +173,21 @@ the completed XLWorkbook. If you want to use the same ExcelReader to perform
 more reads that must not be restricted, do not forget to remove 
 the SwappingAreaListener.
 
-
+<H3 id="filter">Using filters</H3>
+An {@link nl.fountain.xelem.lex.ExcelReaderFilter} is an
+{@link nl.fountain.xelem.lex.ExcelReaderListener} that can register other
+listeners: it wraps other listeners. It's a sort of chain. The default
+implementations of these interfaces
+{@link nl.fountain.xelem.lex.DefaultExcelReaderListener}
+and {@link nl.fountain.xelem.lex.DefaultExcelReaderFilter} have contrary
+behaviour. Events send to DefaultExcelReaderListener drop dead unless
+it's subclass overrides the setXXX- or startXXX-method. Events
+send to DefaultExcelReaderFilter are propagated unfiltered to the registered
+listeners unless it's subclass overrides the method and takes appropriate action.
+<P>
+Filters and listeners can be configured in a variety of ways. For instance, we use an
+EmptyRowFilter to count the number of empty rows on a worksheet and abandon
+listening for further events on that sheet at a certain emptyRowCount. I'm sure
+your imagination, inventiveness and creativity go beyond that.
 
 </body>

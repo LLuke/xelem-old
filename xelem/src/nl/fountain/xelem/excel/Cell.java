@@ -553,8 +553,9 @@ public interface Cell extends XLElement {
     boolean booleanValue();
     
     /**
-     * Gets the Data-element.
-     * @param doc the document in which the returned element may be appended
+     * Gets the Data-element of this cell as an
+     * {@link org.w3c.dom.Element org.w3c.dom.Element}.
+     * @param doc the document to which the returned element may be appended
      * @return the Data-element
      */
     Element getDataElement(Document doc);

@@ -8,7 +8,9 @@ import java.io.IOException;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import nl.fountain.xelem.Area;
 import nl.fountain.xelem.excel.Row;
+import nl.fountain.xelem.excel.Worksheet;
 import nl.fountain.xelem.lex.DefaultExcelReaderListener;
 import nl.fountain.xelem.lex.ExcelReader;
 
@@ -41,5 +43,29 @@ public class Test {
         });
         reader.read("testsuitefiles/ReaderTest/reader.xml");
     }
+    
+    class SwappingAreaListener extends DefaultExcelReaderListener {
+        
+       private ExcelReader reader;
+
+       public SwappingAreaListener(ExcelReader reader) {
+          this.reader = reader;
+       }
+       
+       // override method in DefaultExcelReaderListener
+       public void startWorksheet(int sheetIndex, Worksheet sheet) {
+          switch (sheetIndex) {
+             case 1:
+                reader.setReadArea(new Area("A1:C6"));
+                break;
+             case 2:
+                reader.setReadArea(new Area("G11:G11"));
+                break;
+             default:
+                reader.clearReadArea();
+         }        
+       }  
+    }
+
     
 }

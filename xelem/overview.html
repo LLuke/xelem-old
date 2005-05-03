@@ -6,12 +6,11 @@
 	<LI><a href="#xlelements">XLElements</a>
 	<LI><a href="#xfactory">configuration: the XFactory</a>
 	<LI><a href="#styles">formatting the workbook: Styles</a>
-	</UL>	
-<LI><a href="#xelemlex"><b>reading SpreadsheetML</b></a>
-	<UL>
-	<LI><a href="#blbl">bla bla</a>
 	</UL>
-<LI><a href="#fbla"><b>some advice</b></a>
+<P>	
+<LI><a href="#xelemlex"><b>reading SpreadsheetML</b></a>
+<P>
+<LI><a href="#fbla"><b>tips &amp; tricks</b></a>
 	<UL>
 	<LI><a href="#webapplications">xelem and webApplications</a>
 	</UL>
@@ -198,7 +197,32 @@ ss:ID-attribute as the passed id in the configuration
 file or you should have merged a style with such an id before calling the
 createDocument-method on the workbook. 
 
+
+<P id="xelemlex">
 <HR>
+<P>
+<HR>
+<H2>reading SpreadsheetML</H2>
+Xelem can read. The nl.fountain.xelem.lex-package (since xelem.2.0) now offers an
+easy to use API to read spreadsheetML.
+<P>
+{@link nl.fountain.xelem.lex.ExcelReader} is the basic class for reading Excel-xml.
+It delivers the contents of an xml-file or an 
+xml-InputSource as a fully populated {@link nl.fountain.xelem.excel.Workbook}.
+The package also offers an event-based model with the
+{@link nl.fountain.xelem.lex.ExcelReaderListener ExcelReaderListener-interface}.
+There's a more detailled discussion on the xelem.lex API on the 
+<a href="nl/fountain/xelem/lex/package-summary.html#package_description">
+package overview page</a>.
+
+
+<P id="fbla">
+<HR>
+<P>
+<HR>
+
+<H2>tips &amp; tricks</H2>
+
 <H3 id="webapplications">xelem and webApplications</H3>
 Using xelem in a webApplication can offer your clients the oppertunity to
 download Excel-files that are dynamically created upon request. Here's an example

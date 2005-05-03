@@ -54,7 +54,7 @@ import org.xml.sax.helpers.DefaultHandler;
  * registered at this ExcelReader while parsing an xml-file or
  * xml-InputSource.
  * 
- * @see <a href=package-summary.html#package_description">package overview</a>
+ * @see <a href="package-summary.html#package_description">package overview</a>
  * 
  * @since xelem.2.0
  */
@@ -120,6 +120,7 @@ public class ExcelReader {
      * area is set or until the read area has been cleared.
      * 
      * @param area the area to read
+     * @see <a href="package-summary.html#areas">package overview</a>
      */
     public void setReadArea(Area area) {
         director.setBuildArea(area);
@@ -169,6 +170,7 @@ public class ExcelReader {
      * Registers the given listener on this ExcelReader.
      * 
      * @param listener the ExcelReaderListener to be registered
+     * @see <a href="package-summary.html#eventbasedmodel">package overview</a>
      */
     public void addExcelReaderListener(ExcelReaderListener listener) {
         director.addExcelReaderListener(listener);

@@ -32,4 +32,10 @@ class SwappingAreaListener extends DefaultExcelReaderListener {
         	    reader.clearReadArea();
         }        
     }  
+    
+    // @see nl.fountain.xelem.lex.DefaultExcelReaderListener#endWorksheet(int, java.lang.String)
+    public void endWorksheet(int sheetIndex, String sheetName) {
+        super.endWorksheet(sheetIndex, sheetName);
+    }
+    
 }

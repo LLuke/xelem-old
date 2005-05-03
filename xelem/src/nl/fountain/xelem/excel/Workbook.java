@@ -41,9 +41,9 @@ import org.w3c.dom.Document;
  * and all of it's children. This is done with the 
  * {@link #createDocument()}-method.
  * <P>
- * A Workbook can be obtained from 
+ * A Workbook might also be obtained from an
  * {@link nl.fountain.xelem.lex.ExcelReader},
- * that reads Excel xml-files or xml-InputSources.
+ * an object that reads Excel xml-files or xml-InputSources.
  * 
  * 
  * 

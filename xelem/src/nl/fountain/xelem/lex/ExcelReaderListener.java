@@ -39,6 +39,7 @@ import nl.fountain.xelem.excel.WorksheetOptions;
  * A registered ExcelReaderListener listens to events fired by {@link ExcelReader}
  * while the ExcelReader is reading xml-spreadsheets of type spreadsheetML.
  * 
+ * @see <a href="package-summary.html#package_description">package overview</a>
  * @since xelem.2.0
  */
 public interface ExcelReaderListener {

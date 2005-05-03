@@ -28,8 +28,9 @@ import java.util.List;
  * events, values and instances to the listeners registered with this
  * ExcelReaderFilter.
  * 
+ * @see <a href="package-summary.html#package_description">package overview</a>
  * @since xelem.2.0
- *
+ * 
  */
 public interface ExcelReaderFilter extends ExcelReaderListener {
     
