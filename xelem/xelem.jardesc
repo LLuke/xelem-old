@@ -14,12 +14,13 @@
         <javaElement handleIdentifier="=xelem/src&lt;nl.fountain.xelem.excel{WorksheetOptions.java"/>
         <javaElement handleIdentifier="=xelem/src&lt;nl.fountain.xelem.excel.x{XExcelWorkbook.java"/>
         <javaElement handleIdentifier="=xelem/src&lt;nl.fountain.xelem.lex{SSRowBuilder.java"/>
+        <javaElement handleIdentifier="=xelem/src&lt;nl.fountain.xelem.excel.ss{SSComment.java"/>
         <javaElement handleIdentifier="=xelem/src&lt;nl.fountain.xelem.excel.ss{SSNamedRange.java"/>
         <javaElement handleIdentifier="=xelem/src&lt;nl.fountain.xelem.excel{Workbook.java"/>
         <javaElement handleIdentifier="=xelem/src&lt;nl.fountain.xelem.lex{DefaultExcelReaderListener.java"/>
         <javaElement handleIdentifier="=xelem/src&lt;nl.fountain.xelem{UnsupportedStyleException.java"/>
-        <javaElement handleIdentifier="=xelem/src&lt;nl.fountain.xelem.excel{Worksheet.java"/>
         <javaElement handleIdentifier="=xelem/src&lt;nl.fountain.xelem.excel.x{XPane.java"/>
+        <javaElement handleIdentifier="=xelem/src&lt;nl.fountain.xelem.excel{Worksheet.java"/>
         <javaElement handleIdentifier="=xelem/src&lt;nl.fountain.xelem{XSerializer.java"/>
         <javaElement handleIdentifier="=xelem/src&lt;nl.fountain.xelem.excel{ExcelWorkbook.java"/>
         <javaElement handleIdentifier="=xelem/src&lt;nl.fountain.xelem.excel.x{XWorksheetOptions.java"/>

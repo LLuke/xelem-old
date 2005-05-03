@@ -740,7 +740,7 @@ public class CreateDocumentTest extends TestCase {
         wb.addSheet();
         Worksheet sheet = wb.addSheet();
         sheet.addCell("this sheet is selected; "
-                + "the workbooks structure is protected.");
+                + "the workbooks structure is protected. (cannot move sheets)");
         sheet.addCellAt(2, 1).setData("choose >Tools >Protection >Unprotect Workbook");
         wb.addSheet();
         wb.addSheet();
@@ -791,12 +791,13 @@ public class CreateDocumentTest extends TestCase {
         comment = sheet.addCell("empty comment").addComment();
         comment.setData("");
         
-        comment = sheet.addCell("lf comment").addComment();
-        comment.setAuthor("the great author");
-        comment.setData("<B><I><Font html:Face=\"Tahoma\" html:Size=\"9\" "
-                + "html:Color=\"#000000\">the great author:</Font></I></B>"
-                + "<Font html:Face=\"Tahoma\" html:Size=\"9\" "
-                + "html:Color=\"#000000\">&#10;dit is&#10;commentaar.</Font>");
+        // deprecated
+//        comment = sheet.addCell("lf comment").addComment();
+//        comment.setAuthor("the great author");
+//        comment.setData("<B><I><Font html:Face=\"Tahoma\" html:Size=\"9\" "
+//                + "html:Color=\"#000000\">the great author:</Font></I></B>"
+//                + "<Font html:Face=\"Tahoma\" html:Size=\"9\" "
+//                + "html:Color=\"#000000\">&#10;dit is&#10;commentaar.</Font>");
         
         if (toFile) xmlToFile(wb);
     }

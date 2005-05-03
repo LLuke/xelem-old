@@ -67,7 +67,6 @@ public class DefaultExcelReaderFilterTest extends TestCase {
             	    break;
             	default:
             	    reader.clearReadArea();
-            		System.out.println(sheetIndex);
             }
             super.startWorksheet(sheetIndex, sheet);
         }

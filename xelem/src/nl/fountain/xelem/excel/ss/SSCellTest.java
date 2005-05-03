@@ -208,21 +208,21 @@ public class SSCellTest extends XLElementTest {
         //System.out.println(xml);
     }
     
-    public void testSubclassing() {
-        Object o = "123456789";
-        SSCell sCell = new SSCell() {
-            public void setData(String data) {
-                setType(DATATYPE_NUMBER);
-                setData(data.length());
-             }
-        };
-        sCell.setData(o);
-        GIO gio = new GIO();
-        String xml = xmlToString(sCell, gio);
-        assertTrue(xml.indexOf("<Data ss:Type=\"Number\">9</Data>") > 0);
-        
-        //System.out.println(xml);
-    }
+//    public void testSubclassing() {
+//        Object o = "123456789";
+//        SSCell sCell = new SSCell() {
+//            public void setData(String data) {
+//                setType(DATATYPE_NUMBER);
+//                setData(data.length());
+//             }
+//        };
+//        sCell.setData(o);
+//        GIO gio = new GIO();
+//        String xml = xmlToString(sCell, gio);
+//        assertTrue(xml.indexOf("<Data ss:Type=\"Number\">9</Data>") > 0);
+//        
+//        //System.out.println(xml);
+//    }
     
     public void testGetData() {
         Cell cell = new SSCell();
