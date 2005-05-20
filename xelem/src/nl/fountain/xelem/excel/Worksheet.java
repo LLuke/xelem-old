@@ -816,6 +816,13 @@ public interface Worksheet extends XLElement {
      */
     boolean hasAutoFilter();
     
+    /**
+     * Removes the Autofilter on this worksheet.
+     * 
+     * @since xelem.2.1
+     */
+    void removeAutoFilter();
+    
     //int rowCount();
     //int columnCount();
     

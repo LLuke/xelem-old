@@ -417,6 +417,10 @@ public class SSWorksheet extends AbstractXLElement implements Worksheet {
         return autoFilter != null;
     }
     
+    public void removeAutoFilter() {
+        autoFilter = null;
+    }
+    
     public Element assemble(Element parent, GIO gio) {
         Document doc = parent.getOwnerDocument();
         Element wse = assemble(doc, gio);

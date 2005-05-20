@@ -26,6 +26,11 @@ package nl.fountain.xelem;
  */
 public class UnsupportedStyleException extends Exception {
     
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
     public UnsupportedStyleException(String message) {
         super(message);
     }

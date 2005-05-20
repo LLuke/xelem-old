@@ -28,6 +28,11 @@ package nl.fountain.xelem;
  */
 public class XelemException extends Exception {
     
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
     public XelemException(Throwable cause) {
         super(cause);
     }

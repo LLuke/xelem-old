@@ -26,6 +26,11 @@ package nl.fountain.xelem.excel;
  */
 public class DuplicateNameException extends RuntimeException {
     
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
     public DuplicateNameException() {
         super();
     }
