@@ -4,6 +4,8 @@
  */
 package nl.fountain.xelem.integration;
 
+import java.io.File;
+
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import junit.textui.TestRunner;
@@ -32,9 +34,21 @@ import nl.fountain.xelem.lex.WorkbookListenerTest;
  *
  */
 public class AllTests extends TestCase {
+	
+	private static final String[] T_O_DIRS = {"testoutput/CreateDocumentTest", 
+												"testoutput/XLDocumentTest",
+												"testoutput/ReaderTest"};
 
     
     public static void main(String[] args) {
+    	// create testoutput directories
+    	for (int i = 0; i < T_O_DIRS.length; i++) {
+        	File output = new File(T_O_DIRS[i]);
+        	if (!output.exists()) {
+        		output.mkdirs();
+        	}
+		}
+    	// run suite
         TestRunner.run(suite());
     }
     
