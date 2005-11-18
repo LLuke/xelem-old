@@ -39,7 +39,7 @@ import java.util.TreeSet;
  */
 public class GIO {
     
-    private Set styleIDSet;
+    private Set<String> styleIDSet;
     private int selectedSheetsCount;
     private boolean printComments;
     
@@ -58,9 +58,9 @@ public class GIO {
      * 
      * @return 	A set of styleID's.
      */
-    public Set getStyleIDSet() {
+    public Set<String> getStyleIDSet() {
         if (styleIDSet == null) {
-            styleIDSet = new TreeSet();
+            styleIDSet = new TreeSet<String>();
         }
         return styleIDSet;
     }

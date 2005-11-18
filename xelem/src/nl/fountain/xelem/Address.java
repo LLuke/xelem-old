@@ -296,16 +296,15 @@ public class Address implements Comparable {
      * 			the list is empty.
      * @throws ClassCastException If the addresses provided are not of equal class.
      */
-    public static String getAbsoluteRange(Collection addresses) {
+    public static String getAbsoluteRange(Collection<Address> addresses) {
         if (addresses.size() == 0) {
             return null;
         }
         StringBuffer sb = new StringBuffer();
-        Set adrs = new TreeSet(addresses);
-        for (Iterator iter = adrs.iterator(); iter.hasNext();) {
-            Address adr = (Address) iter.next();
+        Set<Address> adrs = new TreeSet<Address>(addresses);
+        for (Iterator<Address> iter = adrs.iterator(); iter.hasNext();) {
             if (sb.length() > 0) sb.append(","); 
-            sb.append(adr.getAbsoluteAddress());
+            sb.append(iter.next().getAbsoluteAddress());
         }
         return sb.toString();
     }
@@ -419,16 +418,15 @@ public class Address implements Comparable {
      * 			the list is empty.
      * @throws ClassCastException If the addresses provided are not of equal class.
      */
-    public String getRefTo(Collection addresses) {
+    public String getRefTo(Collection<Address> addresses) {
         if (addresses.size() == 0) {
             return null;
         }   
         StringBuffer sb = new StringBuffer();
-        Set adrs = new TreeSet(addresses);
-        for (Iterator iter = adrs.iterator(); iter.hasNext();) {
-            Address adr = (Address) iter.next();
+        Set<Address> adrs = new TreeSet<Address>(addresses);
+        for (Iterator<Address> iter = adrs.iterator(); iter.hasNext();) {
             if (sb.length() > 0) sb.append(","); 
-            sb.append(getRefTo(adr));
+            sb.append(getRefTo(iter.next()));
         }
         return sb.toString();
     }

@@ -103,7 +103,7 @@ public class AddressTest extends TestCase {
     }
 
     public void testGetAbsoluteRangeCollection() {
-        Collection list = new ArrayList();
+        Collection<Address> list = new ArrayList<Address>();
         assertNull(Address.getAbsoluteRange(list));
         Address adr1 = new Address(5, 7);
         list.add(adr1);
@@ -180,7 +180,7 @@ public class AddressTest extends TestCase {
      */
     public void testGetRefToCollection() {
         Address adr = new Address(5, 7);
-        Collection list = new ArrayList();
+        Collection<Address> list = new ArrayList<Address>();
         assertNull(adr.getRefTo(list));
         
         list.add(adr);

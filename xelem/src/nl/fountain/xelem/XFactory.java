@@ -69,9 +69,9 @@ public class XFactory {
     
     private static String configFileName;
     private static boolean loaded = false;
-    private static List doc_comments;
-    private static Map styles;
-    private static Set issStyles;
+    private static List<String> doc_comments;
+    private static Map<String, Node> styles;
+    private static Set<String> issStyles;
     private static Node infoSheet;
     
     private XFactory() throws XelemException {
@@ -161,7 +161,7 @@ public class XFactory {
      * 
      * @return	a list of Strings
      */
-    public List getDocComments() {
+    public List<String> getDocComments() {
         return doc_comments;
     }
     
@@ -298,8 +298,8 @@ public class XFactory {
     }
     
     private void init() {
-        doc_comments = new ArrayList();
-        styles = new HashMap();
+        doc_comments = new ArrayList<String>();
+        styles = new HashMap<String, Node>();
     }
     
     private void loadConfiguration(String fileName) throws XelemException {
@@ -341,7 +341,7 @@ public class XFactory {
     }
 
     Node loadInfoSheet() throws XelemException {
-        issStyles = new TreeSet();
+        issStyles = new TreeSet<String>();
         try {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             factory.setNamespaceAware(true);

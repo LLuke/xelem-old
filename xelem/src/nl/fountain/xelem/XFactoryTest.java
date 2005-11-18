@@ -75,9 +75,9 @@ public class XFactoryTest extends XLElementTest {
     }
     
     public void testGetDocComments() throws XelemException {
-       List docComments = XFactory.newInstance().getDocComments(); 
+       List<String> docComments = XFactory.newInstance().getDocComments(); 
        assertNotNull(docComments);
-       Iterator iter = docComments.iterator();
+       Iterator<String> iter = docComments.iterator();
        assertEquals("      f:comment 1      ", iter.next());
        assertEquals("      f:comment 2      ", iter.next());
        assertEquals("      f:comment 3      ", iter.next());      
