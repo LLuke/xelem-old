@@ -309,7 +309,7 @@ public interface Row extends XLElement {
      * 
      * @return A collection of cells.
      */
-    Collection getCells();
+    Collection<Cell> getCells();
     
     /**
      * Gets all the cells of this row. The key of the Map.Entrys is of type
@@ -317,7 +317,7 @@ public interface Row extends XLElement {
      * 
      * @return A TreeMap of cells.
      */
-    TreeMap getCellMap();
+    TreeMap<Integer, Cell> getCellMap();
     
     /**
      * Gets the number of cells in this row.
@@ -339,7 +339,7 @@ public interface Row extends XLElement {
      * 
      * @return An iterator for the cells in this row.
      */
-    Iterator cellIterator();
+    Iterator<Cell> cellIterator();
     
     /**
      * Creates an {@link org.w3c.dom.Element} with the specified 

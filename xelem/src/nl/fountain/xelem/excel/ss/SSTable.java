@@ -42,8 +42,8 @@ import org.xml.sax.Attributes;
  */
 public class SSTable extends AbstractXLElement implements Table {
     
-    TreeMap columns;
-    TreeMap rows;
+    TreeMap<Integer, Column> columns;
+    TreeMap<Integer, Row> rows;
     private String styleID;
     private double rowheight;
     private double columnwidth;
@@ -56,8 +56,8 @@ public class SSTable extends AbstractXLElement implements Table {
      * @see nl.fountain.xelem.excel.Worksheet#getTable()
      */
     public SSTable() {
-        rows = new TreeMap();
-        columns = new TreeMap();
+        rows = new TreeMap<Integer, Row>();
+        columns = new TreeMap<Integer, Column>();
     }
     
     public void setStyleID(String id) {
@@ -101,7 +101,7 @@ public class SSTable extends AbstractXLElement implements Table {
     }
     
     public Column getColumnAt(int columnIndex) {
-        Column column = (Column) columns.get(new Integer(columnIndex));
+        Column column = columns.get(new Integer(columnIndex));
         if (column == null) {
             column = addColumnAt(columnIndex);
         }
@@ -112,7 +112,7 @@ public class SSTable extends AbstractXLElement implements Table {
         return columns.get(new Integer(index)) != null;
     }
     
-    public Collection getColumns() {
+    public Collection<Column> getColumns() {
         return columns.values();
     }
 
@@ -141,11 +141,11 @@ public class SSTable extends AbstractXLElement implements Table {
         return row;
     }
 
-    public Collection getRows() {
+    public Collection<Row> getRows() {
         return rows.values();
     }
     
-    public TreeMap getRowMap() {
+    public TreeMap<Integer, Row> getRowMap() {
         return rows;
     }
 
@@ -175,8 +175,8 @@ public class SSTable extends AbstractXLElement implements Table {
     
     public int maxCellIndex() {
         int max = 0;
-        for (Iterator iter = rows.values().iterator(); iter.hasNext();) {
-            Row row = (Row) iter.next();
+        for (Iterator<Row> iter = rows.values().iterator(); iter.hasNext();) {
+            Row row = iter.next();
             if (row.maxCellIndex() > max) max = row.maxCellIndex();
         }
         return max;
@@ -187,7 +187,7 @@ public class SSTable extends AbstractXLElement implements Table {
         if (rows.size() == 0) {
             lastKey = 0;
         } else {
-            lastKey = ((Integer)rows.lastKey()).intValue();
+            lastKey = rows.lastKey().intValue();
         }
         return lastKey;
     }
@@ -197,16 +197,16 @@ public class SSTable extends AbstractXLElement implements Table {
         if (columns.size() == 0) {
             lastKey = 0;
         } else {
-            lastKey = ((Integer)columns.lastKey()).intValue();
+            lastKey = columns.lastKey().intValue();
         }
         return lastKey;
     }
     
-    public Iterator rowIterator() {
+    public Iterator<Row> rowIterator() {
         return new RowIterator();
     }
     
-    public Iterator columnIterator() {
+    public Iterator<Column> columnIterator() {
         return new ColumnIterator();
     }
     
@@ -237,16 +237,14 @@ public class SSTable extends AbstractXLElement implements Table {
         
         parent.appendChild(te);
         
-        Iterator iter = columnIterator();
-        while (iter.hasNext()) {
-            Column column = (Column) iter.next();
-            column.assemble(te, gio);
+        Iterator<Column> iterC = columnIterator();
+        while (iterC.hasNext()) {
+            iterC.next().assemble(te, gio);
         }
         
-        iter = rowIterator();
-        while (iter.hasNext()) {
-            Row row = (Row) iter.next();
-            row.assemble(te, gio);
+        Iterator<Row> iterR = rowIterator();
+        while (iterR.hasNext()) {
+            iterR.next().assemble(te, gio);
         }
         return te;
     }
@@ -289,9 +287,9 @@ public class SSTable extends AbstractXLElement implements Table {
     }
     
     /////////////////////////////////////////////
-    private class RowIterator implements Iterator {
+    private class RowIterator implements Iterator<Row> {
         
-        private Iterator rit;
+        private Iterator<Integer> rit;
         private Integer current;
         private int prevIndex;
         
@@ -307,8 +305,8 @@ public class SSTable extends AbstractXLElement implements Table {
             return rit.hasNext();
         }
 
-        public Object next() {
-            current = (Integer) rit.next();  
+        public Row next() {
+            current = rit.next();  
             int curIndex = current.intValue();
             SSRow r = (SSRow) rows.get(current);
             if (prevIndex + 1 != curIndex) {
@@ -322,9 +320,9 @@ public class SSTable extends AbstractXLElement implements Table {
         
     }
     
-    private class ColumnIterator implements Iterator {
+    private class ColumnIterator implements Iterator<Column> {
         
-        private Iterator cit;
+        private Iterator<Integer> cit;
         private Integer current;
         private int prevIndex;
         private int maxSpan;
@@ -344,8 +342,8 @@ public class SSTable extends AbstractXLElement implements Table {
         }
 
         // @see java.util.Iterator#next()
-        public Object next() {
-            current = (Integer) cit.next();  
+        public Column next() {
+            current = cit.next();  
             int curIndex = current.intValue();
             SSColumn c = (SSColumn) columns.get(current);
             if (prevIndex + 1 != curIndex) {

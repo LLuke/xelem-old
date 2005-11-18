@@ -38,7 +38,7 @@ import org.xml.sax.Attributes;
 public abstract class AbstractXLElement implements XLElement {
     
     //private static Map nsMap;
-    private List comments;
+    private List<String> comments;
     private boolean printComments;
     
     protected AbstractXLElement() {}
@@ -53,7 +53,7 @@ public abstract class AbstractXLElement implements XLElement {
      */
     public void addElementComment(String comment) {
         if (comments == null) {
-            comments = new ArrayList();
+            comments = new ArrayList<String>();
         }
         comments.add(comment);
     }
@@ -63,7 +63,7 @@ public abstract class AbstractXLElement implements XLElement {
      * 
      * @return 	a list of Strings.
      */
-    public List getElementComments() {
+    public List<String> getElementComments() {
         return comments;
     }
     
@@ -93,9 +93,8 @@ public abstract class AbstractXLElement implements XLElement {
         Element element = doc.createElementNS(getNameSpace(), getTagName());
         element.setPrefix(getPrefix());
         if (gio.isPrintingComments() && getElementComments() != null) {
-            for (Iterator iter = getElementComments().iterator(); iter.hasNext();) {
-                String comment = (String) iter.next();
-                element.appendChild(doc.createComment(comment));
+            for (Iterator<String> iter = getElementComments().iterator(); iter.hasNext();) {
+                element.appendChild(doc.createComment(iter.next()));
             }
         }
         

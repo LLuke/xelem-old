@@ -43,7 +43,7 @@ import org.xml.sax.Attributes;
  */
 public class SSRow extends AbstractXLElement implements Row {
 
-    TreeMap cells;
+    TreeMap<Integer, Cell> cells;
     private int idx;
     private String styleID;
     private double height = -1.0;
@@ -57,7 +57,7 @@ public class SSRow extends AbstractXLElement implements Row {
      * @see nl.fountain.xelem.excel.Worksheet#addRow()
      */
     public SSRow() {
-        cells = new TreeMap();
+        cells = new TreeMap<Integer, Cell>();
     }
     
     public void setStyleID(String id) {
@@ -171,7 +171,7 @@ public class SSRow extends AbstractXLElement implements Row {
        return (Cell) cells.remove(new Integer(index)); 
     }
 
-    public Collection getCells() {
+    public Collection<Cell> getCells() {
         return cells.values();
     }
 
@@ -191,7 +191,7 @@ public class SSRow extends AbstractXLElement implements Row {
        return cells.size(); 
     }
     
-    public TreeMap getCellMap() {
+    public TreeMap<Integer, Cell> getCellMap() {
         return cells;
     }
       
@@ -217,7 +217,7 @@ public class SSRow extends AbstractXLElement implements Row {
         return PREFIX_SS;
     }
 
-    public Iterator cellIterator() {
+    public Iterator<Cell> cellIterator() {
         return new CellIterator();
     }
     
@@ -239,7 +239,7 @@ public class SSRow extends AbstractXLElement implements Row {
         
         parent.appendChild(re);
         
-        Iterator iter = cellIterator();
+        Iterator<Cell> iter = cellIterator();
         while (iter.hasNext()) {
             Cell cell = (Cell) iter.next();
             cell.assemble(re, gio);
@@ -262,10 +262,9 @@ public class SSRow extends AbstractXLElement implements Row {
             rowElement.setAttributeNodeNS(createAttributeNS(doc, "StyleID", getStyleID()));
         }
         setAdditionalAttributes(doc, rowElement);
-        Iterator iter = cellIterator();
+        Iterator<Cell> iter = cellIterator();
         while (iter.hasNext()) {
-            Cell cell = (Cell) iter.next();
-            cell.assemble(rowElement, gio);
+            iter.next().assemble(rowElement, gio);
         }
         return rowElement;
     }
@@ -303,9 +302,9 @@ public class SSRow extends AbstractXLElement implements Row {
     }
     
     /////////////////////////////////////////////
-    private class CellIterator implements Iterator {
+    private class CellIterator implements Iterator<Cell> {
         
-        private Iterator cit;
+        private Iterator<Integer> cit;
         private Integer current;
         private int prevIndex;
         
@@ -321,8 +320,8 @@ public class SSRow extends AbstractXLElement implements Row {
             return cit.hasNext();
         }
 
-        public Object next() {
-            current = (Integer) cit.next();
+        public Cell next() {
+            current = cit.next();
             int curIndex = current.intValue();
             SSCell c = (SSCell) cells.get(current);
             if (prevIndex + 1 != curIndex) {

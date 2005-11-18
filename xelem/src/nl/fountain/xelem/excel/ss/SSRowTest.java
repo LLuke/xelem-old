@@ -42,7 +42,7 @@ public class SSRowTest extends XLElementTest {
         assertSame(cell2, row.getCellMap().get(new Integer(2)));
         assertNotSame(cell, cell2);
         
-        Iterator iter = row.getCells().iterator();
+        Iterator<Cell> iter = row.getCells().iterator();
         assertSame(cell, iter.next());
         assertSame(cell2, iter.next());
         try {
@@ -69,7 +69,7 @@ public class SSRowTest extends XLElementTest {
         assertEquals(3, row.size());
         assertSame(cell3, row.getCellMap().get(new Integer(3)));
         
-        Iterator iter = row.getCells().iterator();
+        Iterator<Cell> iter = row.getCells().iterator();
         assertSame(cell3, iter.next());
         assertSame(cell, iter.next());
         assertSame(cell6, iter.next());
@@ -136,7 +136,7 @@ public class SSRowTest extends XLElementTest {
        assertEquals(2, row.size());
        
        row.addCell();
-       Iterator iter = row.getCellMap().keySet().iterator();
+       Iterator<Integer> iter = row.getCellMap().keySet().iterator();
        assertEquals(new Integer(1), iter.next());
        assertEquals(new Integer(3), iter.next());
        assertEquals(new Integer(4), iter.next());

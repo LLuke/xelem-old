@@ -146,7 +146,7 @@ public interface Table extends XLElement {
      * 
      * @return A collection of columns.
      */
-    Collection getColumns();
+    Collection<Column> getColumns();
     
     /**
      * Returns an iterator for the columns in this table. Columns are aware of their
@@ -154,7 +154,7 @@ public interface Table extends XLElement {
      * 
      * @return An iterator for the columns in this table.
      */
-    Iterator columnIterator();
+    Iterator<Column> columnIterator();
     
     /**
      * Adds a new Row to this table. If no rows were previously added
@@ -239,7 +239,7 @@ public interface Table extends XLElement {
      * 
      * @return A collection of rows.
      */
-    Collection getRows(); 
+    Collection<Row> getRows(); 
     
     /**
      * Gets all the rows of this table. The key of the Map.Entrys is of type
@@ -247,7 +247,7 @@ public interface Table extends XLElement {
      * 
      * @return A TreeMap of rows.
      */
-    TreeMap getRowMap();
+    TreeMap<Integer, Row> getRowMap();
     
     /**
      * Returns an iterator for the rows in this table. Rows are aware of their
@@ -255,7 +255,7 @@ public interface Table extends XLElement {
      * 
      * @return An iterator for the rows in this table.
      */
-    Iterator rowIterator();
+    Iterator<Row> rowIterator();
     
     /**
      * Returns the number of rows in this table.

@@ -42,7 +42,7 @@ public class SSTableTest extends XLElementTest {
         assertSame(row2, table.getRowMap().get(new Integer(2)));
         assertNotSame(row, row2);
         
-        Iterator iter = table.getRows().iterator();
+        Iterator<Row> iter = table.getRows().iterator();
         assertSame(row, iter.next());
         assertSame(row2, iter.next());
         try {
@@ -69,7 +69,7 @@ public class SSTableTest extends XLElementTest {
         assertEquals(3, table.rowCount());
         assertSame(row3, table.getRowMap().get(new Integer(3)));
         
-        Iterator iter = table.getRows().iterator();
+        Iterator<Row> iter = table.getRows().iterator();
         assertSame(row3, iter.next());
         assertSame(row, iter.next());
         assertSame(row6, iter.next());
@@ -136,7 +136,7 @@ public class SSTableTest extends XLElementTest {
        assertEquals(2, table.rowCount());
        
        table.addRow();
-       Iterator iter = table.getRowMap().keySet().iterator();
+       Iterator<Integer> iter = table.getRowMap().keySet().iterator();
        assertEquals(new Integer(1), iter.next());
        assertEquals(new Integer(3), iter.next());
        assertEquals(new Integer(4), iter.next());
@@ -153,7 +153,7 @@ public class SSTableTest extends XLElementTest {
        Row row1 = table.addRow();
        Row row2 = table.addRow();
        
-       Iterator iter = table.rowIterator();
+       Iterator<Row> iter = table.rowIterator();
        assertEquals(row1, iter.next());
        assertEquals(row2, iter.next());
        try {
@@ -177,7 +177,7 @@ public class SSTableTest extends XLElementTest {
         Row row2 = table.addRowAt(5);
         Row row3 = table.addRowAt(7, row2);
         
-        Iterator iter = table.rowIterator();
+        Iterator<Row> iter = table.rowIterator();
         Row r1 = (Row) iter.next();
         assertEquals(row1, r1);
         
