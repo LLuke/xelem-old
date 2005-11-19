@@ -52,7 +52,7 @@ public class ExcelReaderListenerTest extends TestCase {
     
     public void testAddRemoveClearListener() throws Exception {
         ExcelReader xlReader = new ExcelReader();
-        List listeners = xlReader.getListeners();
+        List<ExcelReaderListener> listeners = xlReader.getListeners();
         assertEquals(0, listeners.size());
         
         Listener listener = new Listener();
@@ -218,7 +218,7 @@ public class ExcelReaderListenerTest extends TestCase {
           assertEquals(lastWorksheetName, sheetName);
         }
         
-        public void endDocument(Map prefixMap) {
+        public void endDocument(Map<String, String> prefixMap) {
             assertEquals(9, prefixMap.size());
         }
         

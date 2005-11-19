@@ -92,9 +92,9 @@ public class CreateDocumentTest extends TestCase {
         warnings = 2;
         printWarnings = false;
         String xml = xmlToString(wb);
-        Iterator iter = wb.getWarnings().iterator();
-        String w1 = (String) iter.next();
-        String w2 = (String) iter.next();
+        Iterator<String> iter = wb.getWarnings().iterator();
+        String w1 = iter.next();
+        String w2 = iter.next();
         assertTrue(w1.indexOf("WARNING 1): java.io.FileNotFoundException:") > 0);
         assertTrue(w2.indexOf("WARNING 2): nl.fountain.xelem." +
         		"UnsupportedStyleException: Style 'bar' not found.") > 0);
@@ -830,8 +830,8 @@ public class CreateDocumentTest extends TestCase {
     private void transform(Workbook wb, Result result) throws Exception {
         Document doc = wb.createDocument();
         if (printWarnings) {
-		    for (Iterator iter = wb.getWarnings().iterator(); iter.hasNext();) {
-		        System.out.println(iter.next());           
+		    for (String s : wb.getWarnings()) {
+		        System.out.println(s);           
 		    }
         }
         assertEquals(warnings, wb.getWarnings().size());

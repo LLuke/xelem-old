@@ -181,6 +181,6 @@ public interface ExcelReaderListener {
      * 
      * @param prefixMap a map of prefixes (keys) and uri's recieved while reading
      */
-    void endDocument(Map prefixMap);
+    void endDocument(Map<String, String> prefixMap);
 
 }

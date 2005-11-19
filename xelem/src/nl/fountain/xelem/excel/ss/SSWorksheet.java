@@ -25,7 +25,6 @@ import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 import nl.fountain.xelem.Address;
@@ -70,7 +69,7 @@ public class SSWorksheet extends AbstractXLElement implements Worksheet {
     private String name;
     private boolean protect;
     private boolean righttoleft;
-    private Map namedRanges;
+    private Map<String, NamedRange> namedRanges;
     private Table table;
     private WorksheetOptions options;
     private AutoFilter autoFilter;
@@ -125,7 +124,7 @@ public class SSWorksheet extends AbstractXLElement implements Worksheet {
     
     public NamedRange addNamedRange(NamedRange nr) {
         if (namedRanges == null) {
-            namedRanges = new HashMap();
+            namedRanges = new HashMap<String, NamedRange>();
         }
         namedRanges.put(nr.getName(), nr);
         return nr;
@@ -135,9 +134,9 @@ public class SSWorksheet extends AbstractXLElement implements Worksheet {
         return addNamedRange(new SSNamedRange(name, refersTo));
     }
     
-    public Map getNamedRanges() {
+    public Map<String, NamedRange> getNamedRanges() {
         if (namedRanges == null) {
-            return Collections.EMPTY_MAP;
+            return Collections.emptyMap();
         } else {
             return namedRanges;
         }
@@ -320,7 +319,7 @@ public class SSWorksheet extends AbstractXLElement implements Worksheet {
         return getTable().removeRowAt(rowIndex);
     }
 
-    public Collection getRows() {
+    public Collection<Row> getRows() {
         return getTable().getRows();
     }
 
@@ -368,7 +367,7 @@ public class SSWorksheet extends AbstractXLElement implements Worksheet {
         return getTable().removeColumnAt(Address.calculateColumn(label));
     }
     
-    public Collection getColumns() {
+    public Collection<Column> getColumns() {
         return getTable().getColumns();
     }
     
@@ -437,8 +436,7 @@ public class SSWorksheet extends AbstractXLElement implements Worksheet {
         if (namedRanges != null) {
             Element names = doc.createElement("Names");
             wse.appendChild(names);
-            for (Iterator iter = namedRanges.values().iterator(); iter.hasNext();) {
-                NamedRange nr = (NamedRange) iter.next();
+            for (NamedRange nr : namedRanges.values()){
                 nr.assemble(names, gio);
             }
         }

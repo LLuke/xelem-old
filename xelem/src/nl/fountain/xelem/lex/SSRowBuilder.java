@@ -20,8 +20,6 @@
  */
 package nl.fountain.xelem.lex;
 
-import java.util.Iterator;
-
 import nl.fountain.xelem.excel.Cell;
 import nl.fountain.xelem.excel.Row;
 import nl.fountain.xelem.excel.XLElement;
@@ -74,8 +72,7 @@ class SSRowBuilder extends AnonymousBuilder {
     public void endElement(String uri, String localName, String qName) throws SAXException {
         if (currentRow.getTagName().equals(localName)) {
             if (currentRow.getNameSpace().equals(uri)) {
-                for (Iterator iter = director.getListeners().iterator(); iter.hasNext();) {
-                    ExcelReaderListener listener = (ExcelReaderListener) iter.next();
+            	for (ExcelReaderListener listener : director.getListeners()) {
                     listener.setRow(director.getCurrentSheetIndex(),
                             director.getCurrentSheetName(), currentRow);
                 }

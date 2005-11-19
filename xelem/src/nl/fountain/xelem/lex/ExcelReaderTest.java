@@ -211,7 +211,7 @@ public class ExcelReaderTest extends TestCase {
         assertTrue(wb.hasExcelWorkbook());
         assertTrue(!wb.hasDocumentProperties());
         
-        Map prfxs = xlr.getPrefixMap();
+        Map<String, String> prfxs = xlr.getPrefixMap();
         assertEquals("urn:schemas-microsoft-com:office:spreadsheet", prfxs.get(""));
         assertEquals("urn:schemas-microsoft-com:office:office", prfxs.get("o"));
         assertEquals("http://www.w3.org/TR/REC-html40", prfxs.get("html"));
@@ -221,7 +221,7 @@ public class ExcelReaderTest extends TestCase {
     
     public void testNamedRange() throws Exception {
         Workbook wb = getReaderWorkbook();
-        Map map = wb.getNamedRanges();
+        Map<String, NamedRange> map = wb.getNamedRanges();
         assertEquals(1, map.size());
         NamedRange nr = (NamedRange) map.get("foo");
         assertEquals("foo", nr.getName());
@@ -235,7 +235,7 @@ public class ExcelReaderTest extends TestCase {
     }
     
     private void doTestSheets(Workbook wb) {
-        Iterator iter = wb.getSheetNames().iterator();
+        Iterator<String> iter = wb.getSheetNames().iterator();
         
         assertEquals("Tom Poes", iter.next());
         assertEquals("Donald Duck", iter.next());
@@ -272,7 +272,7 @@ public class ExcelReaderTest extends TestCase {
     public void testNamedRangeOnWorksheet() throws Exception {
         Workbook wb = getReaderWorkbook();
         Worksheet sheet = wb.getWorksheet("Tom Poes");
-        Map map = sheet.getNamedRanges();
+        Map<String, NamedRange> map = sheet.getNamedRanges();
         assertEquals(1, map.size());
         NamedRange nr = (NamedRange) map.get("_FilterDatabase");
         assertEquals("_FilterDatabase", nr.getName());

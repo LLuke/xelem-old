@@ -22,7 +22,6 @@
 package nl.fountain.xelem;
 
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -302,9 +301,9 @@ public class Address implements Comparable {
         }
         StringBuffer sb = new StringBuffer();
         Set<Address> adrs = new TreeSet<Address>(addresses);
-        for (Iterator<Address> iter = adrs.iterator(); iter.hasNext();) {
+        for (Address a : adrs) {
             if (sb.length() > 0) sb.append(","); 
-            sb.append(iter.next().getAbsoluteAddress());
+            sb.append(a.getAbsoluteAddress());
         }
         return sb.toString();
     }
@@ -424,9 +423,9 @@ public class Address implements Comparable {
         }   
         StringBuffer sb = new StringBuffer();
         Set<Address> adrs = new TreeSet<Address>(addresses);
-        for (Iterator<Address> iter = adrs.iterator(); iter.hasNext();) {
+        for (Address a : adrs) {
             if (sb.length() > 0) sb.append(","); 
-            sb.append(getRefTo(iter.next()));
+            sb.append(getRefTo(a));
         }
         return sb.toString();
     }

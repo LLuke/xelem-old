@@ -42,7 +42,7 @@ import org.xml.sax.helpers.DefaultHandler;
  */
 class AnonymousBuilder extends DefaultHandler implements Builder {
     
-    private static Map methodMap;
+    private static Map<String, Method> methodMap;
     private boolean occupied;
     protected XMLReader reader;
     protected ContentHandler parent;
@@ -79,12 +79,12 @@ class AnonymousBuilder extends DefaultHandler implements Builder {
     }
     
     private Method getMethod(String tagName) {
-        return (Method) getMethodMap().get(tagName);
+        return getMethodMap().get(tagName);
     }
     
-    private Map getMethodMap() {
+    private Map<String, Method> getMethodMap() {
         if (methodMap == null) {
-            methodMap = new HashMap();
+            methodMap = new HashMap<String, Method>();
             Object[][] methods = null;
             try {
                 methods = new Object[][]{
@@ -93,7 +93,7 @@ class AnonymousBuilder extends DefaultHandler implements Builder {
                    {"WorksheetOptions", ExcelReaderListener.class.getMethod("setWorksheetOptions", new Class[]{int.class, String.class, WorksheetOptions.class})}
                 };
                 for (int i = 0; i < methods.length; i++) {
-                    methodMap.put(methods[i][0], methods[i][1]);
+                    methodMap.put((String)methods[i][0], (Method)methods[i][1]);
                 }
             } catch (SecurityException e) {
                 e.printStackTrace();
@@ -109,8 +109,8 @@ class AnonymousBuilder extends DefaultHandler implements Builder {
             Method m = getMethod(current.getTagName());
             if (m != null) {
 	            try {
-	                for (Iterator iter = director.getListeners().iterator(); iter.hasNext();) {
-	                    ExcelReaderListener listener = (ExcelReaderListener) iter.next();
+	                for (Iterator<ExcelReaderListener> iter = director.getListeners().iterator(); iter.hasNext();) {
+	                    ExcelReaderListener listener = iter.next();
 	                    if (m.getParameterTypes()[0].equals(int.class)) {
 	                        m.invoke(listener, new Object[] {new Integer(director.getCurrentSheetIndex()), director.getCurrentSheetName(), current});
 	                    } else {

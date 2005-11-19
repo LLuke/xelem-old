@@ -125,7 +125,7 @@ public interface Worksheet extends XLElement {
      * 
      * @return a map with NamedRanges
      */
-    Map getNamedRanges();
+    Map<String, NamedRange> getNamedRanges();
     
     /**
      * Sets the given worksheetOptions as the worksheetOptions of this worksheet.
@@ -601,7 +601,7 @@ public interface Worksheet extends XLElement {
      * 
      * @return A collection of rows.
      */
-    Collection getRows();
+    Collection<Row> getRows();
     
     /**
      * Gets the row at the given index.
@@ -727,7 +727,7 @@ public interface Worksheet extends XLElement {
      * 
      * @return A collection of columns.
      */
-    Collection getColumns();
+    Collection<Column> getColumns();
     
     /**
      * Gets the column at the given index. If no column was at the given index,

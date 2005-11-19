@@ -39,7 +39,7 @@ public interface ExcelReaderFilter extends ExcelReaderListener {
      * 
      * @return a list of registered listeners
      */
-    List getListeners();
+    List<ExcelReaderListener> getListeners();
     
     /**
      * Registers the given listener.

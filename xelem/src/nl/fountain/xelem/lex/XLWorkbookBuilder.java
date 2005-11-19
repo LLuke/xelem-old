@@ -20,8 +20,6 @@
  */
 package nl.fountain.xelem.lex;
 
-import java.util.Iterator;
-
 import nl.fountain.xelem.excel.DocumentProperties;
 import nl.fountain.xelem.excel.ExcelWorkbook;
 import nl.fountain.xelem.excel.NamedRange;
@@ -75,8 +73,7 @@ class XLWorkbookBuilder extends AnonymousBuilder {
             NamedRange nr = new SSNamedRange(
                     atts.getValue(XLElement.XMLNS_SS, "Name"), null);
             nr.setAttributes(atts);
-            for (Iterator iter = director.getListeners().iterator(); iter.hasNext();) {
-                ExcelReaderListener listener = (ExcelReaderListener) iter.next();
+            for (ExcelReaderListener listener : director.getListeners()) {
                 listener.setNamedRange(nr);
             }
             
@@ -87,8 +84,7 @@ class XLWorkbookBuilder extends AnonymousBuilder {
             director.setCurrentSheetIndex(sheetCounter);
             director.setCurrentSheetName(sheetName);
             sheet.setAttributes(atts);
-            for (Iterator iter = director.getListeners().iterator(); iter.hasNext();) {
-                ExcelReaderListener listener = (ExcelReaderListener) iter.next();
+            for (ExcelReaderListener listener : director.getListeners()) {
                 listener.startWorksheet(sheetCounter, sheet);
             }
             

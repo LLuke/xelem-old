@@ -40,7 +40,7 @@ import org.w3c.dom.Element;
  */
 public class XWorksheetOptions extends AbstractXLElement implements WorksheetOptions {
     
-    private Map panes;
+    private Map<Integer, Pane> panes;
     private int zoom;
     private int tabColorIndex = -1;
     private String gridlineColor;
@@ -436,7 +436,7 @@ public class XWorksheetOptions extends AbstractXLElement implements WorksheetOpt
     
     private Pane getPane(int number) {
         if (panes == null) {
-            panes = new HashMap();
+            panes = new HashMap<Integer, Pane>();
         }
         Pane pane = (Pane) panes.get(new Integer(number));
         if (pane == null) {

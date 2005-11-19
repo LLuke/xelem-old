@@ -22,7 +22,6 @@ package nl.fountain.xelem.lex;
 
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -65,7 +64,7 @@ public class ExcelReader {
     
     Director director;
     private Handler handler;
-    private Map uris;
+    private Map<String, String> uris;
     
     /**
      * Constructs a new ExcelReader.
@@ -162,7 +161,7 @@ public class ExcelReader {
      * 
      * @return a list of registered listeners
      */
-    public List getListeners() {
+    public List<ExcelReaderListener> getListeners() {
         return director.getListeners();
     }
     
@@ -290,9 +289,9 @@ public class ExcelReader {
      * 
      * @return a map of prefixes (keys) and uri's recieved while reading
      */
-    public Map getPrefixMap() {
+    public Map<String, String> getPrefixMap() {
         if (uris == null) {
-            uris = new HashMap();
+            uris = new HashMap<String, String>();
         }
         return uris;
     }
@@ -316,8 +315,7 @@ public class ExcelReader {
         }
         
         public void processingInstruction(String target, String data) throws SAXException {
-            for (Iterator iter = director.getListeners().iterator(); iter.hasNext();) {
-                ExcelReaderListener listener = (ExcelReaderListener) iter.next();
+        	for (ExcelReaderListener listener : director.getListeners()) {
                 listener.processingInstruction(target, data);
             }
         }
@@ -331,8 +329,7 @@ public class ExcelReader {
             if (XLElement.XMLNS_SS.equals(uri) && "Workbook".equals(localName)) {
                 String systemId = getSystemId();
                 Builder builder = director.getXLWorkbookBuilder(); 
-                for (Iterator iter = director.getListeners().iterator(); iter.hasNext();) {
-                    ExcelReaderListener listener = (ExcelReaderListener) iter.next();
+                for (ExcelReaderListener listener : director.getListeners()) {
                     listener.startWorkbook(systemId);
                 }               
                 builder.build(reader, this);               
@@ -340,15 +337,13 @@ public class ExcelReader {
         }
         
         public void startDocument() throws SAXException {        
-            for (Iterator iter = director.getListeners().iterator(); iter.hasNext();) {
-                ExcelReaderListener listener = (ExcelReaderListener) iter.next();
+        	for (ExcelReaderListener listener : director.getListeners()) {
                 listener.startDocument();
             }
         }
         
         public void endDocument() throws SAXException {
-            for (Iterator iter = director.getListeners().iterator(); iter.hasNext();) {
-                ExcelReaderListener listener = (ExcelReaderListener) iter.next();
+        	for (ExcelReaderListener listener : director.getListeners()) {
                 listener.endDocument(getPrefixMap());
             }
         }

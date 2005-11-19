@@ -119,7 +119,7 @@ public class XLDocumentTest extends TestCase {
     }
     
     public void testAppendRows() throws Exception {
-       Collection rows = new ArrayList();
+       Collection<Row> rows = new ArrayList<Row>();
        Row row = new SSRow();
        row.addCell("501000");
        row.addCell("wk 02, Claude 5,8 u.");
@@ -189,7 +189,7 @@ public class XLDocumentTest extends TestCase {
     
     public void testPivotWithNamedRange() throws Exception {
         if (toFile) {
-	        Collection rows = getData();
+	        Collection<Row> rows = getData();
 	        
 	        String template =
 	            "testsuitefiles/XLDocumentTest/prices0.xml";
@@ -211,7 +211,7 @@ public class XLDocumentTest extends TestCase {
         String template =
             "testsuitefiles/XLDocumentTest/prices1.1.xml";
         XLDocument xlDoc = new XLDocument(template);
-        Collection rows = getData();
+        Collection<Row> rows = getData();
         Cell cel = new SSCell();
         cel.setData("created on " + new Date());
         xlDoc.setCellData(cel, "prices", 1, 1);
@@ -239,7 +239,7 @@ public class XLDocumentTest extends TestCase {
         
         // set up a collection of rows and populate them with data.
         // your data will probably be collected in a more sophisticated way.
-        Collection rows = new ArrayList();
+        Collection<Row> rows = new ArrayList<Row>();
         for (int r = 0; r < data.length; r++) {
             Row row = new SSRow();
             for (int c = 0; c < data[r].length; c++) {
@@ -274,7 +274,7 @@ public class XLDocumentTest extends TestCase {
     }
     
     
-    private Collection getData() {
+    private Collection<Row> getData() {
 //        Object[][] data = {
 //        	{"koffie", "java", "Sun", new Double(2.95), new Double(55.6)},
 //        	{"koffie", "arabica", "Sun", new Double(3.10), new Double(123.5)},
@@ -294,7 +294,7 @@ public class XLDocumentTest extends TestCase {
             	{"yellow", "A", "Commet", new Double(4.15), new Double(19.8)}
             };
         
-        Collection rows = new ArrayList();
+        Collection<Row> rows = new ArrayList<Row>();
         for (int r = 0; r < data.length; r++) {
             Row row = new SSRow();
             for (int c = 0; c < data[r].length; c++) {

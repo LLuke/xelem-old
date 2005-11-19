@@ -203,7 +203,7 @@ public interface Workbook extends XLElement {
      * are equal to their names.
      * @return 	a map with NamedRanges
      */
-    Map getNamedRanges();
+    Map<String, NamedRange> getNamedRanges();
     
     /**
      * Adds a new Worksheet to this workbook. The new sheet will have 
@@ -255,7 +255,7 @@ public interface Workbook extends XLElement {
      * 
      * @return A list of worksheets.
      */
-    List getWorksheets();
+    List<Worksheet> getWorksheets();
     
     /**
      * Gets a list of all the names of worksheets in this workbook in
@@ -270,7 +270,7 @@ public interface Workbook extends XLElement {
      * 
      * @return A list of sheet names.
      */
-    List getSheetNames();
+    List<String> getSheetNames();
     
     /**
      * Gets the worksheet with the given name.
@@ -326,7 +326,7 @@ public interface Workbook extends XLElement {
      * @return A list of warnings. The list may be empty if no warnings were
      * 			generated.
      */
-    List getWarnings();
+    List<String> getWarnings();
     
 
 }

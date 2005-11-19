@@ -20,8 +20,6 @@
  */
 package nl.fountain.xelem.lex;
 
-import java.util.Iterator;
-
 import nl.fountain.xelem.excel.Comment;
 import nl.fountain.xelem.excel.XLElement;
 import nl.fountain.xelem.excel.ss.SSCell;
@@ -66,8 +64,7 @@ class SSCellBuilder extends AnonymousBuilder {
     public void endElement(String uri, String localName, String qName) throws SAXException {
         if (current.getNameSpace().equals(uri)) {
             if (current.getTagName().equals(localName)) {
-                for (Iterator iter = director.getListeners().iterator(); iter.hasNext();) {
-                    ExcelReaderListener listener = (ExcelReaderListener) iter.next();
+            	for (ExcelReaderListener listener : director.getListeners()) {
                     listener.setCell(director.getCurrentSheetIndex(),
                             director.getCurrentSheetName(), 
                             director.getCurrentRowIndex(), current);

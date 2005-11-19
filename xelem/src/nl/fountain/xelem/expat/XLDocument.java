@@ -197,7 +197,7 @@ import org.xml.sax.SAXException;
 public class XLDocument {
     
     private Document doc;
-    private Map tableMap;
+    private Map<String, Node> tableMap;
     
     /**
      * Creates a new XLDocument by parsing the specified file into a
@@ -216,7 +216,7 @@ public class XLDocument {
      */
     public XLDocument(String fileName) throws XelemException {
         doc = loadDocument(fileName);
-        tableMap = new HashMap();
+        tableMap = new HashMap<String, Node>();
     }
     
     /**
@@ -256,11 +256,10 @@ public class XLDocument {
      * @throws java.util.NoSuchElementException	if the mentioned sheet 
      * 	was not found in the template.
      */
-    public void appendRows(String sheetName, Collection rows) {
+    public void appendRows(String sheetName, Collection<Row> rows) {
         Node table = getTableElement(sheetName);
-        for (Iterator iter = rows.iterator(); iter.hasNext();) {
-            Row row = (Row) iter.next();
-            table.appendChild(row.createElement(doc));
+        for (Iterator<Row> iter = rows.iterator(); iter.hasNext();) {
+            table.appendChild(iter.next().createElement(doc));
         }      
     }
     

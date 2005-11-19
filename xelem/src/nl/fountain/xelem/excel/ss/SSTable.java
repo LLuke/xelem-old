@@ -175,9 +175,8 @@ public class SSTable extends AbstractXLElement implements Table {
     
     public int maxCellIndex() {
         int max = 0;
-        for (Iterator<Row> iter = rows.values().iterator(); iter.hasNext();) {
-            Row row = iter.next();
-            if (row.maxCellIndex() > max) max = row.maxCellIndex();
+        for (Row r : rows.values()) {
+            if (r.maxCellIndex() > max) max = r.maxCellIndex();
         }
         return max;
     }

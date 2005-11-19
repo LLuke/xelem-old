@@ -27,7 +27,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -82,15 +81,15 @@ public class XLWorkbook extends AbstractXLElement implements Workbook {
     private ExcelWorkbook excelWorkbook;
     private String name;
     private String filename;
-    private Collection docComments;
-    private Map sheets;
-    private List sheetList;
-    private Map namedRanges;
+    private Collection<String> docComments;
+    private Map <String, Worksheet>sheets;
+    private List<String> sheetList;
+    private Map<String, NamedRange> namedRanges;
     private boolean printComments = true;
     private boolean printDocComments = true;
     private boolean appendInfoSheet;
     private XFactory xFactory;
-    private List warnings;
+    private List<String> warnings;
     private SimpleDateFormat sdf;
     
     /**
@@ -105,8 +104,8 @@ public class XLWorkbook extends AbstractXLElement implements Workbook {
      * Creates a new XLWorkbook with the given name.
      */
     public XLWorkbook(String name) {
-        sheets = new HashMap();
-        sheetList = new ArrayList();
+        sheets = new HashMap<String, Worksheet>();
+        sheetList = new ArrayList<String>();
         this.name = name;
     }
     
@@ -171,7 +170,7 @@ public class XLWorkbook extends AbstractXLElement implements Workbook {
     
     public NamedRange addNamedRange(NamedRange nr) {
         if (namedRanges == null) {
-            namedRanges = new HashMap();
+            namedRanges = new HashMap<String, NamedRange>();
         }
         namedRanges.put(nr.getName(), nr);
         return nr;
@@ -181,9 +180,9 @@ public class XLWorkbook extends AbstractXLElement implements Workbook {
         return addNamedRange(new SSNamedRange(name, refersTo));
     }  
     
-    public Map getNamedRanges() {
+    public Map<String, NamedRange> getNamedRanges() {
         if (namedRanges == null) {
-            return Collections.EMPTY_MAP;
+            return Collections.emptyMap();
         } else {
             return namedRanges;
         }
@@ -216,26 +215,26 @@ public class XLWorkbook extends AbstractXLElement implements Workbook {
         return sheet;
     }
 
-    public List getWorksheets() {
-        List worksheets = new ArrayList();
-        for (Iterator iter = sheetList.iterator(); iter.hasNext();) {
-            worksheets.add(sheets.get(iter.next()));           
+    public List<Worksheet> getWorksheets() {
+        List<Worksheet> worksheets = new ArrayList<Worksheet>();
+        for (String s : sheetList) {
+            worksheets.add(sheets.get(s));           
         }
         return worksheets;
     }
     
-    public List getSheetNames() {
+    public List<String> getSheetNames() {
         return sheetList;
     }
 
     public Worksheet getWorksheet(String name) {
-        return (Worksheet) sheets.get(name);
+        return sheets.get(name);
     }
     
     public Worksheet getWorksheetAt(int index) {
         Worksheet ws = null;
         try {
-            ws = (Worksheet) sheets.get(sheetList.get(index));
+            ws = sheets.get(sheetList.get(index));
         } catch (IndexOutOfBoundsException e) {
             //
         }
@@ -246,7 +245,7 @@ public class XLWorkbook extends AbstractXLElement implements Workbook {
         int index = sheetList.indexOf(name);
         if (index < 0) return null;
         sheetList.remove(index);
-        return (Worksheet) sheets.remove(name);
+        return sheets.remove(name);
     }
 
     public void setPrintElementComments(boolean print) {
@@ -293,9 +292,8 @@ public class XLWorkbook extends AbstractXLElement implements Workbook {
                 "progid=\"Excel.Sheet\""), root);
         
         if (isPrintingDocComments()) {
-            for (Iterator iter = getFactory().getDocComments().iterator(); iter.hasNext();) {
-                String dc = (String) iter.next();
-                doc.insertBefore(doc.createComment(dc), root);
+            for (String s : getFactory().getDocComments()) {
+                doc.insertBefore(doc.createComment(s), root);
             }
         }
         
@@ -306,9 +304,8 @@ public class XLWorkbook extends AbstractXLElement implements Workbook {
         root.setAttribute("xmlns:html", XMLNS_HTML);
         
         if (isPrintingElementComments() && getElementComments() != null) {
-            for (Iterator iter = getElementComments().iterator(); iter.hasNext();) {
-                String comment = (String) iter.next();
-                root.appendChild(doc.createComment(comment));
+            for (String s : getElementComments()) {
+                root.appendChild(doc.createComment(s));
             }
         }
 
@@ -329,8 +326,7 @@ public class XLWorkbook extends AbstractXLElement implements Workbook {
         if (namedRanges != null) {
             Element names = doc.createElement("Names");
             root.appendChild(names);
-            for (Iterator iter = namedRanges.values().iterator(); iter.hasNext();) {
-                NamedRange nr = (NamedRange) iter.next();
+            for (NamedRange nr : namedRanges.values()) {
                 nr.assemble(names, gio);
             }
         }
@@ -339,8 +335,8 @@ public class XLWorkbook extends AbstractXLElement implements Workbook {
         if (sheets.size() < 1) {
             addSheet();
         }
-        for (Iterator iter = sheetList.iterator(); iter.hasNext();) {
-            Worksheet ws = (Worksheet) sheets.get(iter.next());
+        for (String s : sheetList) {
+            Worksheet ws = sheets.get(s);
             ws.assemble(root, gio);
         }
         
@@ -366,9 +362,9 @@ public class XLWorkbook extends AbstractXLElement implements Workbook {
         return root;
     }
 
-    public List getWarnings() {
+    public List<String> getWarnings() {
         if (warnings == null) {
-            return Collections.EMPTY_LIST;
+            return Collections.emptyList();
         } else {
             return warnings;
         }
@@ -406,8 +402,7 @@ public class XLWorkbook extends AbstractXLElement implements Workbook {
     }
     
     private void appendStyles(Document doc, Element styles, GIO gio) {
-        for (Iterator iter = gio.getStyleIDSet().iterator(); iter.hasNext();) {
-            String id = (String) iter.next();
+        for (String id : gio.getStyleIDSet()) {;
             Element style = getFactory().getStyle(id);
             if (style == null) {
                 // last resort: create one on the spot
@@ -438,7 +433,7 @@ public class XLWorkbook extends AbstractXLElement implements Workbook {
     
     private void addWarning(Throwable e) {
         if (warnings == null) {
-            warnings = new ArrayList();
+            warnings = new ArrayList<String>();
             sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss:SSS");
         }
         StringBuffer msg = new StringBuffer("\nWARNING ");

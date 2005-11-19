@@ -139,7 +139,7 @@ public class DefaultExcelReaderListener implements ExcelReaderListener {
      * Does effectively nothing. Subclasses can override this method
      * to do effectively something.
      */
-    public void endDocument(Map prefixMap) {
+    public void endDocument(Map<String, String> prefixMap) {
     }
 
 }

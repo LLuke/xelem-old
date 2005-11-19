@@ -21,7 +21,6 @@
 package nl.fountain.xelem.lex;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import nl.fountain.xelem.Area;
@@ -40,9 +39,9 @@ class Director {
     private SSWorksheetBuilder ssworksheetbuilder;
     private SSRowBuilder ssrowbuilder;
     private SSCellBuilder sscellbuilder;
-    private List anonymousBuilders;
+    private List<AnonymousBuilder> anonymousBuilders;
     private Area buildArea;
-    private List listeners;
+    private List<ExcelReaderListener> listeners;
     
     private int currentSheetIndex;
     private String currentSheetName;
@@ -64,9 +63,9 @@ class Director {
         return buildArea != null;
     }
     
-    public List getListeners() {
+    public List<ExcelReaderListener> getListeners() {
         if (listeners == null) {
-            listeners = new ArrayList();
+            listeners = new ArrayList<ExcelReaderListener>();
         }
         return listeners;
     }
@@ -115,8 +114,7 @@ class Director {
     
     public AnonymousBuilder getAnonymousBuilder() {
         AnonymousBuilder aBuilder = null;
-        for (Iterator iter = getBuilders().iterator(); iter.hasNext();) {
-            AnonymousBuilder builder = (AnonymousBuilder) iter.next();
+        for (AnonymousBuilder builder : getBuilders()) {
             if (!builder.isOccupied()) {
                 aBuilder = builder;
                 break;
@@ -154,9 +152,9 @@ class Director {
         return currentRowIndex;
     }
     
-    private List getBuilders() {
+    private List<AnonymousBuilder> getBuilders() {
         if (anonymousBuilders == null) {
-            anonymousBuilders = new ArrayList();
+            anonymousBuilders = new ArrayList<AnonymousBuilder>();
         }
         return anonymousBuilders;
     }

@@ -96,7 +96,7 @@ public class XLWorkbookTest extends XLElementTest {
         Worksheet z = wb.addSheet("Z");
         Worksheet a = wb.addSheet("A");
         Worksheet p = wb.addSheet("P");
-        Iterator iter = wb.getWorksheets().iterator();
+        Iterator<Worksheet> iter = wb.getWorksheets().iterator();
         assertSame(z, iter.next());
         assertSame(a, iter.next());
         assertSame(p, iter.next());

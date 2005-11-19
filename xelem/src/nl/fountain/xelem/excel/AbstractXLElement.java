@@ -22,7 +22,6 @@
 package nl.fountain.xelem.excel;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import nl.fountain.xelem.GIO;
@@ -93,8 +92,8 @@ public abstract class AbstractXLElement implements XLElement {
         Element element = doc.createElementNS(getNameSpace(), getTagName());
         element.setPrefix(getPrefix());
         if (gio.isPrintingComments() && getElementComments() != null) {
-            for (Iterator<String> iter = getElementComments().iterator(); iter.hasNext();) {
-                element.appendChild(doc.createComment(iter.next()));
+            for (String s : getElementComments()) {
+                element.appendChild(doc.createComment(s));
             }
         }
         
