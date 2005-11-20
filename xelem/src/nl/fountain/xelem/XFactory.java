@@ -242,10 +242,10 @@ public class XFactory {
         
         String[] elements = new String[] { "Alignment", "Borders",
                 "Font",  "Interior", "NumberFormat", "Protection" };
-        for (int i = 0; i < elements.length; i++) {
-	        NodeList nl2 = clonedS2.getElementsByTagName(elements[i]);
+        for (String s : elements) {
+	        NodeList nl2 = clonedS2.getElementsByTagName(s);
 	        if (nl2.getLength() > 0) {
-	            NodeList nl1 = ne.getElementsByTagName(elements[i]);
+	            NodeList nl1 = ne.getElementsByTagName(s);
 	            if (nl1.getLength() == 0) {
 	                ne.appendChild(nl2.item(0));
 	            }
