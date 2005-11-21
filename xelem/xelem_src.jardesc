@@ -1,19 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jardesc>
-    <jar path="D:/eclipse_jar/xelem/xelem_src.2.0.jar"/>
-    <options overwrite="false" compress="true" exportErrors="true" exportWarnings="true" saveDescription="true" descriptionLocation="/xelem/xelem_src.jardesc" useSourceFolders="false" buildIfNeeded="true"/>
-    <selectedElements exportClassFiles="false" exportOutputFolder="false" exportJavaFiles="true">
-        <javaElement handleIdentifier="=xelem/src&lt;nl.fountain.xelem.expat"/>
-        <javaElement handleIdentifier="=xelem/src&lt;nl.fountain.xelem"/>
-        <javaElement handleIdentifier="=xelem/src&lt;nl.fountain.xelem.excel.ss"/>
-        <folder path="/xelem/config"/>
-        <folder path="/xelem/testsuitefiles"/>
-        <javaElement handleIdentifier="=xelem/src&lt;nl.fountain.xelem.excel.x"/>
-        <javaElement handleIdentifier="=xelem/src&lt;nl.fountain.xelem.excel"/>
-        <javaElement handleIdentifier="=xelem/src&lt;nl.fountain.xelem.excel.o"/>
-        <file path="/xelem/overview.html"/>
-        <folder path="/xelem/testoutput"/>
-        <javaElement handleIdentifier="=xelem/src&lt;nl.fountain.xelem.lex"/>
-        <javaElement handleIdentifier="=xelem/src&lt;nl.fountain.xelem.integration"/>
-    </selectedElements>
+<jar path="D:/eclipse_jar/xelem/xelem_src.3.0.jar"/>
+<options buildIfNeeded="true" compress="true" descriptionLocation="/xelem/xelem_src.jardesc" exportErrors="true" exportWarnings="true" includeDirectoryEntries="false" overwrite="false" saveDescription="true" useSourceFolders="false"/>
+<selectedElements exportClassFiles="false" exportJavaFiles="true" exportOutputFolder="false">
+<javaElement handleIdentifier="=xelem/src&lt;nl.fountain.xelem"/>
+<folder path="/xelem/config"/>
+<folder path="/xelem/testsuitefiles"/>
+<javaElement handleIdentifier="=xelem/src&lt;nl.fountain.xelem.excel.x"/>
+<javaElement handleIdentifier="=xelem/src&lt;nl.fountain.xelem.excel"/>
+<javaElement handleIdentifier="=xelem/src&lt;nl.fountain.xelem.lex"/>
+<javaElement handleIdentifier="=xelem/src&lt;nl.fountain.xelem.excel.ss"/>
+<javaElement handleIdentifier="=xelem/src&lt;nl.fountain.xelem.expat"/>
+<file path="/xelem/overview.html"/>
+<javaElement handleIdentifier="=xelem/src&lt;nl.fountain.xelem.excel.o"/>
+<javaElement handleIdentifier="=xelem/src&lt;nl.fountain.xelem.integration"/>
+</selectedElements>
 </jardesc>

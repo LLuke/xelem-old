@@ -194,7 +194,7 @@ public class XFactory {
      * 
      * @return 	all available style id's.
      */
-    public Set getStyleIDs() {
+    public Set<String> getStyleIDs() {
         return styles.keySet();
     }
     

@@ -82,7 +82,7 @@ public class XLWorkbook extends AbstractXLElement implements Workbook {
     private String name;
     private String filename;
     private Collection<String> docComments;
-    private Map <String, Worksheet>sheets;
+    private Map<String, Worksheet>sheets;
     private List<String> sheetList;
     private Map<String, NamedRange> namedRanges;
     private boolean printComments = true;
