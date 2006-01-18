@@ -15,11 +15,11 @@
 <javaElement handleIdentifier="=xelem/src&lt;nl.fountain.xelem.excel{Table.java"/>
 <javaElement handleIdentifier="=xelem/src&lt;nl.fountain.xelem.excel{Column.java"/>
 <javaElement handleIdentifier="=xelem/src&lt;nl.fountain.xelem.excel{ExcelWorkbook.java"/>
-<javaElement handleIdentifier="=xelem/src&lt;nl.fountain.xelem{Address.java"/>
 <javaElement handleIdentifier="=xelem/src&lt;nl.fountain.xelem{UnsupportedStyleException.java"/>
+<javaElement handleIdentifier="=xelem/src&lt;nl.fountain.xelem{Address.java"/>
 <javaElement handleIdentifier="=xelem/src&lt;nl.fountain.xelem.lex{SSCellBuilder.java"/>
-<javaElement handleIdentifier="=xelem/src&lt;nl.fountain.xelem{GIO.java"/>
 <javaElement handleIdentifier="=xelem/src&lt;nl.fountain.xelem{XLUtil.java"/>
+<javaElement handleIdentifier="=xelem/src&lt;nl.fountain.xelem{GIO.java"/>
 <javaElement handleIdentifier="=xelem/src&lt;nl.fountain.xelem.lex{SSWorksheetBuilder.java"/>
 <javaElement handleIdentifier="=xelem/src&lt;nl.fountain.xelem.excel{DuplicateNameException.java"/>
 <javaElement handleIdentifier="=xelem/src&lt;nl.fountain.xelem.excel{WorksheetOptions.java"/>
