@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="nl.fountain.vtks.model">
+
+    <class name="AbstractKop" table="KOP">
+        <id name="id" type="long" column="kop_id">
+            <generator class="increment"/>
+        </id>
+        <property name="caption"/>
+        <property name="leftMostColumn">
+        	<column name="leftMostColumn" sql-type="SMALLINT UNSIGNED"/>
+        </property>
+        <property name="rightMostColumn">
+        	<column name="rightMostColumn" sql-type="SMALLINT UNSIGNED"/>
+        </property>
+        
+        <joined-subclass name="Tabelkop" table="TABELKOP">
+        	<key column="kop_id"/>
+        	<property name="bestandsnaam"/>
+        	<property name="bladnaam"/>
+        	<property name="jaar">
+        		<column name="jaar" sql-type="SMALLINT UNSIGNED"/>
+        	</property>
+        	
+        <many-to-one name="model" 
+        		column="modelId" 
+        		not-null="false"/>
+        	
+    	</joined-subclass>
+    	
+    	<joined-subclass name="Kolomkop" table="KOLOMKOP">
+        	<key column="kop_id"/>
+        	<property name="type">
+        		<column name="kolomtype" sql-type="SET('RIJ', 'DATA', 'META', 'LEEG')"/>
+        	</property>
+        	<many-to-one name="parent" 
+        		column="parentId" 
+        		not-null="false"/>
+        	
+        	<set name="children" sort="natural" inverse="true" cascade="all-delete-orphan">
+    			<key column="parentId"/>
+    			<one-to-many class="Kolomkop"/>
+			</set>
+			
+			<many-to-one name="model" 
+        		column="modelId" 
+        		not-null="false"/>
+        	
+    	</joined-subclass>
+        
+    </class>
+
+</hibernate-mapping>

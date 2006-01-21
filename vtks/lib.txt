@@ -1,0 +1,14 @@
+lib_vtks
+
+hibernate3.jar
+log4j-1.2.11.jar
+xelem.jar
+dom4j-1.6.1.jar
+commons-logging-1.0.4.jar
+commons-collections-2.1.1.jar
+mysql-connector-java
+c3po
+ehcache
+cglib
+asm
+jta

@@ -1,0 +1,57 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+
+    <session-factory>
+
+        <!-- Database connection settings -->
+        <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
+        <!-- 
+        <property name="connection.url">jdbc:mysql://194.171.144.15:336/vtks</property>
+        <property name="connection.username">vtks_remote</property>
+        <property name="connection.password">vtks_remote</property>
+        -->
+        <!-- -->
+        <property name="connection.url">jdbc:mysql://localhost:336/vtks</property>       
+        <property name="connection.username">vtks_user</property>
+        <property name="connection.password">vtks_user</property>
+
+        <!-- JDBC connection pool (use the built-in) 
+        <property name="connection.pool_size">1</property>
+        -->
+        
+        <!-- configuration pool via c3p0--> 
+		<property name="hibernate.c3p0.acquire_increment">1</property> 
+		<property name="hibernate.c3p0.idle_test_period">100</property> <!-- seconds --> 
+		<property name="hibernate.c3p0.max_size">100</property> 
+		<property name="hibernate.c3p0.max_statements">0</property> 
+		<property name="hibernate.c3p0.min_size">10</property> 
+		<property name="hibernate.c3p0.timeout">100</property> <!-- seconds -->         
+
+        <!-- SQL dialect -->
+        <property name="dialect">org.hibernate.dialect.MySQLInnoDBDialect</property>
+
+        <!-- Echo all executed SQL to stdout -->
+        <property name="show_sql">false</property>
+		
+		<!-- schema creatie: eg. update | create | create-drop -->
+        <!-- Drop and re-create the database schema on startup -->
+        <property name="hbm2ddl.auto">create</property>
+        <!-- Update the database schema 
+        <property name="hbm2ddl.auto">update</property>
+        -->
+
+        <mapping resource="nl/fountain/vtks/model/AbstractKop.hbm.xml"/>
+        <mapping resource="nl/fountain/vtks/model/Model.hbm.xml"/>
+        
+        <!-- cache settings -->
+        <class-cache class="nl.fountain.vtks.model.AbstractKop" usage="read-write"/>
+        <class-cache class="nl.fountain.vtks.model.Model" usage="read-write"/>
+        
+
+    </session-factory>
+
+</hibernate-configuration>

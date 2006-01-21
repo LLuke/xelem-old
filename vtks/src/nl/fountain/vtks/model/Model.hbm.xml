@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="nl.fountain.vtks.model">
+
+	<class name="Model" table="MODEL">
+        <id name="id" type="long" column="model_id">
+            <generator class="increment"/>
+        </id>
+        
+        <set name="kolomkoppen" inverse="true" cascade="all-delete-orphan">
+    		<key column="modelId"/>
+    		<one-to-many class="Kolomkop"/>
+		</set>
+		
+	</class>
+
+</hibernate-mapping>
